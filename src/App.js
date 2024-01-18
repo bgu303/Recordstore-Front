@@ -1,24 +1,35 @@
-import logo from './logo.svg';
 import './App.css';
+import FrontPage from './components/Frontpage';
+import Records from './components/Records';
+import "./App.css";
+import { useState } from "react";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import { Tabs, Tab } from "@mui/material";
+import Typography from "@mui/material/Typography";
 
 function App() {
+
+  const [page, setPage] = useState("Etusivu")
+
+  const changeTab = (event, page) => {
+    setPage(page)
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6">Mikon levykauppa</Typography>
+        </Toolbar>
+        <Tabs textColor="white" value={page} onChange={changeTab}>
+          <Tab label="Etusivu" className="tabs" value="Etusivu"></Tab>
+          <Tab label="Levylista" className="tabs" value="Levylista"></Tab>
+        </Tabs>
+      </AppBar>
+      {page === "Etusivu" && <FrontPage />}
+      {page === "Levylista" && <Records />}
+    </>
   );
 }
 
