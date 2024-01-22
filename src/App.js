@@ -1,6 +1,7 @@
 import './App.css';
 import FrontPage from './components/Frontpage';
 import Records from './components/Records';
+import CreateUser from './components/Createuser';
 import "./App.css";
 import { useState } from "react";
 import AppBar from "@mui/material/AppBar";
@@ -25,10 +26,12 @@ function App() {
         <Tabs textColor="white" value={page} onChange={changeTab}>
           <Tab label="Etusivu" className="tabs" value="Etusivu"></Tab>
           <Tab label="Levylista" className="tabs" value="Levylista"></Tab>
+          <Tab label="Luo Käyttäjä" className="tabs" value="Luo Käyttäjä"></Tab>
         </Tabs>
       </AppBar>
       {page === "Etusivu" && <FrontPage />}
       {page === "Levylista" && <Records />}
+      {page === "Luo Käyttäjä" && <CreateUser />}
     </>
   );
 }

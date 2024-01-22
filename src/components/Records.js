@@ -11,8 +11,18 @@ function Records() {
 
     const getRecords = () => {
         fetch("http://localhost:3001/records")
-            .then(response => response.json())
+            .then(response => {
+                if (response.ok) {
+                    return response.json()
+                } else {
+                    throw new Error("Something went wrong")
+                }
+            })
             .then(responseData => setRecords(responseData))
+            .catch(error => {
+                console.log(error.message)
+                setRecords([])
+            })
     }
 
     useEffect(() => {
