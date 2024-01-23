@@ -5,28 +5,34 @@ import "ag-grid-community/styles/ag-grid.css";
 import 'ag-grid-community/styles/ag-theme-material.css';
 import { Button } from '@mui/material';
 
-function Records() {
-
-    const [records, setRecords] = useState([])
+function Records({ isLoggedIn, loggedInUser }) {
+    const [records, setRecords] = useState([]);
 
     const getRecords = () => {
         fetch("http://localhost:3001/records")
             .then(response => {
                 if (response.ok) {
-                    return response.json()
+                    return response.json();
                 } else {
-                    throw new Error("Something went wrong")
+                    throw new Error("Something went wrong");
                 }
             })
             .then(responseData => setRecords(responseData))
             .catch(error => {
-                console.log(error.message)
-                setRecords([])
+                console.log(error.message);
+                setRecords([]);
             })
     }
 
+    const handleDiscogsLink = (data) => {
+        const discogsSubStr = data.substring(1);
+        fetch("https://api.discogs.com/releases/" + discogsSubStr)
+            .then(response => response.json())
+            .then(responseData => window.open(responseData.uri))
+    }
+
     useEffect(() => {
-        getRecords()
+        getRecords();
     }, [])
 
     const [columnDefinitions, setColumnDefinitions] = useState([
@@ -38,14 +44,30 @@ function Records() {
         { field: "kan", headerName: "PS", filter: true, suppressMovable: true, flex: 1 },
         { field: "price", headerName: "Hinta", filter: true, suppressMovable: true, flex: 1 },
         { field: "genre", headerName: "Genre", filter: true, suppressMovable: true, flex: 1 },
-        { field: "discogs", headerName: "Discogs", filter: true, suppressMovable: true, flex: 1 },
+        {
+            field: "discogs",
+            headerName: "Discogs",
+            filter: true,
+            suppressMovable: true,
+            flex: 1,
+            cellRenderer: params => (
+                <div
+                style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}
+                onClick={() => handleDiscogsLink(params.data.discogs)}
+              >
+                {params.data.discogs}
+              </div>
+            ),
+          },
         {
             cellRenderer: params => <Button size="small" color="success" onClick={() => addToChart(params.data)}>Lisää Koriin</Button>,
-            flex: 1
+            flex: 1,
+            hide: !isLoggedIn
         },
         {
             cellRenderer: params => <Button size="small" color="error" onClick={() => deleteRecord(params.data)}>Poista</Button>,
-            flex: 1
+            flex: 1,
+            hide: loggedInUser.role !== "ADMIN"
         }
     ]);
     
@@ -55,16 +77,16 @@ function Records() {
             fetch(`http://localhost:3001/records/${data.id}`, {method: "DELETE"})
             .then(response => {
                 if (response.ok) {
-                    getRecords()
+                    getRecords();
                 } else {
-                    alert("Jotain meni vikaan.")
+                    alert("Jotain meni vikaan.");
                 }
             })
         }
     }
 
     const addToChart = (data) => {
-        console.log(`adding to chart: ${data}`)
+        console.log(`adding to chart: ${data}`);
     }
 
     return (
@@ -83,4 +105,4 @@ function Records() {
     )
 }
 
-export default Records
+export default Records;

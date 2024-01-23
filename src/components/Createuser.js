@@ -5,7 +5,7 @@ import "ag-grid-community/styles/ag-grid.css";
 import 'ag-grid-community/styles/ag-theme-material.css';
 import { Button } from '@mui/material';
 import TextField from '@mui/material/TextField';
-import '../styling/Createuser.css'
+import '../styling/Createuser.css';
 
 function CreateUser() {
 
@@ -16,7 +16,7 @@ function CreateUser() {
         role: "USER"
     })
 
-    const createUser =  async () => {
+    const createUser = async () => {
         if (user.password !== user.confirmPassword) {
             alert("Salasanat eivät ole samat");
             return;
@@ -35,21 +35,20 @@ function CreateUser() {
 
             if (!response.ok) {
                 if (response.status === 501) {
-                    alert("Sähköposti on jo käytössä.")
-                    return
+                    return alert("Sähköposti on jo käytössä.");
                 }
-                alert("Jokin meni vikaan käyttäjää luodessa.")
+                alert("Jokin meni vikaan käyttäjää luodessa.");
             } else {
-                alert("Käyttäjä luotu!")
+                alert("Käyttäjä luotu!");
                 setUser({
                     email: "",
                     password: "",
                     confirmPassword: "",
                     role: "USER"
-                })
+                });
             }
         } catch (error) {
-            console.log(`Error in creating user: ${error}`)
+            console.log(`Error in creating user: ${error}`);
         }
     }
  
@@ -73,4 +72,4 @@ function CreateUser() {
     )
 }
 
-export default CreateUser
+export default CreateUser;
