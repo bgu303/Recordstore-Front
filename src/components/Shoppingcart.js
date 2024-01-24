@@ -8,11 +8,15 @@ import TextField from '@mui/material/TextField';
 import '../styling/Createuser.css';
 
 function Shoppingcart({ loggedInUser }) {
-
     const [shoppingcart, setShoppingcart] = useState([]);
+    let [totalPrice, setTotalPrice] = useState(0);
 
     useEffect(() => {
         showShoppingcart();
+        for (let i = 0; i < shoppingcart.length; i++) {
+            totalPrice += shoppingcart[i].price
+        }
+        setTotalPrice(totalPrice);
     }, [])
 
     const showShoppingcart = () => {
@@ -49,7 +53,7 @@ function Shoppingcart({ loggedInUser }) {
     return (
         <>
         <h2>Ostoskori</h2>
-        <div className="ag-theme-material trainings" style={{ height: "1000px", width: "95%", margin: "auto" }}>
+        <div className="ag-theme-material trainings" style={{ height: "500px", width: "95%", margin: "auto" }}>
                 <AgGridReact
                 rowData={shoppingcart}
                 columnDefs={columnDefinitions}
@@ -58,6 +62,7 @@ function Shoppingcart({ loggedInUser }) {
                 domLayout="auto"
                 />
             </div>
+            <span>Ostoskorin yhteishinta: {totalPrice}</span>
         </>
     )
 }

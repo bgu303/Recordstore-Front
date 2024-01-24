@@ -45,6 +45,10 @@ function Login({ isLoggedIn, setIsLoggedIn, loggedInUser, setLoggedInUser }) {
                   });
 
                 setIsLoggedIn(true);
+                setUser({
+                    email: "",
+                    password: ""
+                })
                 alert("Kirjauduttu sisään!");
             }
         } catch (error) {
@@ -59,9 +63,11 @@ function Login({ isLoggedIn, setIsLoggedIn, loggedInUser, setLoggedInUser }) {
             <TextField
             label="Sähköposti"
             onChange={e => setUser({...user, email: e.target.value})}
+            value={user.email}
             />
             <TextField label="Salasana"
             onChange={e => setUser({...user, password: e.target.value})}
+            value={user.password}
             />
             <Button onClick={() => login()}>Kirjaudu Sisään</Button>
         </div>

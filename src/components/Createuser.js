@@ -37,13 +37,13 @@ function CreateUser() {
                 }
                 alert("Jokin meni vikaan käyttäjää luodessa.");
             } else {
-                alert("Käyttäjä luotu!");
                 setUser({
                     email: "",
                     password: "",
                     confirmPassword: "",
                     role: "USER"
                 });
+                alert("Käyttäjä luotu!");
             }
         } catch (error) {
             console.log(`Error in creating user: ${error}`);
@@ -57,12 +57,15 @@ function CreateUser() {
             <TextField
             label="Sähköposti"
             onChange={e => setUser({...user, email: e.target.value})}
+            value={user.email}
             />
             <TextField label="Salasana"
             onChange={e => setUser({...user, password: e.target.value})}
+            value={user.password}
             />
             <TextField label="Salasana uudelleen"
             onChange={e => setUser({...user, confirmPassword: e.target.value})}
+            value={user.confirmPassword}
             />
             <Button onClick={() => createUser()}>Luo käyttäjä</Button>
         </div>
