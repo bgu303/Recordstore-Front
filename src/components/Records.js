@@ -31,6 +31,44 @@ function Records({ isLoggedIn, loggedInUser }) {
             .then(responseData => window.open(responseData.uri))
     }
 
+    const deleteRecord = (data) => {
+        if(window.confirm("Oletko varma että haluat poistaa levyn?")) {
+            fetch(`http://localhost:3001/records/${data.id}`, {method: "DELETE"})
+            .then(response => {
+                if (response.ok) {
+                    getRecords();
+                } else {
+                    alert("Jotain meni vikaan.");
+                }
+            })
+        }
+    }
+
+    const addToCart = async (data) => {
+        console.log(`UserId: ${loggedInUser.id} itemId: ${data.id}`);
+        try {
+            const response = await fetch("http://localhost:3001/records/addtocart", {
+                method: "POST",
+                headers: { "Content-type": "application/json" },
+                body: JSON.stringify({
+                    userId: loggedInUser.id,
+                    recordId: data.id
+                })
+            })
+
+            if (!response.ok) {
+                if (response.status === 501) {
+                    return alert("Levy on jo ostoskorissa");
+                }
+                return alert("Jokin meni vikaan lisätessä koriin");
+            } else {
+                return alert("Koriin lisääminen onnistui!");
+            }
+        } catch (error) {
+            console.log(`Error adding to cart: ${error}`);
+        }
+    }
+
     useEffect(() => {
         getRecords();
     }, [])
@@ -60,7 +98,7 @@ function Records({ isLoggedIn, loggedInUser }) {
             ),
           },
         {
-            cellRenderer: params => <Button size="small" color="success" onClick={() => addToChart(params.data)}>Lisää Koriin</Button>,
+            cellRenderer: params => <Button size="small" color="success" onClick={() => addToCart(params.data)}>Lisää Koriin</Button>,
             flex: 1,
             hide: !isLoggedIn
         },
@@ -71,24 +109,6 @@ function Records({ isLoggedIn, loggedInUser }) {
         }
     ]);
     
-
-    const deleteRecord = (data) => {
-        if(window.confirm("Oletko varma että haluat poistaa levyn?")) {
-            fetch(`http://localhost:3001/records/${data.id}`, {method: "DELETE"})
-            .then(response => {
-                if (response.ok) {
-                    getRecords();
-                } else {
-                    alert("Jotain meni vikaan.");
-                }
-            })
-        }
-    }
-
-    const addToChart = (data) => {
-        console.log(`adding to chart: ${data}`);
-    }
-
     return (
         <>
             <h1 style={{textAlign: "center"}}>Levykaupan levylista</h1>

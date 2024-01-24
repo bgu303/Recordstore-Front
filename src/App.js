@@ -3,6 +3,7 @@ import FrontPage from './components/Frontpage';
 import Records from './components/Records';
 import CreateUser from './components/Createuser';
 import Login from './components/Login';
+import Shoppingcart from './components/Shoppingcart';
 import "./App.css";
 import { useState } from "react";
 import AppBar from "@mui/material/AppBar";
@@ -16,7 +17,8 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState({
     email: "",
-    role: ""
+    role: "",
+    id: null
   });
 
   const changeTab = (event, page) => {
@@ -33,13 +35,15 @@ function App() {
           <Tab label="Etusivu" className="tabs" value="Etusivu"></Tab>
           <Tab label="Levylista" className="tabs" value="Levylista"></Tab>
           { !isLoggedIn && <Tab label="Luo Käyttäjä" className="tabs" value="Luo Käyttäjä"></Tab> }
-          <Tab label="Kirjaudu Sisään" className="tabs" value="Kirjaudu Sisään"></Tab>
+          { !isLoggedIn && <Tab label="Kirjaudu Sisään" className="tabs" value="Kirjaudu Sisään"></Tab> }
+          { isLoggedIn && <Tab label="Ostoskori" className="tabs" value="Ostoskori"></Tab> }
         </Tabs>
       </AppBar>
       {page === "Etusivu" && <FrontPage />}
       {page === "Levylista" && <Records isLoggedIn={isLoggedIn} loggedInUser={loggedInUser} />}
       {page === "Luo Käyttäjä" && <CreateUser />}
       {page === "Kirjaudu Sisään" && <Login isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} />}
+      {page === "Ostoskori" && <Shoppingcart loggedInUser={loggedInUser} />}
     </>
   );
 }

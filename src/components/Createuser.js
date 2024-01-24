@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
-import { AgGridReact } from 'ag-grid-react';
+import { useState } from 'react';
 import "ag-grid-community/styles/ag-grid.css";
 import 'ag-grid-community/styles/ag-theme-material.css';
 import { Button } from '@mui/material';
@@ -8,7 +7,6 @@ import TextField from '@mui/material/TextField';
 import '../styling/Createuser.css';
 
 function CreateUser() {
-
     const [user, setUser] = useState({
         email: "",
         password: "",

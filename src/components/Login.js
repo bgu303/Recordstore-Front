@@ -40,7 +40,8 @@ function Login({ isLoggedIn, setIsLoggedIn, loggedInUser, setLoggedInUser }) {
                 const decodedToken = jwtDecode(token);
                 setLoggedInUser({
                     email: decodedToken.email,
-                    role: decodedToken.user_role
+                    role: decodedToken.userRole,
+                    id: decodedToken.userId
                   });
 
                 setIsLoggedIn(true);
