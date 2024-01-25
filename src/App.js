@@ -9,6 +9,7 @@ import { useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import { Tabs, Tab } from "@mui/material";
+import { Button } from '@mui/material';
 import Typography from "@mui/material/Typography";
 import AddRecord from './components/Addrecord';
 
@@ -26,6 +27,16 @@ function App() {
     setPage(page);
   }
 
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setLoggedInUser({
+      email: "",
+      role: "",
+      id: null
+    });
+    window.location.href = "http://localhost:3000/";
+  }
+
   return (
     <>
       <AppBar position="static">
@@ -35,10 +46,11 @@ function App() {
         <Tabs textColor="inherit" value={page} onChange={changeTab}>
           <Tab label="Etusivu" className="tabs" value="Etusivu"></Tab>
           <Tab label="Levylista" className="tabs" value="Levylista"></Tab>
-          { !isLoggedIn && <Tab label="Luo Käyttäjä" className="tabs" value="Luo Käyttäjä"></Tab> }
-          { !isLoggedIn && <Tab label="Kirjaudu Sisään" className="tabs" value="Kirjaudu Sisään"></Tab> }
-          { isLoggedIn && <Tab label="Ostoskori" className="tabs" value="Ostoskori"></Tab> }
-          { isLoggedIn && loggedInUser.role === "ADMIN" && <Tab label="Lisää Levy" className="tabs" value="Lisää Levy"></Tab> }
+          {!isLoggedIn && <Tab label="Luo Käyttäjä" className="tabs" value="Luo Käyttäjä"></Tab>}
+          {!isLoggedIn && <Tab label="Kirjaudu Sisään" className="tabs" value="Kirjaudu Sisään"></Tab>}
+          {isLoggedIn && <Tab label="Ostoskori" className="tabs" value="Ostoskori"></Tab>}
+          {isLoggedIn && loggedInUser.role === "ADMIN" && <Tab label="Lisää Levy" className="tabs" value="Lisää Levy"></Tab>}
+          {isLoggedIn && <Button color="error" onClick={() => handleLogout()}>Kirjaudu ulos</Button>}
         </Tabs>
       </AppBar>
       {page === "Etusivu" && <FrontPage />}

@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
-import { AgGridReact } from 'ag-grid-react';
+import { useState } from 'react';
 import "ag-grid-community/styles/ag-grid.css";
 import 'ag-grid-community/styles/ag-theme-material.css';
 import { Button } from '@mui/material';
@@ -13,7 +12,6 @@ function Login({ isLoggedIn, setIsLoggedIn, loggedInUser, setLoggedInUser }) {
         email: "",
         password: "",
     });
-
 
     const login = async () => {
         if (user.email.trim() === "" || user.password.trim() === "") {
