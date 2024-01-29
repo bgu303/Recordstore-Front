@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import "ag-grid-community/styles/ag-grid.css";
 import 'ag-grid-community/styles/ag-theme-material.css';
 import { Button } from '@mui/material';
@@ -13,48 +13,62 @@ function Login({ isLoggedIn, setIsLoggedIn, loggedInUser, setLoggedInUser }) {
         email: "",
         password: "",
     });
+
     const navigate = useNavigate();
 
-    const login = async () => {
+    useEffect(() => {
+        localStorage.setItem("isLoggedIn", isLoggedIn);
+        localStorage.setItem("loggedInUserId", loggedInUser.id);
+        localStorage.setItem("loggedInUserEmail", loggedInUser.email);
+        localStorage.setItem("loggedInUserRole", loggedInUser.role);
+    }, [isLoggedIn])
+    
+    const login = () => {
         if (user.email.trim() === "" || user.password.trim() === "") {
             return alert("Täytä molemmat kentät");
         }
-        try {
-            const response = await fetch("http://localhost:3001/user/login", {
-                method: "POST",
-                headers: { "Content-type": "application/json" },
-                body: JSON.stringify({
-                    email: user.email,
-                    password: user.password
-                })
+    
+        fetch("http://localhost:3001/user/login", {
+            method: "POST",
+            headers: { "Content-type": "application/json" },
+            body: JSON.stringify({
+                email: user.email,
+                password: user.password
             })
-
+        })
+        .then(response => {
             if (!response.ok) {
                 if (response.status === 401) {
-                    return alert("Salasana tai käyttäjänimi väärin.");
+                    return Promise.reject("Salasana tai käyttäjänimi väärin.");
                 }
-                return alert("Jokin meni vikaan.");
-            } else {
-                const data = await response.json();
-                const { token } = data;
-                const decodedToken = jwtDecode(token);
-
-                setLoggedInUser({
-                    email: decodedToken.email,
-                    role: decodedToken.userRole,
-                    id: decodedToken.userId
-                });
-                setIsLoggedIn(true);
-                setUser({
-                    email: "",
-                    password: ""
-                });
-                navigate("/records");
+                return Promise.reject("Jokin meni vikaan.");
             }
-        } catch (error) {
+            return response.json();
+        })
+        .then(data => {
+            const { token } = data;
+            const decodedToken = jwtDecode(token);
+    
+            setLoggedInUser({
+                email: decodedToken.email,
+                role: decodedToken.userRole,
+                id: decodedToken.userId
+            });
+            setIsLoggedIn(true);
+            setUser({
+                email: "",
+                password: ""
+            });
+            setTimeout(() => {
+                navigate("/records")
+             }, 300);
+        })
+        .catch(error => {
             console.log(`Error logging in: ${error}`);
-        }
-    }
+            alert("Jokin meni vikaan.");
+        });
+    };
+    
 
     return (
         <>

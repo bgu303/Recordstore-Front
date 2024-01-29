@@ -20,18 +20,19 @@ function App() {
   });
 
   useEffect(() => {
-    if (isLoggedIn) {
-      localStorage.setItem("isLoggedIn", JSON.stringify(isLoggedIn))
-      localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser))
+    const storedIsLoggedIn = localStorage.getItem("isLoggedIn");
+    const storedUserId = localStorage.getItem("loggedInUserId");
+    const storedUserEmail = localStorage.getItem("loggedInUserEmail");
+    const storedUserRole = localStorage.getItem("loggedInUserRole");
+    console.log(storedIsLoggedIn);
+    if (storedIsLoggedIn === "true") {
+      console.log("moi2")
+      setIsLoggedIn(true);
+      setLoggedInUser({...loggedInUser, email: storedUserEmail})
+      setLoggedInUser({...loggedInUser, role: storedUserRole})
+      setLoggedInUser({...loggedInUser, id: storedUserId})
     }
-  }, [])
-
-  useEffect(() => {
-    if (localStorage.getItem("isLoggedIn") !== null) {
-      setIsLoggedIn(JSON.parse(localStorage.getItem("isLoggedIn")));
-      setLoggedInUser(JSON.parse(localStorage.getItem("loggedInUser")))
-    }
-  }, [])
+  }, []);
 
   return (
     <Router>
