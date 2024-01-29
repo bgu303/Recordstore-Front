@@ -6,12 +6,14 @@ import { Button } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import '../styling/Createuser.css'
 import { jwtDecode } from 'jwt-decode';
+import { useNavigate } from 'react-router-dom';
 
 function Login({ isLoggedIn, setIsLoggedIn, loggedInUser, setLoggedInUser }) {
     const [user, setUser] = useState({
         email: "",
         password: "",
     });
+    const navigate = useNavigate();
 
     const login = async () => {
         if (user.email.trim() === "" || user.password.trim() === "") {
@@ -36,18 +38,18 @@ function Login({ isLoggedIn, setIsLoggedIn, loggedInUser, setLoggedInUser }) {
                 const data = await response.json();
                 const { token } = data;
                 const decodedToken = jwtDecode(token);
+
                 setLoggedInUser({
                     email: decodedToken.email,
                     role: decodedToken.userRole,
                     id: decodedToken.userId
-                  });
-
+                });
                 setIsLoggedIn(true);
                 setUser({
                     email: "",
                     password: ""
-                })
-                alert("Kirjauduttu sisään!");
+                });
+                navigate("/records");
             }
         } catch (error) {
             console.log(`Error logging in: ${error}`);
@@ -56,19 +58,19 @@ function Login({ isLoggedIn, setIsLoggedIn, loggedInUser, setLoggedInUser }) {
 
     return (
         <>
-        <div className="mainDiv">
-            <h3>Kirjaudu sisään</h3>
-            <TextField
-            label="Sähköposti"
-            onChange={e => setUser({...user, email: e.target.value})}
-            value={user.email}
-            />
-            <TextField label="Salasana"
-            onChange={e => setUser({...user, password: e.target.value})}
-            value={user.password}
-            />
-            <Button onClick={() => login()}>Kirjaudu Sisään</Button>
-        </div>
+            <div className="mainDiv">
+                <h3>Kirjaudu sisään</h3>
+                <TextField
+                    label="Sähköposti"
+                    onChange={e => setUser({ ...user, email: e.target.value })}
+                    value={user.email}
+                />
+                <TextField label="Salasana"
+                    onChange={e => setUser({ ...user, password: e.target.value })}
+                    value={user.password}
+                />
+                <Button onClick={() => login()}>Kirjaudu Sisään</Button>
+            </div>
         </>
     )
 }

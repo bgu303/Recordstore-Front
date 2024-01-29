@@ -5,6 +5,7 @@ import 'ag-grid-community/styles/ag-theme-material.css';
 import { Button } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import '../styling/Createuser.css';
+import { useNavigate } from 'react-router-dom';
 
 function CreateUser() {
     const [user, setUser] = useState({
@@ -14,12 +15,14 @@ function CreateUser() {
         role: "USER"
     })
 
+    const navigate = useNavigate();
+
     const createUser = async () => {
         if (user.password !== user.confirmPassword) {
             alert("Salasanat eivät ole samat");
             return;
         } 
-
+        
         try {
             const response = await fetch("http://localhost:3001/user/createuser", {
                 method: "POST",
@@ -44,6 +47,8 @@ function CreateUser() {
                     role: "USER"
                 });
                 alert("Käyttäjä luotu!");
+                navigate("/records");
+
             }
         } catch (error) {
             console.log(`Error in creating user: ${error}`);

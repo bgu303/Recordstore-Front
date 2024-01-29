@@ -4,18 +4,14 @@ import Records from './components/Records';
 import CreateUser from './components/Createuser';
 import Login from './components/Login';
 import Shoppingcart from './components/Shoppingcart';
+import Logout from './components/Logout';
 import "./App.css";
-import { useState } from "react";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import { Tabs, Tab } from "@mui/material";
-import { Button } from '@mui/material';
-import Typography from "@mui/material/Typography";
+import { useState, useEffect } from "react";
 import AddRecord from './components/Addrecord';
+import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
+import "./styling/Navbar.css";
 
 function App() {
-
-  const [page, setPage] = useState("Etusivu");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState({
     email: "",
@@ -23,43 +19,44 @@ function App() {
     id: null
   });
 
-  const changeTab = (event, page) => {
-    setPage(page);
-  }
+  useEffect(() => {
+    if (isLoggedIn) {
+      localStorage.setItem("isLoggedIn", JSON.stringify(isLoggedIn))
+      localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser))
+    }
+  }, [])
 
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setLoggedInUser({
-      email: "",
-      role: "",
-      id: null
-    });
-    window.location.href = "http://localhost:3000/";
-  }
+  useEffect(() => {
+    if (localStorage.getItem("isLoggedIn") !== null) {
+      setIsLoggedIn(JSON.parse(localStorage.getItem("isLoggedIn")));
+      setLoggedInUser(JSON.parse(localStorage.getItem("loggedInUser")))
+    }
+  }, [])
 
   return (
-    <>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6">Mikon levykauppa</Typography>
-        </Toolbar>
-        <Tabs textColor="inherit" value={page} onChange={changeTab}>
-          <Tab label="Etusivu" className="tabs" value="Etusivu"></Tab>
-          <Tab label="Levylista" className="tabs" value="Levylista"></Tab>
-          {!isLoggedIn && <Tab label="Luo Käyttäjä" className="tabs" value="Luo Käyttäjä"></Tab>}
-          {!isLoggedIn && <Tab label="Kirjaudu Sisään" className="tabs" value="Kirjaudu Sisään"></Tab>}
-          {isLoggedIn && <Tab label="Ostoskori" className="tabs" value="Ostoskori"></Tab>}
-          {isLoggedIn && loggedInUser.role === "ADMIN" && <Tab label="Lisää Levy" className="tabs" value="Lisää Levy"></Tab>}
-          {isLoggedIn && <Button color="error" onClick={() => handleLogout()}>Kirjaudu ulos</Button>}
-        </Tabs>
-      </AppBar>
-      {page === "Etusivu" && <FrontPage />}
-      {page === "Levylista" && <Records isLoggedIn={isLoggedIn} loggedInUser={loggedInUser} />}
-      {page === "Luo Käyttäjä" && <CreateUser />}
-      {page === "Kirjaudu Sisään" && <Login isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} />}
-      {page === "Ostoskori" && <Shoppingcart loggedInUser={loggedInUser} />}
-      {page === "Lisää Levy" && <AddRecord />}
-    </>
+    <Router>
+      <div>
+        <nav>
+          <nav className="navbar">
+            <Link to="/" className="nav-link">Etusivu</Link>
+            <Link to="/records" className="nav-link">Levylista</Link>
+            { isLoggedIn && <Link to="/shoppingcart" className="nav-link">Ostoskori</Link> }
+            { isLoggedIn && loggedInUser.role === "ADMIN" && <Link to="/addrecord" className="nav-link">Lisää Levy</Link> }
+            { !isLoggedIn && <Link to="/createuser" className="nav-link">Luo Käyttäjä</Link> }
+            { !isLoggedIn && <Link to="/login" className="nav-link">Kirjaudu Sisään</Link> }
+            { isLoggedIn && <Logout setIsLoggedIn={setIsLoggedIn} setLoggedInUser={setLoggedInUser}/> }
+          </nav>
+        </nav>
+        <Routes>
+          <Route path="/" element={<FrontPage />} />
+          <Route path="/records" element={<Records isLoggedIn={isLoggedIn} loggedInUser={loggedInUser} />} />
+          <Route path="/createuser" element={<CreateUser />} />
+          <Route path="/login" element={<Login isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} />} />
+          <Route path="/shoppingcart" element={<Shoppingcart loggedInUser={loggedInUser} />} />
+          <Route path="/addrecord" element={<AddRecord />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
