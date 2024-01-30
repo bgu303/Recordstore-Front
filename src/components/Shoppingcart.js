@@ -8,14 +8,9 @@ import '../styling/Createuser.css';
 
 function Shoppingcart({ loggedInUser }) {
     const [shoppingcart, setShoppingcart] = useState([]);
-    let [totalPrice, setTotalPrice] = useState(0);
 
     useEffect(() => {
         showShoppingcart();
-        for (let i = 0; i < shoppingcart.length; i++) {
-            totalPrice += shoppingcart[i].price
-        }
-        setTotalPrice(totalPrice);
     }, [])
 
     const showShoppingcart = () => {
@@ -27,6 +22,20 @@ function Shoppingcart({ loggedInUser }) {
     const deleteFromShoppingcart = (data) => {
         if(window.confirm("Oletko varma että haluat poistaa levyn?")) {
             fetch(`http://localhost:3001/records/shoppingcartdelete/${data.id}`, {method: "DELETE"})
+            .then(response => {
+                if (response.ok) {
+                    showShoppingcart();
+                } else {
+                    alert("Jotain meni vikaan.");
+                    console.log(response)
+                }
+            })
+        }
+    }
+
+    const sendOrder = () => {
+        if(window.confirm("Lähetetäänkö tilaus?")) {
+            fetch(`http://localhost:3001/records/shoppingcartdeleteall/${loggedInUser.id}`, {method: "DELETE"})
             .then(response => {
                 if (response.ok) {
                     showShoppingcart();
@@ -61,7 +70,9 @@ function Shoppingcart({ loggedInUser }) {
                 domLayout="auto"
                 />
             </div>
-            <span>Ostoskorin yhteishinta: {totalPrice}</span>
+            <div style={{textAlign: "center"}}>
+                <Button size="large" color="success" variant="contained" onClick={() => sendOrder()}>Lähetä</Button>
+            </div>
         </>
     )
 }
