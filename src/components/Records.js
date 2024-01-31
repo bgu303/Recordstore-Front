@@ -58,7 +58,7 @@ function Records({ isLoggedIn, loggedInUser }) {
 
             if (!response.ok) {
                 if (response.status === 501) {
-                    return alert("Levy on jo ostoskorissa");
+                    return alert("Levy on jo sinun tai toisen käyttäjän ostoskorissa");
                 }
                 return alert("Jokin meni vikaan lisätessä koriin");
             } else {

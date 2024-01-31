@@ -10,9 +10,11 @@ function Shoppingcart({ loggedInUser }) {
     const [shoppingcart, setShoppingcart] = useState([]);
 
     useEffect(() => {
-        showShoppingcart();
-    }, [])
-
+        if (loggedInUser.id) {
+            showShoppingcart();
+        }
+    }, [loggedInUser.id]);
+    
     const showShoppingcart = () => {
         fetch(`http://localhost:3001/records/shoppingcartitems/${loggedInUser.id}`)
             .then(response => response.json())

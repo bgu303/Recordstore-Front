@@ -24,15 +24,16 @@ function App() {
     const storedUserId = localStorage.getItem("loggedInUserId");
     const storedUserEmail = localStorage.getItem("loggedInUserEmail");
     const storedUserRole = localStorage.getItem("loggedInUserRole");
-    console.log(storedIsLoggedIn);
+
     if (storedIsLoggedIn === "true") {
-      console.log("moi2")
-      setIsLoggedIn(true);
-      setLoggedInUser({...loggedInUser, email: storedUserEmail})
-      setLoggedInUser({...loggedInUser, role: storedUserRole})
-      setLoggedInUser({...loggedInUser, id: storedUserId})
+        setIsLoggedIn(true);
+        setLoggedInUser({
+            email: storedUserEmail,
+            role: storedUserRole,
+            id: parseInt(storedUserId, 10)
+        });
     }
-  }, []);
+}, []);
 
   return (
     <Router>
