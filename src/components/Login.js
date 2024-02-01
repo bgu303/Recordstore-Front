@@ -7,6 +7,7 @@ import TextField from '@mui/material/TextField';
 import '../styling/Createuser.css'
 import { jwtDecode } from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
+import { BASE_URL } from './Apiconstants';
 
 function Login({ isLoggedIn, setIsLoggedIn, loggedInUser, setLoggedInUser }) {
     const [user, setUser] = useState({
@@ -28,7 +29,7 @@ function Login({ isLoggedIn, setIsLoggedIn, loggedInUser, setLoggedInUser }) {
             return alert("Täytä molemmat kentät");
         }
     
-        fetch("http://localhost:3001/user/login", {
+        fetch(`${BASE_URL}/user/login`, {
             method: "POST",
             headers: { "Content-type": "application/json" },
             body: JSON.stringify({

@@ -6,6 +6,7 @@ import { Button } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import '../styling/Createuser.css';
 import { useNavigate } from 'react-router-dom';
+import { BASE_URL } from './Apiconstants';
 
 function CreateUser() {
     const [user, setUser] = useState({
@@ -24,7 +25,7 @@ function CreateUser() {
         } 
         
         try {
-            const response = await fetch("http://localhost:3001/user/createuser", {
+            const response = await fetch(`${BASE_URL}/user/createuser`, {
                 method: "POST",
                 headers: { "Content-type": "application/json" },
                 body: JSON.stringify({

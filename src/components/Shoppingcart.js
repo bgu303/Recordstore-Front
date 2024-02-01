@@ -4,7 +4,14 @@ import { AgGridReact } from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
 import 'ag-grid-community/styles/ag-theme-material.css';
 import { Button, TextField } from '@mui/material';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Radio from '@mui/material/Radio';
+
 import '../styling/Createuser.css';
+import { BASE_URL } from './Apiconstants';
 
 function Shoppingcart({ loggedInUser }) {
     const [shoppingcart, setShoppingcart] = useState([]);
@@ -14,22 +21,27 @@ function Shoppingcart({ loggedInUser }) {
         email: "",
         address: "",
         zipCode: "",
-        city: ""
+        city: "",
+        paymentOption: ""
     });
 
     useEffect(() => {
         showShoppingcart();
     }, [loggedInUser.id]);
 
+    const handlePaymentOption = (e) => {
+        setCustomerInfo({...customerInfo, paymentOption: e.target.value});
+    }
+
     const showShoppingcart = () => {
-        fetch(`http://localhost:3001/records/shoppingcartitems/${loggedInUser.id}`)
+        fetch(`${BASE_URL}/shoppingcart/shoppingcartitems/${loggedInUser.id}`)
             .then(response => response.json())
             .then(responseData => setShoppingcart(responseData))
     }
 
     const deleteFromShoppingcart = (data) => {
         if (window.confirm("Oletko varma että haluat poistaa levyn?")) {
-            fetch(`http://localhost:3001/records/shoppingcartdelete/${data.id}`, { method: "DELETE" })
+            fetch(`${BASE_URL}/shoppingcart/shoppingcartdelete/${data.id}`, { method: "DELETE" })
                 .then(response => {
                     if (response.ok) {
                         showShoppingcart();
@@ -51,7 +63,7 @@ function Shoppingcart({ loggedInUser }) {
 
         if (confirmation) {
             try {
-                const response = await fetch("http://localhost:3001/records/sendcart", {
+                const response = await fetch(`${BASE_URL}/shoppingcart/sendcart`, {
                     method: "POST",
                     headers: { "Content-type": "application/json" },
                     body: JSON.stringify({
@@ -67,11 +79,12 @@ function Shoppingcart({ loggedInUser }) {
                         name: "",
                         phoneNumber: "",
                         email: "",
+                        address: "",
                         zipCode: "",
                         city: ""
                     });
 
-                    fetch(`http://localhost:3001/records/shoppingcartdeleteall/${loggedInUser.id}`, { method: "DELETE" })
+                    fetch(`${BASE_URL}/shoppingcart/shoppingcartdeleteall/${loggedInUser.id}`, { method: "DELETE" })
                         .then(response => {
                             if (response.ok) {
                                 showShoppingcart();
@@ -90,7 +103,6 @@ function Shoppingcart({ loggedInUser }) {
         }
     };
 
-
     const [columnDefinitions, setColumnDefinitions] = useState([
         { field: "artist", headerName: "Artisti", filter: true, suppressMovable: true, flex: 1 },
         { field: "title", headerName: "Levyn nimi", filter: true, suppressMovable: true, flex: 1 },
@@ -104,7 +116,7 @@ function Shoppingcart({ loggedInUser }) {
 
     return (
         <>
-            <h2>Ostoskori</h2>
+            <h2 style={{textAlign: "center"}}>Ostoskori</h2>
             <div className="ag-theme-material trainings" style={{ height: "500px", width: "95%", margin: "auto" }}>
                 <AgGridReact
                     rowData={shoppingcart}
@@ -140,6 +152,33 @@ function Shoppingcart({ loggedInUser }) {
                     onChange={e => setCustomerInfo({ ...customerInfo, city: e.target.value })}
                     value={customerInfo.city}
                 />
+                <div>
+                    <FormControl>
+                        <FormLabel>Maksutapa</FormLabel>
+                        <RadioGroup
+                            aria-label="paymentOption"
+                            name="paymentOption"
+                            value={customerInfo.paymentOption}
+                            onChange={handlePaymentOption}
+                        >
+                            <FormControlLabel
+                                value="Käteinen"
+                                control={<Radio />}
+                                label="Käteinen"
+                            />
+                            <FormControlLabel
+                                value="Mobilepay"
+                                control={<Radio />}
+                                label="Mobilepay"
+                            />
+                            <FormControlLabel
+                                value="Tilisiirto"
+                                control={<Radio />}
+                                label="Tilisiirto"
+                            />
+                        </RadioGroup>
+                    </FormControl>
+                </div>
             </div>
             <div style={{ textAlign: "center" }}>
                 <Button size="large" color="success" variant="contained" onClick={() => sendOrder()}>Lähetä</Button>
