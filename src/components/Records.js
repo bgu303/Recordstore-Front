@@ -72,7 +72,8 @@ function Records({ isLoggedIn, loggedInUser }) {
 
     useEffect(() => {
         getRecords();
-    }, [])
+        console.log(isLoggedIn)
+    }, [isLoggedIn])
 
     const [columnDefinitions, setColumnDefinitions] = useState([
         { field: "artist", headerName: "Artisti", filter: true, suppressMovable: true, flex: 1 },
@@ -101,12 +102,12 @@ function Records({ isLoggedIn, loggedInUser }) {
         {
             cellRenderer: params => <Button size="small" color="success" onClick={() => addToCart(params.data)}>Lisää Koriin</Button>,
             flex: 1,
-            hide: !isLoggedIn
+            hide: !localStorage.getItem("isLoggedIn")
         },
         {
             cellRenderer: params => <Button size="small" color="error" onClick={() => deleteRecord(params.data)}>Poista</Button>,
             flex: 1,
-            hide: loggedInUser.role !== "ADMIN"
+            hide: localStorage.getItem("loggedInUserRole") !== "ADMIN"
         }
     ]);
     
