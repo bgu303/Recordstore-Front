@@ -19,10 +19,15 @@ function CreateUser() {
     const navigate = useNavigate();
 
     const createUser = async () => {
+        if (user.email.trim() === "" || user.password.trim() === "" || user.confirmPassword === "") {
+            return alert("Täytä kaikki kentät.");
+        }
         if (user.password !== user.confirmPassword) {
-            alert("Salasanat eivät ole samat");
-            return;
-        } 
+            return alert("Salasanat eivät ole samat");
+        }
+        if (user.password.length < 9) {
+            return alert("Salasanan tulee olla vähintään 9 merkkiä pitkä.");
+        }
         
         try {
             const response = await fetch(`${BASE_URL}/user/createuser`, {
@@ -48,7 +53,7 @@ function CreateUser() {
                     role: "USER"
                 });
                 alert("Käyttäjä luotu!");
-                navigate("/records");
+                navigate("/login");
 
             }
         } catch (error) {
@@ -61,15 +66,17 @@ function CreateUser() {
         <div className="mainDiv">
             <h3>Luo Käyttäjä</h3>
             <TextField
-            label="Sähköposti"
+            label="Sähköposti tai käyttäjänimi"
             onChange={e => setUser({...user, email: e.target.value})}
             value={user.email}
             />
             <TextField label="Salasana"
+            type="password"
             onChange={e => setUser({...user, password: e.target.value})}
             value={user.password}
             />
             <TextField label="Salasana uudelleen"
+            type="password"
             onChange={e => setUser({...user, confirmPassword: e.target.value})}
             value={user.confirmPassword}
             />

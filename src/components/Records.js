@@ -110,6 +110,10 @@ function Records({ isLoggedIn, loggedInUser }) {
             hide: localStorage.getItem("loggedInUserRole") !== "ADMIN"
         }
     ]);
+
+    const finnishTranslations = {
+        filterOoo: 'Hae...',
+      };
     
     return (
         <>
@@ -118,6 +122,7 @@ function Records({ isLoggedIn, loggedInUser }) {
                 <AgGridReact
                 rowData={records}
                 columnDefs={columnDefinitions}
+                localeText={finnishTranslations}
                 pagination={true}
                 paginationPageSize={20}
                 domLayout="auto"

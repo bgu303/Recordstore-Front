@@ -76,11 +76,12 @@ function Login({ isLoggedIn, setIsLoggedIn, loggedInUser, setLoggedInUser }) {
             <div className="mainDiv">
                 <h3>Kirjaudu sisään</h3>
                 <TextField
-                    label="Sähköposti"
+                    label="Sähköposti tai käyttäjänimi"
                     onChange={e => setUser({ ...user, email: e.target.value })}
                     value={user.email}
                 />
                 <TextField label="Salasana"
+                    type="password"
                     onChange={e => setUser({ ...user, password: e.target.value })}
                     value={user.password}
                 />
