@@ -9,7 +9,7 @@ import FormLabel from '@mui/material/FormLabel';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
-
+import { useNavigate } from "react-router-dom";
 import '../styling/Createuser.css';
 import { BASE_URL } from './Apiconstants';
 
@@ -25,12 +25,22 @@ function Shoppingcart({ loggedInUser }) {
         paymentOption: ""
     });
 
+    const navigate = useNavigate();
+
     useEffect(() => {
         showShoppingcart();
     }, [loggedInUser.id]);
 
+    const calculateTotalAmount = () => {
+        let total = 0;
+        shoppingcart.forEach(item => {
+            total += item.price;
+        });
+        return total;
+    };
+
     const handlePaymentOption = (e) => {
-        setCustomerInfo({...customerInfo, paymentOption: e.target.value});
+        setCustomerInfo({ ...customerInfo, paymentOption: e.target.value });
     }
 
     const showShoppingcart = () => {
@@ -53,15 +63,13 @@ function Shoppingcart({ loggedInUser }) {
     }
 
     const sendOrder = async () => {
-        if (customerInfo.name.trim() === "" || customerInfo.phoneNumber.trim() === "" || customerInfo.email.trim() === "" || customerInfo.address.trim() === "" || customerInfo.zipCode.trim() === "" || customerInfo.city.trim() === "") {
-            return alert("Täytä kaikki tilaajan kentät.");
-        }
-        if (shoppingcart.length === 0) {
-            return alert("Ostoskori on tyhjä. Lisää tuotteita ennen tilauksen lähettämistä.");
-        }
-        const confirmation = window.confirm("Lähetetäänkö ostoskori?");
-
-        if (confirmation) {
+        if (window.confirm("Lähetetäänkö ostoskori?")) {
+            if (customerInfo.name.trim() === "" || customerInfo.phoneNumber.trim() === "" || customerInfo.email.trim() === "" || customerInfo.address.trim() === "" || customerInfo.zipCode.trim() === "" || customerInfo.city.trim() === "") {
+                return alert("Täytä kaikki tilaajan kentät.");
+            }
+            if (shoppingcart.length === 0) {
+                return alert("Ostoskori on tyhjä. Lisää tuotteita ennen tilauksen lähettämistä.");
+            }
             try {
                 const response = await fetch(`${BASE_URL}/shoppingcart/sendcart`, {
                     method: "POST",
@@ -93,7 +101,8 @@ function Shoppingcart({ loggedInUser }) {
                                 console.log(response);
                             }
                         });
-                    return alert("Ostoskori lähetetty");
+                        navigate("/records");
+                    return alert("Ostoskori lähetetty, Sinuun ollaan yhteydessä.");
                 }
             } catch (error) {
                 console.log(`Error in sending order: ${error}`);
@@ -116,7 +125,7 @@ function Shoppingcart({ loggedInUser }) {
 
     return (
         <>
-            <h2 style={{textAlign: "center"}}>Ostoskori</h2>
+            <h2 style={{ textAlign: "center" }}>Ostoskori</h2>
             <div className="ag-theme-material trainings" style={{ height: "500px", width: "95%", margin: "auto" }}>
                 <AgGridReact
                     rowData={shoppingcart}
@@ -126,6 +135,7 @@ function Shoppingcart({ loggedInUser }) {
                     domLayout="auto"
                 />
             </div>
+            <h3 style={{ marginLeft: "20px" }}>Yhteensä: {calculateTotalAmount()} euroa.</h3>
             <div className="mainDiv">
                 <h3>Tilaajan Tiedot</h3>
                 <TextField label="Koko nimi"
