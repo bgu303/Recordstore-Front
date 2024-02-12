@@ -16,6 +16,7 @@ import { BASE_URL } from './Apiconstants';
 function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, setCartTotal }) {
     const [shoppingcart, setShoppingcart] = useState([]);
     const navigate = useNavigate();
+    const token = localStorage.getItem('jwtToken');
 
     useEffect(() => {
         showShoppingcart();
@@ -45,25 +46,28 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
         setCartTotal(total);
     };
 
-
     const handlePaymentOption = (e) => {
         setCustomerInfo({ ...customerInfo, paymentOption: e.target.value });
     }
 
     const showShoppingcart = () => {
-        const token = localStorage.getItem('jwtToken');
         fetch(`${BASE_URL}/shoppingcart/shoppingcartitems/${loggedInUser.id}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         })
-            .then(response => response.json())
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    navigate("/records");
+                }
+            })
             .then(responseData => setShoppingcart(responseData))
     }
 
     const deleteFromShoppingcart = (data) => {
         if (window.confirm("Oletko varma että haluat poistaa levyn?")) {
-            const token = localStorage.getItem('jwtToken');
             if (!token) {
                 return alert("Jokin meni vikaan");
             }
