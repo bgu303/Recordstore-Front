@@ -17,7 +17,8 @@ function App() {
   const [loggedInUser, setLoggedInUser] = useState({
     email: "",
     role: "",
-    id: null
+    id: null,
+    token: null
   });
 
   const [customerInfo, setCustomerInfo] = useState({
@@ -37,13 +38,15 @@ function App() {
     const storedUserId = localStorage.getItem("loggedInUserId");
     const storedUserEmail = localStorage.getItem("loggedInUserEmail");
     const storedUserRole = localStorage.getItem("loggedInUserRole");
+    const storedToken = localStorage.getItem("jwtToken");
 
     if (storedIsLoggedIn === "true") {
       setIsLoggedIn(true);
       setLoggedInUser({
         email: storedUserEmail,
         role: storedUserRole,
-        id: parseInt(storedUserId, 10)
+        id: parseInt(storedUserId, 10),
+        token: storedToken
       });
     }
   }, []);

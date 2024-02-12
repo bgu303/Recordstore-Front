@@ -15,7 +15,6 @@ import { BASE_URL } from './Apiconstants';
 
 function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, setCartTotal }) {
     const [shoppingcart, setShoppingcart] = useState([]);
-    
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -32,6 +31,7 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
             city: ""
         });
     }, [])
+
 
     useEffect(() => {
         calculateTotalAmount();
@@ -51,14 +51,30 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
     }
 
     const showShoppingcart = () => {
-        fetch(`${BASE_URL}/shoppingcart/shoppingcartitems/${loggedInUser.id}`)
+        const token = localStorage.getItem('jwtToken');
+        fetch(`${BASE_URL}/shoppingcart/shoppingcartitems/${loggedInUser.id}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
             .then(response => response.json())
             .then(responseData => setShoppingcart(responseData))
     }
 
     const deleteFromShoppingcart = (data) => {
         if (window.confirm("Oletko varma että haluat poistaa levyn?")) {
-            fetch(`${BASE_URL}/shoppingcart/shoppingcartdelete/${data.id}`, { method: "DELETE" })
+            const token = localStorage.getItem('jwtToken');
+            if (!token) {
+                return alert("Jokin meni vikaan");
+            }
+
+            fetch(`${BASE_URL}/shoppingcart/shoppingcartdelete/${data.id}`, {
+                method: "DELETE",
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            })
                 .then(response => {
                     if (response.ok) {
                         showShoppingcart();
@@ -66,8 +82,13 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                         alert("Jotain meni vikaan.");
                     }
                 })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert("Jotain meni vikaan.");
+                });
         }
     }
+
 
     const sendOrder = async () => {
         if (window.confirm("Lähetetäänkö ostoskori?")) {
@@ -99,7 +120,7 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                                 console.log(response);
                             }
                         });
-                        navigate("/ordersummary");
+                    navigate("/ordersummary");
                     return alert("Ostoskori lähetetty, Sinuun ollaan yhteydessä.");
                 }
             } catch (error) {

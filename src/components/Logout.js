@@ -9,7 +9,8 @@ function Logout({ setIsLoggedIn, setLoggedInUser }) {
         setLoggedInUser({
             email: "",
             role: "",
-            id: null
+            id: null,
+            token: null
         });
         localStorage.clear();
         navigate("/");

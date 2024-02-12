@@ -22,6 +22,7 @@ function Login({ isLoggedIn, setIsLoggedIn, loggedInUser, setLoggedInUser }) {
         localStorage.setItem("loggedInUserId", loggedInUser.id);
         localStorage.setItem("loggedInUserEmail", loggedInUser.email);
         localStorage.setItem("loggedInUserRole", loggedInUser.role);
+        localStorage.setItem("jwtToken", loggedInUser.token)
     }, [isLoggedIn])
     
     const login = () => {
@@ -48,12 +49,14 @@ function Login({ isLoggedIn, setIsLoggedIn, loggedInUser, setLoggedInUser }) {
         })
         .then(data => {
             const { token } = data;
+            console.log(token)
             const decodedToken = jwtDecode(token);
     
             setLoggedInUser({
                 email: decodedToken.email,
                 role: decodedToken.userRole,
-                id: decodedToken.userId
+                id: decodedToken.userId,
+                token: token
             });
             setIsLoggedIn(true);
             setUser({
