@@ -13,31 +13,38 @@ import { useNavigate } from "react-router-dom";
 import '../styling/Createuser.css';
 import { BASE_URL } from './Apiconstants';
 
-function Shoppingcart({ loggedInUser }) {
+function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, setCartTotal }) {
     const [shoppingcart, setShoppingcart] = useState([]);
-    const [customerInfo, setCustomerInfo] = useState({
-        name: "",
-        phoneNumber: "",
-        email: "",
-        address: "",
-        zipCode: "",
-        city: "",
-        paymentOption: ""
-    });
-
+    
     const navigate = useNavigate();
 
     useEffect(() => {
         showShoppingcart();
     }, [loggedInUser.id]);
 
+    useEffect(() => {
+        setCustomerInfo({
+            name: "",
+            phoneNumber: "",
+            email: "",
+            address: "",
+            zipCode: "",
+            city: ""
+        });
+    }, [])
+
+    useEffect(() => {
+        calculateTotalAmount();
+    }, [shoppingcart]);
+
     const calculateTotalAmount = () => {
         let total = 0;
         shoppingcart.forEach(item => {
             total += item.price;
         });
-        return total;
+        setCartTotal(total);
     };
+
 
     const handlePaymentOption = (e) => {
         setCustomerInfo({ ...customerInfo, paymentOption: e.target.value });
@@ -83,15 +90,6 @@ function Shoppingcart({ loggedInUser }) {
                 if (!response.ok) {
                     return alert("Jokin meni vikaan");
                 } else {
-                    setCustomerInfo({
-                        name: "",
-                        phoneNumber: "",
-                        email: "",
-                        address: "",
-                        zipCode: "",
-                        city: ""
-                    });
-
                     fetch(`${BASE_URL}/shoppingcart/shoppingcartdeleteall/${loggedInUser.id}`, { method: "DELETE" })
                         .then(response => {
                             if (response.ok) {
@@ -101,7 +99,7 @@ function Shoppingcart({ loggedInUser }) {
                                 console.log(response);
                             }
                         });
-                        navigate("/records");
+                        navigate("/ordersummary");
                     return alert("Ostoskori lähetetty, Sinuun ollaan yhteydessä.");
                 }
             } catch (error) {
@@ -135,7 +133,7 @@ function Shoppingcart({ loggedInUser }) {
                     domLayout="auto"
                 />
             </div>
-            <h3 style={{ marginLeft: "20px" }}>Yhteensä: {calculateTotalAmount()} euroa.</h3>
+            <h3 style={{ marginLeft: "20px" }}>Yhteensä: {cartTotal} euroa.</h3>
             <div className="mainDiv">
                 <h3>Tilaajan Tiedot</h3>
                 <TextField label="Koko nimi"
