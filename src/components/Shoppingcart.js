@@ -125,7 +125,6 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                             }
                         });
                     navigate("/ordersummary");
-                    return alert("Ostoskori lähetetty, Sinuun ollaan yhteydessä.");
                 }
             } catch (error) {
                 console.log(`Error in sending order: ${error}`);
@@ -149,75 +148,82 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
     return (
         <>
             <h2 style={{ textAlign: "center" }}>Ostoskori</h2>
-            <div className="ag-theme-material trainings" style={{ height: "500px", width: "95%", margin: "auto" }}>
-                <AgGridReact
-                    rowData={shoppingcart}
-                    columnDefs={columnDefinitions}
-                    pagination={true}
-                    paginationPageSize={20}
-                    domLayout="auto"
-                />
-            </div>
-            <h3 style={{ marginLeft: "20px" }}>Yhteensä: {cartTotal} euroa.</h3>
-            <div className="mainDiv">
-                <h3>Tilaajan Tiedot</h3>
-                <TextField label="Koko nimi"
-                    onChange={e => setCustomerInfo({ ...customerInfo, name: e.target.value })}
-                    value={customerInfo.name}
-                />
-                <TextField label="Puhelinnumero"
-                    onChange={e => setCustomerInfo({ ...customerInfo, phoneNumber: e.target.value })}
-                    value={customerInfo.phoneNumber}
-                />
-                <TextField label="Sähköposti"
-                    onChange={e => setCustomerInfo({ ...customerInfo, email: e.target.value })}
-                    value={customerInfo.email}
-                />
-                <TextField label="Kotiosoite"
-                    onChange={e => setCustomerInfo({ ...customerInfo, address: e.target.value })}
-                    value={customerInfo.address}
-                />
-                <TextField label="Postinumero"
-                    onChange={e => setCustomerInfo({ ...customerInfo, zipCode: e.target.value })}
-                    value={customerInfo.zipCode}
-                />
-                <TextField label="Kaupunki"
-                    onChange={e => setCustomerInfo({ ...customerInfo, city: e.target.value })}
-                    value={customerInfo.city}
-                />
-                <div>
-                    <FormControl>
-                        <FormLabel>Maksutapa</FormLabel>
-                        <RadioGroup
-                            aria-label="paymentOption"
-                            name="paymentOption"
-                            value={customerInfo.paymentOption}
-                            onChange={handlePaymentOption}
-                        >
-                            <FormControlLabel
-                                value="Käteinen"
-                                control={<Radio />}
-                                label="Käteinen"
-                            />
-                            <FormControlLabel
-                                value="Mobilepay"
-                                control={<Radio />}
-                                label="Mobilepay"
-                            />
-                            <FormControlLabel
-                                value="Tilisiirto"
-                                control={<Radio />}
-                                label="Tilisiirto"
-                            />
-                        </RadioGroup>
-                    </FormControl>
-                </div>
-            </div>
-            <div style={{ textAlign: "center" }}>
-                <Button size="large" color="success" variant="contained" onClick={() => sendOrder()}>Lähetä</Button>
-            </div>
+            { shoppingcart.length === 0 ? (
+                <h3 style={{ textAlign: "center" }}>Ostoskori on tyhjä. Lisää tuotteita levylistasta ostoskoriin.</h3>
+            ) : (
+                <>
+                    <div className="ag-theme-material trainings" style={{ height: "500px", width: "95%", margin: "auto" }}>
+                        <AgGridReact
+                            rowData={shoppingcart}
+                            columnDefs={columnDefinitions}
+                            pagination={true}
+                            paginationPageSize={20}
+                            domLayout="auto"
+                        />
+                    </div>
+                    <h3 style={{ marginLeft: "20px" }}>Yhteensä: {cartTotal} euroa.</h3>
+                    <div className="mainDiv">
+                        <h3>Tilaajan Tiedot</h3>
+                        <TextField label="Koko nimi"
+                            onChange={e => setCustomerInfo({ ...customerInfo, name: e.target.value })}
+                            value={customerInfo.name}
+                        />
+                        <TextField label="Puhelinnumero"
+                            onChange={e => setCustomerInfo({ ...customerInfo, phoneNumber: e.target.value })}
+                            value={customerInfo.phoneNumber}
+                        />
+                        <TextField label="Sähköposti"
+                            onChange={e => setCustomerInfo({ ...customerInfo, email: e.target.value })}
+                            value={customerInfo.email}
+                        />
+                        <TextField label="Kotiosoite"
+                            onChange={e => setCustomerInfo({ ...customerInfo, address: e.target.value })}
+                            value={customerInfo.address}
+                        />
+                        <TextField label="Postinumero"
+                            onChange={e => setCustomerInfo({ ...customerInfo, zipCode: e.target.value })}
+                            value={customerInfo.zipCode}
+                        />
+                        <TextField label="Kaupunki"
+                            onChange={e => setCustomerInfo({ ...customerInfo, city: e.target.value })}
+                            value={customerInfo.city}
+                        />
+                        <div>
+                            <FormControl>
+                                <FormLabel>Maksutapa</FormLabel>
+                                <RadioGroup
+                                    aria-label="paymentOption"
+                                    name="paymentOption"
+                                    value={customerInfo.paymentOption}
+                                    onChange={handlePaymentOption}
+                                >
+                                    <FormControlLabel
+                                        value="Käteinen"
+                                        control={<Radio />}
+                                        label="Käteinen"
+                                    />
+                                    <FormControlLabel
+                                        value="Mobilepay"
+                                        control={<Radio />}
+                                        label="Mobilepay"
+                                    />
+                                    <FormControlLabel
+                                        value="Tilisiirto"
+                                        control={<Radio />}
+                                        label="Tilisiirto"
+                                    />
+                                </RadioGroup>
+                            </FormControl>
+                        </div>
+                    </div>
+                    <div style={{ textAlign: "center" }}>
+                        <Button size="large" color="success" variant="contained" onClick={() => sendOrder()}>Lähetä</Button>
+                    </div>
+                </>
+            )}
         </>
-    )
+    );
+
 }
 
 export default Shoppingcart;

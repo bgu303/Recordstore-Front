@@ -15,14 +15,15 @@ function Ordersummary({ customerInfo, cartTotal }) {
         <>
             <div className="orderSummaryMainDiv">
                 <h2>Tilauksen yhteenveto</h2>
-                <p>Tilaajan nimi: {customerInfo.name}</p>
-                <p>Tilaajan puhelinnumero: {customerInfo.phoneNumber}</p>
-                <p>Tilaajan sähköposti: {customerInfo.email}</p>
-                <p>Tilaajan osoite: {customerInfo.address}</p>
-                <p>Tilaajan kaupunki: {customerInfo.city}</p>
-                <p>Tilaajan postinumero: {customerInfo.zipCode}</p>
-                <p>Tilaajan maksutapa: {customerInfo.paymentOption}</p>
-                <p>Tilauksen hinta yhteensä: {cartTotal} euroa.</p>
+                <p>Tilaajan nimi: <b>{customerInfo.name}</b></p>
+                <p>Tilaajan puhelinnumero: <b>{customerInfo.phoneNumber}</b></p>
+                <p>Tilaajan sähköposti: <b>{customerInfo.email}</b></p>
+                <p>Tilaajan osoite: <b>{customerInfo.address}</b></p>
+                <p>Tilaajan kaupunki: <b>{customerInfo.city}</b></p>
+                <p>Tilaajan postinumero: <b>{customerInfo.zipCode}</b></p>
+                <p>Tilaajan maksutapa: <b>{customerInfo.paymentOption}</b></p>
+                <p>Tilauksen hinta yhteensä: <b>{cartTotal} euroa.</b></p>
+                <p>Kiitos tilauksestasi. Sinuun ollaan henkilökohtaisesti yhteydessä.</p>
                 <Button size="large" color="success" variant="contained" onClick={() => returnFrontpage()}>Palaa levylistaan</Button>
             </div>
         </>
