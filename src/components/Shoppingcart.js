@@ -15,6 +15,7 @@ import { BASE_URL } from './Apiconstants';
 
 function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, setCartTotal }) {
     const [shoppingcart, setShoppingcart] = useState([]);
+    const [shippingOptionChecker, setShippingOptionChecker] = useState(false);
     const navigate = useNavigate();
     const token = localStorage.getItem('jwtToken');
 
@@ -28,11 +29,19 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
             phoneNumber: "",
             email: "",
             address: "",
-            zipCode: "",
-            city: ""
+            paymentOption: "",
+            shippingOption: ""
         });
     }, [])
 
+    useEffect(() => {
+        if (customerInfo.shippingOption === "Nouto Vuosaaresta") {
+            setShippingOptionChecker(false);
+        } else if (customerInfo.shippingOption === "Posti") {
+            setShippingOptionChecker(true);
+        }
+        console.log(shippingOptionChecker)
+    }, [customerInfo.shippingOption])
 
     useEffect(() => {
         calculateTotalAmount();
@@ -48,6 +57,10 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
 
     const handlePaymentOption = (e) => {
         setCustomerInfo({ ...customerInfo, paymentOption: e.target.value });
+    }
+
+    const handleShippingOption = (e) => {
+        setCustomerInfo({ ...customerInfo, shippingOption: e.target.value })
     }
 
     const showShoppingcart = () => {
@@ -93,11 +106,13 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
         }
     }
 
-
     const sendOrder = async () => {
         if (window.confirm("Lähetetäänkö ostoskori?")) {
-            if (customerInfo.name.trim() === "" || customerInfo.phoneNumber.trim() === "" || customerInfo.email.trim() === "" || customerInfo.address.trim() === "" || customerInfo.zipCode.trim() === "" || customerInfo.city.trim() === "") {
-                return alert("Täytä kaikki tilaajan kentät.");
+            if (customerInfo.name.trim() === "" || customerInfo.phoneNumber.trim() === "" || customerInfo.email.trim() === "") {
+                return alert("Täytä kaikki tilaukseen liittyvät kentät.");
+            }
+            if (customerInfo.address.trim() === "" && customerInfo.shippingOption === "Posti") {
+                return alert("Täytä kaikki tilaukseen liittyvät kentät.")
             }
             if (shoppingcart.length === 0) {
                 return alert("Ostoskori on tyhjä. Lisää tuotteita ennen tilauksen lähettämistä.");
@@ -148,7 +163,7 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
     return (
         <>
             <h2 style={{ textAlign: "center" }}>Ostoskori</h2>
-            { shoppingcart.length === 0 ? (
+            {shoppingcart.length === 0 ? (
                 <h3 style={{ textAlign: "center" }}>Ostoskori on tyhjä. Lisää tuotteita levylistasta ostoskoriin.</h3>
             ) : (
                 <>
@@ -175,18 +190,6 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                         <TextField label="Sähköposti"
                             onChange={e => setCustomerInfo({ ...customerInfo, email: e.target.value })}
                             value={customerInfo.email}
-                        />
-                        <TextField label="Kotiosoite"
-                            onChange={e => setCustomerInfo({ ...customerInfo, address: e.target.value })}
-                            value={customerInfo.address}
-                        />
-                        <TextField label="Postinumero"
-                            onChange={e => setCustomerInfo({ ...customerInfo, zipCode: e.target.value })}
-                            value={customerInfo.zipCode}
-                        />
-                        <TextField label="Kaupunki"
-                            onChange={e => setCustomerInfo({ ...customerInfo, city: e.target.value })}
-                            value={customerInfo.city}
                         />
                         <div>
                             <FormControl>
@@ -215,6 +218,36 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                                 </RadioGroup>
                             </FormControl>
                         </div>
+                        <div>
+                            <FormControl>
+                                <FormLabel>Toimitustapa</FormLabel>
+                                <RadioGroup
+                                    aria-label="shippingOption"
+                                    name="shippingOption"
+                                    value={customerInfo.shippingOption}
+                                    onChange={handleShippingOption}
+                                >
+                                    <FormControlLabel
+                                        value="Posti"
+                                        control={<Radio />}
+                                        label="Posti"
+                                    />
+                                    <FormControlLabel
+                                        value="Nouto Vuosaaresta"
+                                        control={<Radio />}
+                                        label="Nouto Vuosaaresta"
+                                    />
+                                </RadioGroup>
+                            </FormControl>
+                        </div>
+                        {customerInfo.shippingOption === "Posti" && (
+                            <TextField label="Postitusosoite"
+                                onChange={e => setCustomerInfo({ ...customerInfo, address: e.target.value })}
+                                value={customerInfo.address}
+                                multiline
+                                rows={4}
+                            />
+                        )}
                     </div>
                     <div style={{ textAlign: "center" }}>
                         <Button size="large" color="success" variant="contained" onClick={() => sendOrder()}>Lähetä</Button>

@@ -19,9 +19,7 @@ function Ordersummary({ customerInfo, cartTotal }) {
                 <p>Tilaajan puhelinnumero: <b>{customerInfo.phoneNumber}</b></p>
                 <p>Tilaajan sähköposti: <b>{customerInfo.email}</b></p>
                 <p>Tilaajan osoite: <b>{customerInfo.address}</b></p>
-                <p>Tilaajan kaupunki: <b>{customerInfo.city}</b></p>
-                <p>Tilaajan postinumero: <b>{customerInfo.zipCode}</b></p>
-                <p>Tilaajan maksutapa: <b>{customerInfo.paymentOption}</b></p>
+                <p>Tiluksen maksutapa: <b>{customerInfo.paymentOption}</b></p>
                 <p>Tilauksen hinta yhteensä: <b>{cartTotal} euroa.</b></p>
                 <p>Kiitos tilauksestasi. Sinuun ollaan henkilökohtaisesti yhteydessä.</p>
                 <Button size="large" color="success" variant="contained" onClick={() => returnFrontpage()}>Palaa levylistaan</Button>

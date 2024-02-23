@@ -26,9 +26,8 @@ function App() {
     phoneNumber: "",
     email: "",
     address: "",
-    zipCode: "",
-    city: "",
-    paymentOption: ""
+    paymentOption: "",
+    shippingOption: ""
   });
 
   const [cartTotal, setCartTotal] = useState(0);
