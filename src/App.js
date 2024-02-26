@@ -7,6 +7,7 @@ import Shoppingcart from './components/Shoppingcart';
 import Logout from './components/Logout';
 import AddRecord from './components/Addrecord';
 import Ordersummary from './components/Ordersummary';
+import ChatRoom from './components/Chat';
 import "./App.css";
 import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
@@ -58,6 +59,7 @@ function App() {
             <Link to="/" className="nav-link">Etusivu</Link>
             <Link to="/records" className="nav-link">Levylista</Link>
             {isLoggedIn && <Link to="/shoppingcart" className="nav-link">Ostoskori</Link>}
+            {isLoggedIn && <Link to="/chat" className="nav-link">Chatti</Link>}
             {isLoggedIn && loggedInUser.role === "ADMIN" && <Link to="/addrecord" className="nav-link">Lisää Levy</Link>}
             {!isLoggedIn && <Link to="/createuser" className="nav-link">Luo Käyttäjä</Link>}
             {!isLoggedIn && <Link to="/login" className="nav-link">Kirjaudu Sisään</Link>}
@@ -70,6 +72,7 @@ function App() {
           <Route path="/createuser" element={<CreateUser />} />
           <Route path="/login" element={<Login isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} />} />
           <Route path="/shoppingcart" element={<Shoppingcart loggedInUser={loggedInUser} customerInfo={customerInfo} setCustomerInfo={setCustomerInfo} cartTotal={cartTotal} setCartTotal={setCartTotal} />} />
+          <Route path="/chat" element={<ChatRoom loggedInUser={loggedInUser}/>} />
           <Route path="/addrecord" element={<AddRecord />} />
           <Route path="/ordersummary" element={<Ordersummary customerInfo={customerInfo} cartTotal={cartTotal} />} />
         </Routes>

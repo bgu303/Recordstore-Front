@@ -40,7 +40,6 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
         } else if (customerInfo.shippingOption === "Posti") {
             setShippingOptionChecker(true);
         }
-        console.log(shippingOptionChecker)
     }, [customerInfo.shippingOption])
 
     useEffect(() => {
