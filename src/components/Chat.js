@@ -110,13 +110,30 @@ function ChatRoom({ loggedInUser }) {
             })
     }
 
+    //Fetches the conversation id, it is needed in order to fetch the conversation messages.
     useEffect(() => {
         fetchConversationId();
     }, [])
 
+    //This fetches the conversation messages and is called every time conversation id changes, so in theory it should automatically open the chat.
+    //Doesn't update the chat automatically though, just opens it
+    useEffect(() => {
+        fetchConversationMessages();
+    }, [conversationId])
+
+    //Used to get all users to the drop down menu that admin uses to choose which conversation to open.
+    //FIX LATER MAYBE!! Should be called only when admin is logged in.
     useEffect(() => {
         getAllUsers();
     }, [])
+
+    //Used for automatically open the correct conversation for admin. CRASHES!!! if you choose admin
+    //As the message recipient. Need to delete admin from the listing later.
+    useEffect(() => {
+        if (selectedUser.length !== 0) {
+            adminOpenConversation();
+        }
+    }, [selectedUser])
 
     const handleUserChange = (event) => {
         setSelectedUser(event.target.value);
