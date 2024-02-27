@@ -41,9 +41,8 @@ function ChatRoom({ loggedInUser }) {
             })
             .then(responseData => {
                 setAllUsers(responseData)
-                console.log(responseData)
             })
-            
+
             .catch(error => {
                 console.log(error.message);
                 setAllUsers([]);
@@ -51,6 +50,10 @@ function ChatRoom({ loggedInUser }) {
     }
 
     const sendMessage = () => {
+        if (message.trim() === "") {
+            return alert("Ei tyhjiä viestejä.");
+        }
+
         fetch(`${BASE_URL}/chat/sendmessage`, {
             method: "POST",
             headers: { "Content-type": "application/json" },
@@ -60,6 +63,24 @@ function ChatRoom({ loggedInUser }) {
                 message: message
             })
         })
+        setMessage("");
+    }
+
+    const adminSendMessage = () => {
+        if (message.trim() === "") {
+            return alert("Ei tyhjiä viestejä.");
+        }
+
+        fetch(`${BASE_URL}/chat/adminsendmessage`, {
+            method: "POST",
+            headers: { "Content-type": "application/json" },
+            body: JSON.stringify({
+                userId: loggedInUser.id,
+                selectedUser: selectedUser,
+                message: message
+            })
+        })
+        setMessage("");
     }
 
     const fetchConversationMessages = () => {
@@ -77,29 +98,28 @@ function ChatRoom({ loggedInUser }) {
             })
     }
 
-    const adminSendMessage = () => {
-        fetch(`${BASE_URL}/chat/adminsendmessage`, {
-            method: "POST",
-            headers: { "Content-type": "application/json" },
-            body: JSON.stringify({
-                userId: loggedInUser.id,
-                conversationId: selectedUser,
-                message: message
-            })
-        })
-    }
-
     const adminOpenConversation = () => {
-        
+        fetch(`${BASE_URL}/chat/admingetconversationmessages/${selectedUser}`)
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error("Something went wrong")
+                }
+            })
+            .then(responseData => {
+                console.log(responseData)
+                setConversationMessages(responseData)
+            })
     }
 
     useEffect(() => {
-        fetchConversationData()
+        fetchConversationData();
+        console.log("moi")
     }, [])
 
     useEffect(() => {
         getAllUsers();
-        console.log(allUsers)
     }, [])
 
     const handleUserChange = (event) => {
@@ -112,26 +132,28 @@ function ChatRoom({ loggedInUser }) {
                 <h1>Chatti XD</h1>
                 <p>Kirjautunut käyttäjä: {loggedInUser.email}</p>
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                    <div style={{ border: "1px solid #ccc", borderRadius: "5px", padding: "10px", maxHeight: "800px", overflowY: "auto", width: "400px", marginBottom: "20px" }}>
+                        {conversationMessages.map((message, index) => (
+                            <div key={index} style={{ marginBottom: "10px", textAlign: message.sender_id === loggedInUser.id ? "right" : "left" }}>
+                                <div style={{ padding: "5px", backgroundColor: message.sender_id === loggedInUser.id ? "#DCF8C6" : "#E0E0E0", borderRadius: "5px", display: "inline-block" }}>
+                                    <strong>{message.sender_id === loggedInUser.id ? "You" : message.sender_id === 14 ? "PoppiMikko" : message.sender_id}</strong><br />
+                                    {message.message}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
                     <TextField
                         label="Lähetä viesti"
                         onChange={e => setMessage(e.target.value)}
+                        value={message}
                     ></TextField>
-                    <Button onClick={() => sendMessage()}>Lähetä</Button>
-                    <Button onClick={() => fetchConversationMessages()}>Viestiketju</Button>
+                    {loggedInUser.role === "USER" && <Button onClick={() => sendMessage()}>Lähetä</Button>}
+                    {loggedInUser.role === "USER" && <Button onClick={() => fetchConversationMessages()}>Viestiketju</Button>}
                     {loggedInUser.role === "ADMIN" && <Button onClick={() => adminSendMessage()}>Admin Lähetä Viesti</Button>}
                     {loggedInUser.role === "ADMIN" && <Button onClick={() => adminOpenConversation()}>Admin Avaa Viestiketju</Button>}
-                    <ul>
-                        {conversationMessages.map(message => (
-                            <li key={message.id}>
-                                <strong>Sender:</strong> {message.sender_id}<br />
-                                <strong>Message:</strong> {message.message}<br />
-                                <strong>Created At:</strong> {message.created_at}
-                            </li>
-                        ))}
-                    </ul>
-                    <div>
+                    {loggedInUser.role === "ADMIN" && <div>
                         <select value={selectedUser} onChange={handleUserChange}>
-                            <option value="">Select User</option>
+                            <option value="">Valitse käyttäjä kenen kanssa chatata</option>
                             {allUsers.map(user => (
                                 <option key={user.id} value={user.id}>{user.email}</option>
                             ))}
@@ -139,11 +161,12 @@ function ChatRoom({ loggedInUser }) {
                         {selectedUser && (
                             <p>Selected User: {selectedUser}</p>
                         )}
-                    </div>
+                    </div>}
                 </div>
             </div>
         </>
     )
+
 }
 
 export default ChatRoom;
