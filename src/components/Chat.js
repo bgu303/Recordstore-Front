@@ -11,22 +11,19 @@ function ChatRoom({ loggedInUser }) {
     const [allUsers, setAllUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState("");
 
-    const fetchConversationData = () => {
-        fetch(`${BASE_URL}/chat/createconversation`, {
-            method: "POST",
-            headers: { "Content-type": "application/json" },
-            body: JSON.stringify({
-                userId: loggedInUser.id,
-            })
-        })
+    const fetchConversationId = () => {
+        if (loggedInUser.role === "ADMIN") {
+            return;
+        }
+
+        fetch(`${BASE_URL}/chat/getconversationid/${loggedInUser.id}`)
             .then(response => {
                 if (response.ok) {
-                    return response.json();
+                    return response.json()
                 }
             })
             .then(data => {
-                console.log(data[0].id);
-                setConversationId(data[0].id);
+                setConversationId(data[0].id)
             })
     }
 
@@ -114,8 +111,7 @@ function ChatRoom({ loggedInUser }) {
     }
 
     useEffect(() => {
-        fetchConversationData();
-        console.log("moi")
+        fetchConversationId();
     }, [])
 
     useEffect(() => {
@@ -149,8 +145,8 @@ function ChatRoom({ loggedInUser }) {
                     ></TextField>
                     {loggedInUser.role === "USER" && <Button onClick={() => sendMessage()}>Lähetä</Button>}
                     {loggedInUser.role === "USER" && <Button onClick={() => fetchConversationMessages()}>Viestiketju</Button>}
-                    {loggedInUser.role === "ADMIN" && <Button onClick={() => adminSendMessage()}>Admin Lähetä Viesti</Button>}
-                    {loggedInUser.role === "ADMIN" && <Button onClick={() => adminOpenConversation()}>Admin Avaa Viestiketju</Button>}
+                    {loggedInUser.role === "ADMIN" && <Button onClick={() => adminSendMessage()}>Lähetä Viesti</Button>}
+                    {loggedInUser.role === "ADMIN" && <Button onClick={() => adminOpenConversation()}>Avaa Viestiketju Henkilön Kanssa</Button>}
                     {loggedInUser.role === "ADMIN" && <div>
                         <select value={selectedUser} onChange={handleUserChange}>
                             <option value="">Valitse käyttäjä kenen kanssa chatata</option>
@@ -166,7 +162,6 @@ function ChatRoom({ loggedInUser }) {
             </div>
         </>
     )
-
 }
 
 export default ChatRoom;
