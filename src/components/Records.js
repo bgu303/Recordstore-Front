@@ -33,15 +33,15 @@ function Records({ isLoggedIn, loggedInUser }) {
     }
 
     const deleteRecord = (data) => {
-        if(window.confirm("Oletko varma että haluat poistaa levyn?")) {
-            fetch(`${BASE_URL}/records/${data.id}`, {method: "DELETE"})
-            .then(response => {
-                if (response.ok) {
-                    getRecords();
-                } else {
-                    alert("Jotain meni vikaan.");
-                }
-            })
+        if (window.confirm("Oletko varma että haluat poistaa levyn?")) {
+            fetch(`${BASE_URL}/records/${data.id}`, { method: "DELETE" })
+                .then(response => {
+                    if (response.ok) {
+                        getRecords();
+                    } else {
+                        alert("Jotain meni vikaan.");
+                    }
+                })
         }
     }
 
@@ -72,7 +72,6 @@ function Records({ isLoggedIn, loggedInUser }) {
 
     useEffect(() => {
         getRecords();
-        console.log(isLoggedIn)
     }, [isLoggedIn])
 
     const [columnDefinitions, setColumnDefinitions] = useState([
@@ -92,13 +91,13 @@ function Records({ isLoggedIn, loggedInUser }) {
             flex: 1,
             cellRenderer: params => (
                 <div
-                style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}
-                onClick={() => handleDiscogsLink(params.data.discogs)}
-              >
-                {params.data.discogs}
-              </div>
+                    style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}
+                    onClick={() => handleDiscogsLink(params.data.discogs)}
+                >
+                    {params.data.discogs}
+                </div>
             ),
-          },
+        },
         {
             cellRenderer: params => <Button size="small" color="success" onClick={() => addToCart(params.data)}>Lisää Koriin</Button>,
             flex: 1,
@@ -113,19 +112,19 @@ function Records({ isLoggedIn, loggedInUser }) {
 
     const finnishTranslations = {
         filterOoo: 'Hae...',
-      };
-    
+    };
+
     return (
         <>
-            <h1 style={{textAlign: "center"}}>Levykaupan levylista</h1>
+            <h1 style={{ textAlign: "center" }}>Levykaupan levylista</h1>
             <div className="ag-theme-material trainings" style={{ height: "1000px", width: "95%", margin: "auto" }}>
                 <AgGridReact
-                rowData={records}
-                columnDefs={columnDefinitions}
-                localeText={finnishTranslations}
-                pagination={true}
-                paginationPageSize={20}
-                domLayout="auto"
+                    rowData={records}
+                    columnDefs={columnDefinitions}
+                    localeText={finnishTranslations}
+                    pagination={true}
+                    paginationPageSize={20}
+                    domLayout="auto"
                 />
             </div>
         </>

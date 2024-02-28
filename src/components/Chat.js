@@ -37,7 +37,8 @@ function ChatRoom({ loggedInUser }) {
                 }
             })
             .then(responseData => {
-                setAllUsers(responseData)
+                const filteredUsers = responseData.filter(user => user.id !== loggedInUser.id);
+                setAllUsers(filteredUsers)
             })
 
             .catch(error => {
@@ -90,7 +91,6 @@ function ChatRoom({ loggedInUser }) {
                 }
             })
             .then(responseData => {
-                console.log(responseData)
                 setConversationMessages(responseData)
             })
     }
@@ -110,13 +110,13 @@ function ChatRoom({ loggedInUser }) {
             })
     }
 
-    //Fetches the conversation id, it is needed in order to fetch the conversation messages.
+    //Fetches the conversation id, it is needed in order to fetch the conversation messages later based on the conversation id.
     useEffect(() => {
         fetchConversationId();
     }, [])
 
     //This fetches the conversation messages and is called every time conversation id changes, so in theory it should automatically open the chat.
-    //Doesn't update the chat automatically though, just opens it
+    //Doesn't update the chat automatically though, just opens it.
     useEffect(() => {
         fetchConversationMessages();
     }, [conversationId])
@@ -124,11 +124,13 @@ function ChatRoom({ loggedInUser }) {
     //Used to get all users to the drop down menu that admin uses to choose which conversation to open.
     //FIX LATER MAYBE!! Should be called only when admin is logged in.
     useEffect(() => {
-        getAllUsers();
+        if (loggedInUser.role === "ADMIN") {
+            getAllUsers();
+        }
     }, [])
 
-    //Used for automatically open the correct conversation for admin. CRASHES!!! if you choose admin
-    //As the message recipient. Need to delete admin from the listing later.
+    //Used for automatically open the correct conversation for admin.
+
     useEffect(() => {
         if (selectedUser.length !== 0) {
             adminOpenConversation();

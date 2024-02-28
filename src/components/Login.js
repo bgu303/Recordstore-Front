@@ -24,12 +24,12 @@ function Login({ isLoggedIn, setIsLoggedIn, loggedInUser, setLoggedInUser }) {
         localStorage.setItem("loggedInUserRole", loggedInUser.role);
         localStorage.setItem("jwtToken", loggedInUser.token)
     }, [isLoggedIn])
-    
+
     const login = () => {
         if (user.email.trim() === "" || user.password.trim() === "") {
             return alert("Täytä molemmat kentät");
         }
-    
+
         fetch(`${BASE_URL}/user/login`, {
             method: "POST",
             headers: { "Content-type": "application/json" },
@@ -38,41 +38,47 @@ function Login({ isLoggedIn, setIsLoggedIn, loggedInUser, setLoggedInUser }) {
                 password: user.password
             })
         })
-        .then(response => {
-            if (!response.ok) {
-                if (response.status === 401) {
-                    return Promise.reject("Salasana tai käyttäjänimi väärin.");
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        return Promise.reject("Salasana tai käyttäjänimi väärin.");
+                    }
+                    return Promise.reject("Jokin meni vikaan.");
                 }
-                return Promise.reject("Jokin meni vikaan.");
-            }
-            return response.json();
-        })
-        .then(data => {
-            const { token } = data;
-            console.log(token)
-            const decodedToken = jwtDecode(token);
-    
-            setLoggedInUser({
-                email: decodedToken.email,
-                role: decodedToken.userRole,
-                id: decodedToken.userId,
-                token: token
+                return response.json();
+            })
+            .then(data => {
+                const { token } = data;
+                console.log(token)
+                const decodedToken = jwtDecode(token);
+
+                setLoggedInUser({
+                    email: decodedToken.email,
+                    role: decodedToken.userRole,
+                    id: decodedToken.userId,
+                    token: token
+                });
+                setIsLoggedIn(true);
+                setUser({
+                    email: "",
+                    password: ""
+                });
+                setTimeout(() => {
+                    navigate("/records")
+                }, 300);
+            })
+            .catch(error => {
+                console.log(`Error logging in: ${error}`);
+                alert("Jokin meni vikaan.");
             });
-            setIsLoggedIn(true);
-            setUser({
-                email: "",
-                password: ""
-            });
-            setTimeout(() => {
-                navigate("/records")
-             }, 300);
-        })
-        .catch(error => {
-            console.log(`Error logging in: ${error}`);
-            alert("Jokin meni vikaan.");
-        });
     };
-    
+
+    //If user presses enter key on either TextField -> tries to login.
+    const handleKeyPress = (e) => {
+        if (e.keyCode === 13) {
+            login();
+        }
+    }
 
     return (
         <>
@@ -82,11 +88,13 @@ function Login({ isLoggedIn, setIsLoggedIn, loggedInUser, setLoggedInUser }) {
                     label="Sähköposti tai käyttäjänimi"
                     onChange={e => setUser({ ...user, email: e.target.value })}
                     value={user.email}
+                    onKeyDown={handleKeyPress}
                 />
                 <TextField label="Salasana"
                     type="password"
                     onChange={e => setUser({ ...user, password: e.target.value })}
                     value={user.password}
+                    onKeyDown={handleKeyPress}
                 />
                 <Button onClick={() => login()}>Kirjaudu Sisään</Button>
             </div>
