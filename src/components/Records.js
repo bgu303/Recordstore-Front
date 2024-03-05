@@ -75,8 +75,8 @@ function Records({ isLoggedIn, loggedInUser }) {
     }, [isLoggedIn])
 
     const [columnDefinitions, setColumnDefinitions] = useState([
-        { field: "artist", headerName: "Artisti", filter: true, suppressMovable: true, flex: 1 },
-        { field: "title", headerName: "Levyn nimi", filter: true, suppressMovable: true, flex: 1 },
+        { field: "artist", headerName: "Artisti", filter: true, suppressMovable: true, width: 250 },
+        { field: "title", headerName: "Levyn nimi", filter: true, suppressMovable: true, width: 300 },
         { field: "label", headerName: "Levy-yhtiö", filter: true, suppressMovable: true, flex: 1 },
         { field: "size", headerName: "Koko", filter: true, suppressMovable: true, width: 120 },
         { field: "lev", headerName: "Rec", filter: true, suppressMovable: true, width: 120 },
@@ -88,7 +88,7 @@ function Records({ isLoggedIn, loggedInUser }) {
             headerName: "Discogs",
             filter: true,
             suppressMovable: true,
-            flex: 1,
+            width: 110,
             cellRenderer: params => (
                 <div
                     style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}
@@ -100,12 +100,12 @@ function Records({ isLoggedIn, loggedInUser }) {
         },
         {
             cellRenderer: params => <Button size="small" color="success" onClick={() => addToCart(params.data)}>Lisää Koriin</Button>,
-            flex: 1,
+            width: 150,
             hide: !localStorage.getItem("isLoggedIn")
         },
         {
             cellRenderer: params => <Button size="small" color="error" onClick={() => deleteRecord(params.data)}>Poista</Button>,
-            flex: 1,
+            width: 150,
             hide: localStorage.getItem("loggedInUserRole") !== "ADMIN"
         }
     ]);
