@@ -64,7 +64,7 @@ function ChatRoom({ loggedInUser }) {
             })
         })
         setMessage("");
-        socket.emit("sendMessage", message);
+        socket.emit("sendMessage", { message: message, sender_id: loggedInUser.id });
     }
 
     const adminSendMessage = () => {
@@ -82,7 +82,7 @@ function ChatRoom({ loggedInUser }) {
             })
         })
         setMessage("");
-        socket.emit("sendMessage", message);
+        socket.emit("sendMessage", { message: message, sender_id: loggedInUser.id });
     }
 
     const fetchConversationMessages = () => {
@@ -179,7 +179,6 @@ function ChatRoom({ loggedInUser }) {
                         value={message}
                     ></TextField>
                     {loggedInUser.role === "USER" && <Button onClick={() => sendMessage()}>Lähetä</Button>}
-                    {loggedInUser.role === "USER" && <Button onClick={() => fetchConversationMessages()}>Viestiketju</Button>}
                     {loggedInUser.role === "ADMIN" && <Button onClick={() => adminSendMessage()}>Lähetä Viesti</Button>}
                     {loggedInUser.role === "ADMIN" && <Button onClick={() => adminOpenConversation()}>Avaa Viestiketju Henkilön Kanssa</Button>}
                     {loggedInUser.role === "ADMIN" && <div>
