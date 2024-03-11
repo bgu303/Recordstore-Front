@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
 import { BASE_URL } from './Apiconstants';
@@ -10,6 +10,7 @@ function ChatRoom({ loggedInUser }) {
     const [conversationMessages, setConversationMessages] = useState([]);
     const [allUsers, setAllUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState("");
+    const messagesEndRef = useRef(null);
 
     const socket = io("http://localhost:3001")
 
@@ -86,6 +87,11 @@ function ChatRoom({ loggedInUser }) {
     }
 
     const fetchConversationMessages = () => {
+        //This is added because for whatever reason in cloud implementation it fetches the conversation messages with id 0.
+        //This prevents it from happening, don't know why this happens, maybe explanation will be found out later.
+        if (conversationId === 0) {
+            return;
+        }
         fetch(`${BASE_URL}/chat/getconversationmessages/${conversationId}`)
             .then(response => {
                 if (response.ok) {
@@ -109,7 +115,6 @@ function ChatRoom({ loggedInUser }) {
                 }
             })
             .then(responseData => {
-                console.log(responseData)
                 setConversationMessages(responseData)
             })
     }
@@ -146,12 +151,19 @@ function ChatRoom({ loggedInUser }) {
             setConversationMessages(prevMessages => [...prevMessages, message]);
             console.log(conversationMessages)
         });
-    
+
         return () => {
             socket.off("message"); // Cleanup when component unmounts
         };
     }, []);
-    
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [conversationMessages]);
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
 
     const handleUserChange = (event) => {
         setSelectedUser(event.target.value);
@@ -172,6 +184,7 @@ function ChatRoom({ loggedInUser }) {
                                 </div>
                             </div>
                         ))}
+                        <div ref={messagesEndRef} />
                     </div>
                     <TextField
                         label="Lähetä viesti"
@@ -195,7 +208,7 @@ function ChatRoom({ loggedInUser }) {
                 </div>
             </div>
         </>
-    )
+    );
 }
 
 export default ChatRoom;
