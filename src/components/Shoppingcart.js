@@ -11,7 +11,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
 import { useNavigate } from "react-router-dom";
 import '../styling/Createuser.css';
-import { BASE_URL } from './Apiconstants';
+import { BASE_URL, BASE_CLOUD_URL } from './Apiconstants';
 
 function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, setCartTotal }) {
     const [shoppingcart, setShoppingcart] = useState([]);
@@ -63,7 +63,7 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
     }
 
     const showShoppingcart = () => {
-        fetch(`${BASE_URL}/shoppingcart/shoppingcartitems/${loggedInUser.id}`, {
+        fetch(`${BASE_CLOUD_URL}/shoppingcart/shoppingcartitems/${loggedInUser.id}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -84,7 +84,7 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                 return alert("Jokin meni vikaan");
             }
 
-            fetch(`${BASE_URL}/shoppingcart/shoppingcartdelete/${data.id}`, {
+            fetch(`${BASE_CLOUD_URL}/shoppingcart/shoppingcartdelete/${data.id}`, {
                 method: "DELETE",
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -117,7 +117,7 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                 return alert("Ostoskori on tyhjä. Lisää tuotteita ennen tilauksen lähettämistä.");
             }
             try {
-                const response = await fetch(`${BASE_URL}/shoppingcart/sendcart`, {
+                const response = await fetch(`${BASE_CLOUD_URL}/shoppingcart/sendcart`, {
                     method: "POST",
                     headers: { "Content-type": "application/json" },
                     body: JSON.stringify({
@@ -129,7 +129,7 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                 if (!response.ok) {
                     return alert("Jokin meni vikaan");
                 } else {
-                    fetch(`${BASE_URL}/shoppingcart/shoppingcartdeleteall/${loggedInUser.id}`, { method: "DELETE" })
+                    fetch(`${BASE_CLOUD_URL}/shoppingcart/shoppingcartdeleteall/${loggedInUser.id}`, { method: "DELETE" })
                         .then(response => {
                             if (response.ok) {
                                 showShoppingcart();

@@ -5,7 +5,7 @@ import 'ag-grid-community/styles/ag-theme-material.css';
 import { Button } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import '../styling/Createuser.css';
-import { BASE_URL } from './Apiconstants';
+import { BASE_URL, BASE_CLOUD_URL } from './Apiconstants';
 
 function AddRecord() {
     const [newRecord, setNewRecord] = useState({
@@ -22,7 +22,7 @@ function AddRecord() {
 
     const addNewRecord = async () => {
         try {
-            const response = await fetch(`${BASE_URL}/records/addnewrecord`, {
+            const response = await fetch(`${BASE_CLOUD_URL}/records/addnewrecord`, {
                 method: "POST",
                 headers: { "Content-type": "application/json" },
                 body: JSON.stringify({

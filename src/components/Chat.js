@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
-import { BASE_URL } from './Apiconstants';
+import { BASE_URL, BASE_CLOUD_URL } from './Apiconstants';
 import io from "socket.io-client";
 
 function ChatRoom({ loggedInUser }) {
@@ -12,14 +12,14 @@ function ChatRoom({ loggedInUser }) {
     const [selectedUser, setSelectedUser] = useState("");
     const messagesEndRef = useRef(null);
 
-    const socket = io("http://localhost:3001")
+    const socket = io("http://recordstore-beanstalk.eu-north-1.elasticbeanstalk.com")
 
     const fetchConversationId = () => {
         if (loggedInUser.role === "ADMIN") {
             return;
         }
 
-        fetch(`${BASE_URL}/chat/getconversationid/${loggedInUser.id}`)
+        fetch(`${BASE_CLOUD_URL}/chat/getconversationid/${loggedInUser.id}`)
             .then(response => {
                 if (response.ok) {
                     return response.json()
@@ -31,7 +31,7 @@ function ChatRoom({ loggedInUser }) {
     }
 
     const getAllUsers = () => {
-        fetch(`${BASE_URL}/user/getallusers`)
+        fetch(`${BASE_CLOUD_URL}/user/getallusers`)
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -55,7 +55,7 @@ function ChatRoom({ loggedInUser }) {
             return alert("Ei tyhjiä viestejä.");
         }
 
-        fetch(`${BASE_URL}/chat/sendmessage`, {
+        fetch(`${BASE_CLOUD_URL}/chat/sendmessage`, {
             method: "POST",
             headers: { "Content-type": "application/json" },
             body: JSON.stringify({
@@ -73,7 +73,7 @@ function ChatRoom({ loggedInUser }) {
             return alert("Ei tyhjiä viestejä.");
         }
 
-        fetch(`${BASE_URL}/chat/adminsendmessage`, {
+        fetch(`${BASE_CLOUD_URL}/chat/adminsendmessage`, {
             method: "POST",
             headers: { "Content-type": "application/json" },
             body: JSON.stringify({
@@ -92,7 +92,7 @@ function ChatRoom({ loggedInUser }) {
         if (conversationId === 0) {
             return;
         }
-        fetch(`${BASE_URL}/chat/getconversationmessages/${conversationId}`)
+        fetch(`${BASE_CLOUD_URL}/chat/getconversationmessages/${conversationId}`)
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -106,7 +106,7 @@ function ChatRoom({ loggedInUser }) {
     }
 
     const adminOpenConversation = () => {
-        fetch(`${BASE_URL}/chat/admingetconversationmessages/${selectedUser}`)
+        fetch(`${BASE_CLOUD_URL}/chat/admingetconversationmessages/${selectedUser}`)
             .then(response => {
                 if (response.ok) {
                     return response.json();
