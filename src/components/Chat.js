@@ -1,25 +1,25 @@
 import { useState, useEffect, useRef } from 'react';
 import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
-import { BASE_URL, BASE_CLOUD_URL } from './Apiconstants';
+import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
 import io from "socket.io-client";
 
 function ChatRoom({ loggedInUser }) {
     const [message, setMessage] = useState("");
-    const [conversationId, setConversationId] = useState(0)
+    const [conversationId, setConversationId] = useState(null)
     const [conversationMessages, setConversationMessages] = useState([]);
     const [allUsers, setAllUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState("");
     const messagesEndRef = useRef(null);
 
-    const socket = io("http://recordstore-beanstalk.eu-north-1.elasticbeanstalk.com")
+    const socket = io(BASE_URL)
 
     const fetchConversationId = () => {
         if (loggedInUser.role === "ADMIN") {
             return;
         }
 
-        fetch(`${BASE_CLOUD_URL}/chat/getconversationid/${loggedInUser.id}`)
+        fetch(`${BASE_URL}/chat/getconversationid/${loggedInUser.id}`)
             .then(response => {
                 if (response.ok) {
                     return response.json()
@@ -31,7 +31,7 @@ function ChatRoom({ loggedInUser }) {
     }
 
     const getAllUsers = () => {
-        fetch(`${BASE_CLOUD_URL}/user/getallusers`)
+        fetch(`${BASE_URL}/user/getallusers`)
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -55,7 +55,7 @@ function ChatRoom({ loggedInUser }) {
             return alert("Ei tyhjiä viestejä.");
         }
 
-        fetch(`${BASE_CLOUD_URL}/chat/sendmessage`, {
+        fetch(`${BASE_URL}/chat/sendmessage`, {
             method: "POST",
             headers: { "Content-type": "application/json" },
             body: JSON.stringify({
@@ -73,13 +73,13 @@ function ChatRoom({ loggedInUser }) {
             return alert("Ei tyhjiä viestejä.");
         }
 
-        fetch(`${BASE_CLOUD_URL}/chat/adminsendmessage`, {
+        fetch(`${BASE_URL}/chat/adminsendmessage`, {
             method: "POST",
             headers: { "Content-type": "application/json" },
             body: JSON.stringify({
                 userId: loggedInUser.id,
                 selectedUser: selectedUser,
-                message: message
+                message: message,
             })
         })
         setMessage("");
@@ -89,10 +89,10 @@ function ChatRoom({ loggedInUser }) {
     const fetchConversationMessages = () => {
         //This is added because for whatever reason in cloud implementation it fetches the conversation messages with id 0.
         //This prevents it from happening, don't know why this happens, maybe explanation will be found out later.
-        if (conversationId === 0) {
+        if (conversationId === null) {
             return;
         }
-        fetch(`${BASE_CLOUD_URL}/chat/getconversationmessages/${conversationId}`)
+        fetch(`${BASE_URL}/chat/getconversationmessages/${conversationId}`)
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -106,7 +106,7 @@ function ChatRoom({ loggedInUser }) {
     }
 
     const adminOpenConversation = () => {
-        fetch(`${BASE_CLOUD_URL}/chat/admingetconversationmessages/${selectedUser}`)
+        fetch(`${BASE_URL}/chat/admingetconversationmessages/${selectedUser}`)
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -146,18 +146,6 @@ function ChatRoom({ loggedInUser }) {
     }, [selectedUser])
 
     useEffect(() => {
-        socket.on("message", (message) => {
-            console.log("Received new message:", message);
-            setConversationMessages(prevMessages => [...prevMessages, message]);
-            console.log(conversationMessages)
-        });
-
-        return () => {
-            socket.off("message"); // Cleanup when component unmounts
-        };
-    }, []);
-
-    useEffect(() => {
         scrollToBottom();
     }, [conversationMessages]);
 
@@ -168,6 +156,33 @@ function ChatRoom({ loggedInUser }) {
     const handleUserChange = (event) => {
         setSelectedUser(event.target.value);
     }
+
+    const handleKeyPress = (e) => {
+        if (loggedInUser.role === "ADMIN") {
+            if (e.keyCode === 13) {
+                adminSendMessage();
+                return;
+            }
+        }
+        if (e.keyCode === 13) {
+            sendMessage();
+        }
+    }
+
+    useEffect(() => {
+        socket.on("message", (message) => {
+            console.log("Received new message:", message);
+            setConversationMessages(prevMessages => [...prevMessages, message]);
+        });
+
+        return () => {
+            socket.off("message"); // Cleanup when component unmounts
+        };
+    }, []);
+
+    useEffect(() => {
+        socket.emit('joinRoom', loggedInUser.id);
+    }, []);
 
     return (
         <>
@@ -190,6 +205,7 @@ function ChatRoom({ loggedInUser }) {
                         label="Lähetä viesti"
                         onChange={e => setMessage(e.target.value)}
                         value={message}
+                        onKeyDown={handleKeyPress}
                     ></TextField>
                     {loggedInUser.role === "USER" && <Button onClick={() => sendMessage()}>Lähetä</Button>}
                     {loggedInUser.role === "ADMIN" && <Button onClick={() => adminSendMessage()}>Lähetä Viesti</Button>}

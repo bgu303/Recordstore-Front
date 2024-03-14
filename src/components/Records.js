@@ -4,13 +4,13 @@ import { AgGridReact } from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
 import 'ag-grid-community/styles/ag-theme-material.css';
 import { Button } from '@mui/material';
-import { BASE_URL, BASE_CLOUD_URL } from './Apiconstants';
+import { BASE_URL, BASE_URL_CLOUD} from './Apiconstants';
 
 function Records({ isLoggedIn, loggedInUser }) {
     const [records, setRecords] = useState([]);
 
     const getRecords = () => {
-        fetch(`${BASE_CLOUD_URL}/records`)
+        fetch(`${BASE_URL}/records`)
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -34,7 +34,7 @@ function Records({ isLoggedIn, loggedInUser }) {
 
     const deleteRecord = (data) => {
         if (window.confirm("Oletko varma että haluat poistaa levyn?")) {
-            fetch(`${BASE_CLOUD_URL}/records/${data.id}`, { method: "DELETE" })
+            fetch(`${BASE_URL}/records/${data.id}`, { method: "DELETE" })
                 .then(response => {
                     if (response.ok) {
                         getRecords();
@@ -48,7 +48,7 @@ function Records({ isLoggedIn, loggedInUser }) {
     const addToCart = async (data) => {
         console.log(`UserId: ${loggedInUser.id} itemId: ${data.id}`);
         try {
-            const response = await fetch(`${BASE_CLOUD_URL}/shoppingcart/addtocart`, {
+            const response = await fetch(`${BASE_URL}/shoppingcart/addtocart`, {
                 method: "POST",
                 headers: { "Content-type": "application/json" },
                 body: JSON.stringify({
