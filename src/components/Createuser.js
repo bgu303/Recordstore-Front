@@ -30,7 +30,7 @@ function CreateUser() {
         }
 
         try {
-            const response = await fetch(`${BASE_URL}/user/createuser`, {
+            const response = await fetch(`${BASE_URL_CLOUD}/user/createuser`, {
                 method: "POST",
                 headers: { "Content-type": "application/json" },
                 body: JSON.stringify({

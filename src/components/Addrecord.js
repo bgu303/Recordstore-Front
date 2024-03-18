@@ -22,7 +22,7 @@ function AddRecord() {
 
     const addNewRecord = async () => {
         try {
-            const response = await fetch(`${BASE_URL}/records/addnewrecord`, {
+            const response = await fetch(`${BASE_URL_CLOUD}/records/addnewrecord`, {
                 method: "POST",
                 headers: { "Content-type": "application/json" },
                 body: JSON.stringify({

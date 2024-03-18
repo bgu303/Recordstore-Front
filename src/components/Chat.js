@@ -12,14 +12,30 @@ function ChatRoom({ loggedInUser }) {
     const [selectedUser, setSelectedUser] = useState("");
     const messagesEndRef = useRef(null);
 
-    const socket = io(BASE_URL)
+    const socket = io(BASE_URL_CLOUD)
 
     const fetchConversationId = () => {
         if (loggedInUser.role === "ADMIN") {
             return;
         }
 
-        fetch(`${BASE_URL}/chat/getconversationid/${loggedInUser.id}`)
+        fetch(`${BASE_URL_CLOUD}/chat/getconversationid/${loggedInUser.id}`)
+            .then(response => {
+                if (response.ok) {
+                    return response.json()
+                }
+            })
+            .then(data => {
+                setConversationId(data[0].id)
+            })
+    }
+
+    const adminFetchConversationId = () => {
+        if (loggedInUser.role === "USER") {
+            return;
+        }
+
+        fetch(`${BASE_URL_CLOUD}/chat/getconversationid/${selectedUser}`)
             .then(response => {
                 if (response.ok) {
                     return response.json()
@@ -31,7 +47,7 @@ function ChatRoom({ loggedInUser }) {
     }
 
     const getAllUsers = () => {
-        fetch(`${BASE_URL}/user/getallusers`)
+        fetch(`${BASE_URL_CLOUD}/user/getallusers`)
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -55,7 +71,7 @@ function ChatRoom({ loggedInUser }) {
             return alert("Ei tyhjiä viestejä.");
         }
 
-        fetch(`${BASE_URL}/chat/sendmessage`, {
+        fetch(`${BASE_URL_CLOUD}/chat/sendmessage`, {
             method: "POST",
             headers: { "Content-type": "application/json" },
             body: JSON.stringify({
@@ -65,7 +81,7 @@ function ChatRoom({ loggedInUser }) {
             })
         })
         setMessage("");
-        socket.emit("sendMessage", { message: message, sender_id: loggedInUser.id });
+        socket.emit("sendMessage", { message: message, sender_id: loggedInUser.id, conversationId: conversationId });
     }
 
     const adminSendMessage = () => {
@@ -73,7 +89,7 @@ function ChatRoom({ loggedInUser }) {
             return alert("Ei tyhjiä viestejä.");
         }
 
-        fetch(`${BASE_URL}/chat/adminsendmessage`, {
+        fetch(`${BASE_URL_CLOUD}/chat/adminsendmessage`, {
             method: "POST",
             headers: { "Content-type": "application/json" },
             body: JSON.stringify({
@@ -83,7 +99,7 @@ function ChatRoom({ loggedInUser }) {
             })
         })
         setMessage("");
-        socket.emit("sendMessage", { message: message, sender_id: loggedInUser.id });
+        socket.emit("sendMessage", { message: message, sender_id: loggedInUser.id, conversationId: conversationId });
     }
 
     const fetchConversationMessages = () => {
@@ -92,7 +108,7 @@ function ChatRoom({ loggedInUser }) {
         if (conversationId === null) {
             return;
         }
-        fetch(`${BASE_URL}/chat/getconversationmessages/${conversationId}`)
+        fetch(`${BASE_URL_CLOUD}/chat/getconversationmessages/${conversationId}`)
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -106,7 +122,7 @@ function ChatRoom({ loggedInUser }) {
     }
 
     const adminOpenConversation = () => {
-        fetch(`${BASE_URL}/chat/admingetconversationmessages/${selectedUser}`)
+        fetch(`${BASE_URL_CLOUD}/chat/admingetconversationmessages/${selectedUser}`)
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -117,6 +133,7 @@ function ChatRoom({ loggedInUser }) {
             .then(responseData => {
                 setConversationMessages(responseData)
             })
+        adminFetchConversationId();
     }
 
     //Fetches the conversation id, it is needed in order to fetch the conversation messages later based on the conversation id.
@@ -172,17 +189,21 @@ function ChatRoom({ loggedInUser }) {
     useEffect(() => {
         socket.on("message", (message) => {
             console.log("Received new message:", message);
+            console.log(conversationId);
             setConversationMessages(prevMessages => [...prevMessages, message]);
         });
-
+    
         return () => {
             socket.off("message"); // Cleanup when component unmounts
         };
-    }, []);
+    }, [conversationId]); //This dependency array needs to be here. I don't quite understand why, but that is the way things are. :)
+    
 
     useEffect(() => {
-        socket.emit('joinRoom', loggedInUser.id);
-    }, []);
+        if (conversationId) {
+            socket.emit('joinRoom', conversationId);
+        }
+    }, [conversationId]);
 
     return (
         <>

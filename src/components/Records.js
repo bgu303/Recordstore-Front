@@ -10,7 +10,7 @@ function Records({ isLoggedIn, loggedInUser }) {
     const [records, setRecords] = useState([]);
 
     const getRecords = () => {
-        fetch(`${BASE_URL}/records`)
+        fetch(`${BASE_URL_CLOUD}/records`)
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -34,7 +34,7 @@ function Records({ isLoggedIn, loggedInUser }) {
 
     const deleteRecord = (data) => {
         if (window.confirm("Oletko varma että haluat poistaa levyn?")) {
-            fetch(`${BASE_URL}/records/${data.id}`, { method: "DELETE" })
+            fetch(`${BASE_URL_CLOUD}/records/${data.id}`, { method: "DELETE" })
                 .then(response => {
                     if (response.ok) {
                         getRecords();
@@ -48,7 +48,7 @@ function Records({ isLoggedIn, loggedInUser }) {
     const addToCart = async (data) => {
         console.log(`UserId: ${loggedInUser.id} itemId: ${data.id}`);
         try {
-            const response = await fetch(`${BASE_URL}/shoppingcart/addtocart`, {
+            const response = await fetch(`${BASE_URL_CLOUD}/shoppingcart/addtocart`, {
                 method: "POST",
                 headers: { "Content-type": "application/json" },
                 body: JSON.stringify({
