@@ -77,7 +77,7 @@ function Records({ isLoggedIn, loggedInUser }) {
     const [columnDefinitions, setColumnDefinitions] = useState([
         { field: "artist", headerName: "Artisti", filter: true, suppressMovable: true, width: 250 },
         { field: "title", headerName: "Levyn nimi", filter: true, suppressMovable: true, width: 300 },
-        { field: "label", headerName: "Levy-yhtiö", filter: true, suppressMovable: true, flex: 1 },
+        { field: "label", headerName: "Levy-yhtiö", filter: true, suppressMovable: true, width: 200 },
         { field: "size", headerName: "Koko", filter: true, suppressMovable: true, width: 120 },
         { field: "lev", headerName: "Rec", filter: true, suppressMovable: true, width: 120 },
         { field: "kan", headerName: "PS", filter: true, suppressMovable: true, width: 120 },
@@ -99,13 +99,15 @@ function Records({ isLoggedIn, loggedInUser }) {
             ),
         },
         {
-            cellRenderer: params => <Button size="small" color="success" onClick={() => addToCart(params.data)}>Lisää Koriin</Button>,
-            width: 150,
+            cellRenderer: params => <Button size="small" variant="contained" color="success" onClick={() => addToCart(params.data)}>Lisää Koriin</Button>,
+            width: 160,
+            suppressMovable: true,
             hide: !localStorage.getItem("isLoggedIn")
         },
         {
-            cellRenderer: params => <Button size="small" color="error" onClick={() => deleteRecord(params.data)}>Poista</Button>,
-            width: 150,
+            cellRenderer: params => <Button size="small" variant="contained" color="error" onClick={() => deleteRecord(params.data)}>Poista</Button>,
+            width: 130,
+            suppressMovable: true,
             hide: localStorage.getItem("loggedInUserRole") !== "ADMIN"
         }
     ]);
@@ -117,13 +119,13 @@ function Records({ isLoggedIn, loggedInUser }) {
     return (
         <>
             <h1 style={{ textAlign: "center" }}>Levykaupan levylista</h1>
-            <div className="ag-theme-material trainings" style={{ height: "1000px", width: "95%", margin: "auto" }}>
+            <div className="ag-theme-material trainings" style={{ height: "800px", width: "95%", margin: "auto" }}>
                 <AgGridReact
                     rowData={records}
                     columnDefs={columnDefinitions}
                     localeText={finnishTranslations}
                     pagination={true}
-                    paginationPageSize={20}
+                    paginationPageSize={14}
                     domLayout="auto"
                 />
             </div>

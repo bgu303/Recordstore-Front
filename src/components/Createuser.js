@@ -90,7 +90,7 @@ function CreateUser() {
                     value={user.confirmPassword}
                     onKeyDown={handleKeyPress}
                 />
-                <Button onClick={() => createUser()}>Luo käyttäjä</Button>
+                <Button color="success" variant="contained" onClick={() => createUser()}>Luo käyttäjä</Button>
             </div>
         </>
     )

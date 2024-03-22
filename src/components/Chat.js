@@ -189,15 +189,14 @@ function ChatRoom({ loggedInUser }) {
     useEffect(() => {
         socket.on("message", (message) => {
             console.log("Received new message:", message);
-            console.log(conversationId);
             setConversationMessages(prevMessages => [...prevMessages, message]);
         });
-    
+
         return () => {
             socket.off("message"); // Cleanup when component unmounts
         };
     }, [conversationId]); //This dependency array needs to be here. I don't quite understand why, but that is the way things are. :)
-    
+
 
     useEffect(() => {
         if (conversationId) {
@@ -208,10 +207,10 @@ function ChatRoom({ loggedInUser }) {
     return (
         <>
             <div style={{ textAlign: "center" }}>
-                <h1>Chatti XD</h1>
+                <h1>Chatti</h1>
                 <p>Kirjautunut käyttäjä: {loggedInUser.email}</p>
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                    <div style={{ border: "1px solid #ccc", borderRadius: "5px", padding: "10px", maxHeight: "600px", overflowY: "auto", width: "400px", marginBottom: "20px" }}>
+                    <div style={{ border: "1px solid #ccc", borderRadius: "5px", padding: "10px", maxHeight: "500px", overflowY: "auto", width: "400px", marginBottom: "20px" }}>
                         {conversationMessages.map((message, index) => (
                             <div key={index} style={{ marginBottom: "10px", textAlign: message.sender_id === loggedInUser.id ? "right" : "left" }}>
                                 <div style={{ padding: "5px", backgroundColor: message.sender_id === loggedInUser.id ? "#DCF8C6" : "#E0E0E0", borderRadius: "5px", display: "inline-block" }}>
@@ -228,19 +227,26 @@ function ChatRoom({ loggedInUser }) {
                         value={message}
                         onKeyDown={handleKeyPress}
                     ></TextField>
-                    {loggedInUser.role === "USER" && <Button onClick={() => sendMessage()}>Lähetä</Button>}
-                    {loggedInUser.role === "ADMIN" && <Button onClick={() => adminSendMessage()}>Lähetä Viesti</Button>}
-                    {loggedInUser.role === "ADMIN" && <Button onClick={() => adminOpenConversation()}>Avaa Viestiketju Henkilön Kanssa</Button>}
+                    {loggedInUser.role === "USER" && <Button style={{ marginTop: 10 }} variant="contained" color="success" onClick={() => sendMessage()}>Lähetä</Button>}
+                    {loggedInUser.role === "ADMIN" && <Button style={{ marginTop: 10 }} variant="contained" color="success" onClick={() => adminSendMessage()}>Lähetä Viesti</Button>}
+                    {loggedInUser.role === "ADMIN" && <Button style={{ marginTop: 10 }} variant="contained" onClick={() => adminOpenConversation()}>Avaa Viestiketju Henkilön Kanssa</Button>}
                     {loggedInUser.role === "ADMIN" && <div>
-                        <select value={selectedUser} onChange={handleUserChange}>
+                        <select
+                            style={{
+                                padding: 10,
+                                fontSize: 14,
+                                border: "1px solid #ccc",
+                                borderRadius: 5,
+                                width: '100%',
+                                marginBottom: 5,
+                                marginTop: 10
+                            }}
+                            value={selectedUser} onChange={handleUserChange}>
                             <option value="">Valitse käyttäjä kenen kanssa chatata</option>
                             {allUsers.map(user => (
                                 <option key={user.id} value={user.id}>{user.email}</option>
                             ))}
                         </select>
-                        {selectedUser && (
-                            <p>Selected User: {selectedUser}</p>
-                        )}
                     </div>}
                 </div>
             </div>

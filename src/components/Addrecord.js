@@ -98,7 +98,7 @@ function AddRecord() {
                     onChange={e => setNewRecord({ ...newRecord, discogs: e.target.value })}
                     value={newRecord.discogs}
                 />
-                <Button onClick={() => addNewRecord()}>Lisää Levy</Button>
+                <Button color="success" variant="contained" onClick={() => addNewRecord()}>Lisää Levy</Button>
             </div>
         </>
     )

@@ -96,7 +96,7 @@ function Login({ isLoggedIn, setIsLoggedIn, loggedInUser, setLoggedInUser }) {
                     value={user.password}
                     onKeyDown={handleKeyPress}
                 />
-                <Button onClick={() => login()}>Kirjaudu Sisään</Button>
+                <Button color="success" variant="contained" onClick={() => login()}>Kirjaudu Sisään</Button>
             </div>
         </>
     )

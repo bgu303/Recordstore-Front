@@ -154,7 +154,7 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
         { field: "size", headerName: "Koko", filter: true, suppressMovable: true, flex: 1 },
         { field: "price", headerName: "Hinta", filter: true, suppressMovable: true, flex: 1 },
         {
-            cellRenderer: params => <Button size="small" color="error" onClick={() => deleteFromShoppingcart(params.data)}>Poista</Button>,
+            cellRenderer: params => <Button size="small" color="error" variant="contained" onClick={() => deleteFromShoppingcart(params.data)}>Poista</Button>,
             flex: 1,
         },
     ]);
