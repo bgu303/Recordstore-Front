@@ -75,8 +75,8 @@ function Records({ isLoggedIn, loggedInUser }) {
     }, [isLoggedIn])
 
     const [columnDefinitions, setColumnDefinitions] = useState([
-        { field: "artist", headerName: "Artisti", filter: true, suppressMovable: true, width: 250 },
-        { field: "title", headerName: "Levyn nimi", filter: true, suppressMovable: true, width: 300 },
+        { field: "artist", headerName: "Artisti", filter: true, suppressMovable: true, width: 240 },
+        { field: "title", headerName: "Levyn nimi", filter: true, suppressMovable: true, width: 270 },
         { field: "label", headerName: "Levy-yhtiö", filter: true, suppressMovable: true, width: 200 },
         { field: "size", headerName: "Koko", filter: true, suppressMovable: true, width: 120 },
         { field: "lev", headerName: "Rec", filter: true, suppressMovable: true, width: 120 },
@@ -119,14 +119,13 @@ function Records({ isLoggedIn, loggedInUser }) {
     return (
         <>
             <h1 style={{ textAlign: "center" }}>Levykaupan levylista</h1>
-            <div className="ag-theme-material trainings" style={{ height: "800px", width: "95%", margin: "auto" }}>
+            <div className="ag-theme-material trainings" style={{ height: "750px", width: "95%", margin: "auto" }}>
                 <AgGridReact
                     rowData={records}
                     columnDefs={columnDefinitions}
                     localeText={finnishTranslations}
-                    pagination={true}
-                    paginationPageSize={14}
                     domLayout="auto"
+                    getRowHeight={() => 35}
                 />
             </div>
         </>

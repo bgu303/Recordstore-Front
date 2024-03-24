@@ -170,8 +170,6 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                         <AgGridReact
                             rowData={shoppingcart}
                             columnDefs={columnDefinitions}
-                            pagination={true}
-                            paginationPageSize={20}
                             domLayout="auto"
                         />
                     </div>

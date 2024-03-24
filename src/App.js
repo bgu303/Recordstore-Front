@@ -8,6 +8,7 @@ import Logout from './components/Logout';
 import AddRecord from './components/Addrecord';
 import Ordersummary from './components/Ordersummary';
 import ChatRoom from './components/Chat';
+import DeleteUser from './components/Deleteuser';
 import "./App.css";
 import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
@@ -75,6 +76,7 @@ function App() {
           <Route path="/chat" element={<ChatRoom loggedInUser={loggedInUser}/>} />
           <Route path="/addrecord" element={<AddRecord />} />
           <Route path="/ordersummary" element={<Ordersummary customerInfo={customerInfo} cartTotal={cartTotal} />} />
+          <Route path='/deleteuser' element={<DeleteUser loggedInUser={loggedInUser} /> } />
         </Routes>
       </div>
     </Router>

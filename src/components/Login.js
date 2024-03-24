@@ -73,6 +73,10 @@ function Login({ isLoggedIn, setIsLoggedIn, loggedInUser, setLoggedInUser }) {
             });
     };
 
+    const navigateDeleteUser = () => {
+        navigate("/deleteuser")
+    }
+
     //If user presses enter key on either TextField -> tries to login.
     const handleKeyPress = (e) => {
         if (e.keyCode === 13) {
@@ -97,6 +101,7 @@ function Login({ isLoggedIn, setIsLoggedIn, loggedInUser, setLoggedInUser }) {
                     onKeyDown={handleKeyPress}
                 />
                 <Button color="success" variant="contained" onClick={() => login()}>Kirjaudu Sisään</Button>
+                <Button color="error" variant="contained" onClick={() => navigateDeleteUser()}>Poista Käyttäjä</Button>
             </div>
         </>
     )
