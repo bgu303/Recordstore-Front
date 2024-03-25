@@ -119,7 +119,7 @@ function Records({ isLoggedIn, loggedInUser }) {
     return (
         <>
             <h1 style={{ textAlign: "center" }}>Levykaupan levylista</h1>
-            <div className="ag-theme-material trainings" style={{ height: "750px", width: "95%", margin: "auto" }}>
+            <div className="ag-theme-material trainings" style={{ height: "750px", width: "95%", margin: "auto", fontSize: 12 }}>
                 <AgGridReact
                     rowData={records}
                     columnDefs={columnDefinitions}

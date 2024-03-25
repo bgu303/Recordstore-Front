@@ -15,6 +15,12 @@ function Login({ isLoggedIn, setIsLoggedIn, loggedInUser, setLoggedInUser }) {
         password: "",
     });
 
+    useEffect(() => {
+        if (isLoggedIn === true) {
+            navigate("/records")
+        }
+    }, [])
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -101,7 +107,7 @@ function Login({ isLoggedIn, setIsLoggedIn, loggedInUser, setLoggedInUser }) {
                     onKeyDown={handleKeyPress}
                 />
                 <Button color="success" variant="contained" onClick={() => login()}>Kirjaudu Sisään</Button>
-                <Button color="error" variant="contained" onClick={() => navigateDeleteUser()}>Poista Käyttäjä</Button>
+                <p>Haluatko poistaa käyttäjäsi? Voit tehdä sen <span onClick={() => navigateDeleteUser()} style={{ color: "blue", fontWeight: "bold", cursor: "pointer" }}>TÄSTÄ</span> linkistä.</p>
             </div>
         </>
     )

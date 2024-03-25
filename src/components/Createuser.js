@@ -25,9 +25,11 @@ function CreateUser() {
         if (user.password !== user.confirmPassword) {
             return alert("Salasanat eivät ole samat");
         }
-        if (user.password.length < 9) {
+
+        //Take into use when testing phase is over.
+        /*if (user.password.length < 9) {
             return alert("Salasanan tulee olla vähintään 9 merkkiä pitkä.");
-        }
+        } */
 
         try {
             const response = await fetch(`${BASE_URL_CLOUD}/user/createuser`, {
