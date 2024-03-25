@@ -44,7 +44,6 @@ function DeleteUser() {
         }
     }
 
-
     return (
         <>
             <div className="mainDiv">
@@ -57,6 +56,7 @@ function DeleteUser() {
                 <TextField label="Salasana"
                     onChange={e => setUser({ ...user, password: e.target.value })}
                     value={user.password}
+                    type="password"
                 />
                 <Button color="error" variant="contained" onClick={() => deleteUser()}>Poista Käyttäjä</Button>
             </div>
