@@ -4,7 +4,7 @@ import '../styling/Frontpage.css'
 function FrontPage() {
     return (
         <div className="frontPageMainDiv">
-            <h1>Tervetuloa Mikon levykauppaan</h1>
+            <h1>Tervetuloa PoppiMikon levykauppaan</h1>
             <p>Alta löydät hieman ohjeistusta levyjen ostoon liittyen</p>
 
             <h2 className="homePageTitles">Hinnoittelu</h2>
