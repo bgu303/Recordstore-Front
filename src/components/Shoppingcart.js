@@ -63,7 +63,7 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
     }
 
     const showShoppingcart = () => {
-        fetch(`${BASE_URL_CLOUD}/shoppingcart/shoppingcartitems/${loggedInUser.id}`, {
+        fetch(`${BASE_URL}/shoppingcart/shoppingcartitems/${loggedInUser.id}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -84,7 +84,7 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                 return alert("Jokin meni vikaan");
             }
 
-            fetch(`${BASE_URL_CLOUD}/shoppingcart/shoppingcartdelete/${data.id}`, {
+            fetch(`${BASE_URL}/shoppingcart/shoppingcartdelete/${data.id}`, {
                 method: "DELETE",
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -105,7 +105,7 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
         }
     }
 
-    const sendOrder = async () => {
+    const sendOrder2 = () => {
         if (window.confirm("Lähetetäänkö ostoskori?")) {
             if (customerInfo.name.trim() === "" || customerInfo.phoneNumber.trim() === "" || customerInfo.email.trim() === "") {
                 return alert("Täytä kaikki tilaukseen liittyvät kentät.");
@@ -117,7 +117,7 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                 return alert("Ostoskori on tyhjä. Lisää tuotteita ennen tilauksen lähettämistä.");
             }
             try {
-                const response = await fetch(`${BASE_URL_CLOUD}/shoppingcart/sendcart`, {
+                const response = fetch(`${BASE_URL}/shoppingcart/sendcart2`, {
                     method: "POST",
                     headers: { "Content-type": "application/json" },
                     body: JSON.stringify({
@@ -129,7 +129,7 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                 if (!response.ok) {
                     return alert("Jokin meni vikaan");
                 } else {
-                    fetch(`${BASE_URL_CLOUD}/shoppingcart/shoppingcartdeleteall/${loggedInUser.id}`, { method: "DELETE" })
+                    fetch(`${BASE_URL}/shoppingcart/shoppingcartdeleteall/${loggedInUser.id}`, { method: "DELETE" })
                         .then(response => {
                             if (response.ok) {
                                 showShoppingcart();
@@ -147,6 +147,50 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
             alert("Ostoskoria ei lähetetty.");
         }
     };
+
+    const sendOrder = async () => {
+
+        if (customerInfo.name.trim() === "" || customerInfo.phoneNumber.trim() === "" || customerInfo.email.trim() === "") {
+            return alert("Täytä kaikki tilaukseen liittyvät kentät.");
+        }
+        if (customerInfo.address.trim() === "" && customerInfo.shippingOption === "Posti") {
+            return alert("Täytä kaikki tilaukseen liittyvät kentät.")
+        }
+        if (shoppingcart.length === 0) {
+            return alert("Ostoskori on tyhjä. Lisää tuotteita ennen tilauksen lähettämistä.");
+        }
+
+        if (window.confirm("Lähetetäänkö ostoskori?")) {
+            try {
+                const response = await fetch(`${BASE_URL}/shoppingcart/sendcart`, {
+                    method: "POST",
+                    headers: { "Content-type": "application/json" },
+                    body: JSON.stringify({
+                        customerInfo,
+                        userId: loggedInUser.id,
+                        shoppingcart: shoppingcart
+                    })
+                });
+
+                if (response.ok) {
+                    const deleteResponse = await fetch(`${BASE_URL}/shoppingcart/shoppingcartdeleteall/${loggedInUser.id}`, { method: "DELETE" });
+
+                    if (deleteResponse.ok) {
+                        showShoppingcart();
+                        navigate("/ordersummary");
+                    } else {
+                        alert("Jotain meni vikaan.");
+                        console.log(deleteResponse);
+                    }
+                }
+            } catch (error) {
+                console.log(`Error in sending order: ${error}`);
+            }
+        } else {
+            alert("Ostoskoria ei lähetetty.");
+        }
+    }
+
 
     const [columnDefinitions, setColumnDefinitions] = useState([
         { field: "artist", headerName: "Artisti", filter: true, suppressMovable: true, flex: 1 },

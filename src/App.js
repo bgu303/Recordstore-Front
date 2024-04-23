@@ -9,6 +9,7 @@ import AddRecord from './components/Addrecord';
 import Ordersummary from './components/Ordersummary';
 import ChatRoom from './components/Chat';
 import DeleteUser from './components/Deleteuser';
+import Orders from './components/Orders';
 import "./App.css";
 import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
@@ -62,6 +63,7 @@ function App() {
             {isLoggedIn && <Link to="/shoppingcart" className="nav-link">Ostoskori</Link>}
             {isLoggedIn && <Link to="/chat" className="nav-link">Chatti</Link>}
             {isLoggedIn && loggedInUser.role === "ADMIN" && <Link to="/addrecord" className="nav-link">Lisää Levy</Link>}
+            {isLoggedIn && loggedInUser.role === "ADMIN" && <Link to="/orders" className="nav-link">Tilaukset</Link>}
             {!isLoggedIn && <Link to="/createuser" className="nav-link">Luo Käyttäjä</Link>}
             {!isLoggedIn && <Link to="/login" className="nav-link">Kirjaudu Sisään</Link>}
             {isLoggedIn && <Logout setIsLoggedIn={setIsLoggedIn} setLoggedInUser={setLoggedInUser} />}
@@ -75,6 +77,7 @@ function App() {
           <Route path="/shoppingcart" element={<Shoppingcart loggedInUser={loggedInUser} customerInfo={customerInfo} setCustomerInfo={setCustomerInfo} cartTotal={cartTotal} setCartTotal={setCartTotal} />} />
           <Route path="/chat" element={<ChatRoom loggedInUser={loggedInUser}/>} />
           <Route path="/addrecord" element={<AddRecord />} />
+          <Route path="/orders" element={<Orders />} />
           <Route path="/ordersummary" element={<Ordersummary customerInfo={customerInfo} cartTotal={cartTotal} />} />
           <Route path='/deleteuser' element={<DeleteUser loggedInUser={loggedInUser} /> } />
         </Routes>
