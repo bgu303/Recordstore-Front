@@ -18,7 +18,10 @@ function Records({ isLoggedIn, loggedInUser }) {
                     throw new Error("Something went wrong");
                 }
             })
-            .then(responseData => setRecords(responseData))
+            .then(responseData => {
+                console.log(responseData)
+                setRecords(responseData)
+            })
             .catch(error => {
                 console.log(error.message);
                 setRecords([]);
@@ -102,14 +105,20 @@ function Records({ isLoggedIn, loggedInUser }) {
             cellRenderer: params => <Button size="small" variant="contained" color="success" onClick={() => addToCart(params.data)}>Lisää Koriin</Button>,
             width: 160,
             suppressMovable: true,
-            hide: !localStorage.getItem("isLoggedIn")
+            hide: !localStorage.getItem("isLoggedIn") || localStorage.getItem("loggedInUserRole") === "ADMIN"
         },
         {
             cellRenderer: params => <Button size="small" variant="contained" color="error" onClick={() => deleteRecord(params.data)}>Poista</Button>,
             width: 130,
             suppressMovable: true,
             hide: localStorage.getItem("loggedInUserRole") !== "ADMIN"
-        }
+        },
+        { field: "sold", headerName: "Status", filter: true, suppressMovable: true, width: 120,
+        hide: localStorage.getItem("loggedInUserRole") !== "ADMIN",
+        cellRenderer: params => {
+            return params.value === 0 ? "Myytävänä" : "Myyty";
+        }},
+        
     ]);
 
     const finnishTranslations = {

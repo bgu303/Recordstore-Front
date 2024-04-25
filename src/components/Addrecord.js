@@ -18,6 +18,7 @@ function AddRecord() {
         price: null,
         genre: "",
         discogs: "",
+        sold: false
     })
 
     const addNewRecord = async () => {
@@ -35,6 +36,7 @@ function AddRecord() {
                     price: newRecord.price,
                     genre: newRecord.genre,
                     discogs: newRecord.discogs,
+                    sold: false
                 })
             })
             if (!response.ok) {
