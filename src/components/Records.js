@@ -19,13 +19,16 @@ function Records({ isLoggedIn, loggedInUser }) {
                 }
             })
             .then(responseData => {
-                console.log(responseData)
-                setRecords(responseData)
+                // Filter out sold records if the user is not an admin.
+                if (localStorage.getItem("loggedInUserRole") !== "ADMIN") {
+                    responseData = responseData.filter(record => record.sold === 0);
+                }
+                setRecords(responseData);
             })
             .catch(error => {
                 console.log(error.message);
                 setRecords([]);
-            })
+            });
     }
 
     const handleDiscogsLink = (data) => {
@@ -73,6 +76,40 @@ function Records({ isLoggedIn, loggedInUser }) {
         }
     }
 
+    const changeStatus = (data) => {
+        //If data.sold === 0, it means that the value is false, and the record hasnt been sold. If data.sold === 1, it means the value is true, and the record has been sold
+        let soldStatus = data.sold;
+        let recordId = data.id
+
+        if (soldStatus === 0) {
+            fetch(`${BASE_URL}/records/updatesoldstatustosold/${recordId}`)
+            .then(response => {
+                if (response.ok) {
+                    getRecords();
+                } else {
+                    console.error("Failed to update sold status");
+                }
+            })
+            .catch(error => {
+                console.error("Error updating sold status:", error);
+            });
+        }
+
+        if (soldStatus === 1) {
+            fetch(`${BASE_URL}/records/updatesoldstatustonotsold/${recordId}`)
+            .then(response => {
+                if (response.ok) {
+                    getRecords();
+                } else {
+                    console.error("Failed to update sold status");
+                }
+            })
+            .catch(error => {
+                console.error("Error updating sold status:", error);
+            });
+        }
+    }
+
     useEffect(() => {
         getRecords();
     }, [isLoggedIn])
@@ -82,9 +119,9 @@ function Records({ isLoggedIn, loggedInUser }) {
         { field: "title", headerName: "Levyn nimi", filter: true, suppressMovable: true, width: 270 },
         { field: "label", headerName: "Levy-yhtiö", filter: true, suppressMovable: true, width: 200 },
         { field: "size", headerName: "Koko", filter: true, suppressMovable: true, width: 120 },
-        { field: "lev", headerName: "Rec", filter: true, suppressMovable: true, width: 120 },
-        { field: "kan", headerName: "PS", filter: true, suppressMovable: true, width: 120 },
-        { field: "price", headerName: "Hinta", filter: true, suppressMovable: true, cellStyle: { textAlign: "right" }, width: 120 },
+        { field: "lev", headerName: "Rec", filter: true, suppressMovable: true, width: 110 },
+        { field: "kan", headerName: "PS", filter: true, suppressMovable: true, width: 110 },
+        { field: "price", headerName: "Hinta", filter: true, suppressMovable: true, cellStyle: { textAlign: "right" }, width: 100 },
         { field: "genre", headerName: "Genre", filter: true, suppressMovable: true, width: 150 },
         {
             field: "discogs",
@@ -118,6 +155,12 @@ function Records({ isLoggedIn, loggedInUser }) {
         cellRenderer: params => {
             return params.value === 0 ? "Myytävänä" : "Myyty";
         }},
+        {
+            cellRenderer: params => <Button size="small" variant="contained" color="success" onClick={() => changeStatus(params.data)}>Status</Button>,
+            width: 120,
+            suppressMovable: true,
+            hide: localStorage.getItem("loggedInUserRole") !== "ADMIN"
+        },
         
     ]);
 
@@ -128,7 +171,7 @@ function Records({ isLoggedIn, loggedInUser }) {
     return (
         <>
             <h1 style={{ textAlign: "center" }}>Levykaupan levylista</h1>
-            <div className="ag-theme-material trainings" style={{ height: "750px", width: "95%", margin: "auto", fontSize: 12 }}>
+            <div className="ag-theme-material trainings" style={{ height: "750px", width: "95%", margin: "auto", fontSize: 11 }}>
                 <AgGridReact
                     rowData={records}
                     columnDefs={columnDefinitions}
