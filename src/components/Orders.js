@@ -2,17 +2,25 @@ import { useEffect, useState } from "react";
 import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
 import '../styling/Orderlist.css'
 import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 function Orders() {
     const [orderData, setOrderData] = useState([]);
+    const token = localStorage.getItem('jwtToken');
+    const navigate = useNavigate();
 
-    useEffect(() => {
-        fetch(`${BASE_URL}/shoppingcart/getorderdata`)
+    const getOrders = () => {
+        fetch(`${BASE_URL}/shoppingcart/getorderdata`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        })
             .then(response => {
                 if (response.ok) {
                     return response.json();
                 } else {
-                    throw new Error("Something went wrong");
+                    navigate("/records");
                 }
             })
             .then(responseData => {
@@ -23,6 +31,11 @@ function Orders() {
             .catch(error => {
                 console.log(error.message);
             });
+    }
+
+
+    useEffect(() => {
+        getOrders();
     }, []);
 
     // Function to group an array of objects by a specified key, GPT MAGIC!
@@ -42,7 +55,23 @@ function Orders() {
     }
 
     const deleteOrder = (data) => {
-        console.log("order deleted " + data);
+        if (window.confirm("Haluatko varmasti poistaa Tilauksen?")) {
+            fetch(`${BASE_URL}/shoppingcart/deleteorder/${data}`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        getOrders();
+                    } else {
+                        alert("Jotain meni vikaan");
+                    }
+                })
+        }
     }
 
     return (
