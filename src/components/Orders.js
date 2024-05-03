@@ -10,7 +10,7 @@ function Orders() {
     const navigate = useNavigate();
 
     const getOrders = () => {
-        fetch(`${BASE_URL}/shoppingcart/getorderdata`, {
+        fetch(`${BASE_URL}/orders/getorderdata`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
@@ -56,7 +56,7 @@ function Orders() {
 
     const deleteOrder = (data) => {
         if (window.confirm("Haluatko varmasti poistaa Tilauksen?")) {
-            fetch(`${BASE_URL}/shoppingcart/deleteorder/${data}`,
+            fetch(`${BASE_URL}/orders/deleteorder/${data}`,
                 {
                     method: "DELETE",
                     headers: {
@@ -74,6 +74,16 @@ function Orders() {
         }
     }
 
+    const formattedDate = (dateString) => {
+        const date = new Date(dateString);
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based.
+        const year = date.getFullYear();
+        const hours = date.getHours().toString().padStart(2, '0');
+        const minutes = date.getMinutes().toString().padStart(2, '0');
+        return `${day}.${month}.${year}. Kello ${hours}:${minutes}`;
+    };
+
     return (
         <>
             <div className="mainDiv">
@@ -81,6 +91,7 @@ function Orders() {
                 {Object.entries(orderData).map(([orderId, order]) => (
                     <div key={orderId} className="orderContainer">
                         <h2>Tilauksen ID: {orderId}</h2>
+                        <h3>Tilaus saapunut: {formattedDate(order[0].order_date)}</h3>
                         {order.length > 0 && (
                             <>
                                 <p><b>Tilaajan Nimi:</b> {order[0].customer_name}</p>
@@ -108,7 +119,6 @@ function Orders() {
                         <Button color="error" variant="contained" onClick={() => deleteOrder(orderId)}>Poista</Button>
                     </div>
                 ))}
-
             </div>
         </>
     );
