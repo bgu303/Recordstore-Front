@@ -33,26 +33,9 @@ function Orders() {
             });
     }
 
-
     useEffect(() => {
         getOrders();
     }, []);
-
-    // Function to group an array of objects by a specified key, GPT MAGIC!
-    function groupBy(array, key) {
-        return array.reduce((result, currentValue) => {
-            (result[currentValue[key]] = result[currentValue[key]] || []).push(currentValue);
-            return result;
-        }, {});
-    }
-
-    function getTotalPrice(order) {
-        let totalPrice = 0;
-        order.forEach(item => {
-            totalPrice += item.price;
-        });
-        return totalPrice;
-    }
 
     const deleteOrder = (data) => {
         if (window.confirm("Haluatko varmasti poistaa Tilauksen?")) {
@@ -72,6 +55,22 @@ function Orders() {
                     }
                 })
         }
+    }
+
+    // Function to group an array of objects by a specified key, GPT MAGIC!
+    function groupBy(array, key) {
+        return array.reduce((result, currentValue) => {
+            (result[currentValue[key]] = result[currentValue[key]] || []).push(currentValue);
+            return result;
+        }, {});
+    }
+
+    function getTotalPrice(order) {
+        let totalPrice = 0;
+        order.forEach(item => {
+            totalPrice += item.price;
+        });
+        return totalPrice;
     }
 
     const formattedDate = (dateString) => {

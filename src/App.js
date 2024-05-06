@@ -10,6 +10,7 @@ import Ordersummary from './components/Ordersummary';
 import ChatRoom from './components/Chat';
 import DeleteUser from './components/Deleteuser';
 import Orders from './components/Orders';
+import OwnOrders from './components/OwnOrders';
 import "./App.css";
 import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
@@ -62,6 +63,7 @@ function App() {
             <Link to="/records" className="nav-link">Levylista</Link>
             {isLoggedIn && <Link to="/shoppingcart" className="nav-link">Ostoskori</Link>}
             {isLoggedIn && <Link to="/chat" className="nav-link">Chatti</Link>}
+            {isLoggedIn && loggedInUser.role !== "ADMIN" && <Link to="/ownorders" className="nav-link">Omat Tilaukseni</Link>}
             {isLoggedIn && loggedInUser.role === "ADMIN" && <Link to="/addrecord" className="nav-link">Lisää Levy</Link>}
             {isLoggedIn && loggedInUser.role === "ADMIN" && <Link to="/orders" className="nav-link">Tilaukset</Link>}
             {!isLoggedIn && <Link to="/createuser" className="nav-link">Luo Käyttäjä</Link>}
@@ -80,6 +82,7 @@ function App() {
           <Route path="/orders" element={<Orders />} />
           <Route path="/ordersummary" element={<Ordersummary customerInfo={customerInfo} cartTotal={cartTotal} />} />
           <Route path='/deleteuser' element={<DeleteUser loggedInUser={loggedInUser} /> } />
+          <Route path='/ownorders' element={<OwnOrders loggedInUser={loggedInUser} /> } />
         </Routes>
       </div>
     </Router>
