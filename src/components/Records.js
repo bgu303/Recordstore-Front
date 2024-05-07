@@ -5,8 +5,9 @@ import "ag-grid-community/styles/ag-grid.css";
 import 'ag-grid-community/styles/ag-theme-material.css';
 import { Button } from '@mui/material';
 import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
+import Sizefilter from './Sizefilter';
 
-function Records({ isLoggedIn, loggedInUser }) {
+function Records({ isLoggedIn, loggedInUser, onModelChange }) {
     const [records, setRecords] = useState([]);
 
     const getRecords = () => {
@@ -118,7 +119,7 @@ function Records({ isLoggedIn, loggedInUser }) {
         { field: "artist", headerName: "Artisti", filter: true, suppressMovable: true, width: 240 },
         { field: "title", headerName: "Levyn nimi", filter: true, suppressMovable: true, width: 270 },
         { field: "label", headerName: "Levy-yhtiö", filter: true, suppressMovable: true, width: 200 },
-        { field: "size", headerName: "Koko", filter: true, suppressMovable: true, width: 120 },
+        { field: "size", headerName: "Koko", filter: Sizefilter,  suppressMovable: true, width: 120 },
         { field: "lev", headerName: "Rec", filter: true, suppressMovable: true, width: 110 },
         { field: "kan", headerName: "PS", filter: true, suppressMovable: true, width: 110 },
         { field: "price", headerName: "Hinta", filter: true, suppressMovable: true, cellStyle: { textAlign: "right" }, width: 100 },
@@ -161,23 +162,29 @@ function Records({ isLoggedIn, loggedInUser }) {
             suppressMovable: true,
             hide: localStorage.getItem("loggedInUserRole") !== "ADMIN"
         },
-        
     ]);
 
     const finnishTranslations = {
         filterOoo: 'Hae...',
     };
 
+    //This needs to be added in order to use custom filtering tools.
+    const gridOptions = {
+        reactiveCustomComponents: true
+    }
+
     return (
         <>
             <h1 style={{ textAlign: "center" }}>Levykaupan levylista</h1>
             <div className="ag-theme-material trainings" style={{ height: "750px", width: "95%", margin: "auto", fontSize: 11 }}>
                 <AgGridReact
+                    reactiveCustomComponents
                     rowData={records}
                     columnDefs={columnDefinitions}
                     localeText={finnishTranslations}
                     domLayout="auto"
                     getRowHeight={() => 35}
+                    gridOptions={gridOptions}
                 />
             </div>
         </>

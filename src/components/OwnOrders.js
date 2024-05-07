@@ -46,6 +46,14 @@ function OwnOrders({ loggedInUser }) {
         return `${day}.${month}.${year}. Kello ${hours}:${minutes}`;
     };
 
+    function getTotalPrice(order) {
+        let totalPrice = 0;
+        order.forEach(item => {
+            totalPrice += item.price;
+        });
+        return totalPrice;
+    }
+
     return (
         <>
             <div className="mainDiv">
@@ -80,6 +88,7 @@ function OwnOrders({ loggedInUser }) {
                                     );
                                 })}
                             </ul>
+                            <p>Hinta yhteensä: {getTotalPrice(order)}€</p>
                         </div>
                     ))
                 )}
