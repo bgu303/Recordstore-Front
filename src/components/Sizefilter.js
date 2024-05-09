@@ -12,8 +12,7 @@ const Sizefilter = ({ model, onModelChange, getValue }) => {
 
   const doesFilterPass = useCallback(p => {
     console.log(p)
-    return true;
-  })
+  }, [model])
 
   useGridFilter({doesFilterPass})
 

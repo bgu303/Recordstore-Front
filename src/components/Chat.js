@@ -15,11 +15,11 @@ function ChatRoom({ loggedInUser }) {
     const socket = io(BASE_URL)
 
     const fetchConversationId = () => {
-        if (loggedInUser.role === "ADMIN") {
+        if (localStorage.getItem("loggedInUserRole") === "ADMIN") {
             return;
         }
 
-        fetch(`${BASE_URL}/chat/getconversationid/${loggedInUser.id}`)
+        fetch(`${BASE_URL}/chat/getconversationid/${localStorage.getItem("loggedInUserId")}`)
             .then(response => {
                 if (response.ok) {
                     return response.json()
@@ -56,7 +56,7 @@ function ChatRoom({ loggedInUser }) {
                 }
             })
             .then(responseData => {
-                const filteredUsers = responseData.filter(user => user.id !== loggedInUser.id);
+                const filteredUsers = responseData.filter(user => user.id != localStorage.getItem("loggedInUserId"));
                 setAllUsers(filteredUsers)
             })
 
@@ -136,24 +136,24 @@ function ChatRoom({ loggedInUser }) {
         adminFetchConversationId();
     }
 
-    //Fetches the conversation id, it is needed in order to fetch the conversation messages later based on the conversation id.
-    useEffect(() => {
-        fetchConversationId();
-    }, [])
-
-    //This fetches the conversation messages and is called every time conversation id changes, so in theory it should automatically open the chat.
-    //Doesn't update the chat automatically though, just opens it.
-    useEffect(() => {
-        fetchConversationMessages();
-    }, [conversationId])
-
     //Used to get all users to the drop down menu that admin uses to choose which conversation to open.
     //FIX LATER MAYBE!! Should be called only when admin is logged in.
     useEffect(() => {
-        if (loggedInUser.role === "ADMIN") {
+        if (localStorage.getItem("loggedInUserRole") === "ADMIN") {
             getAllUsers();
         }
     }, [])
+
+        //Fetches the conversation id, it is needed in order to fetch the conversation messages later based on the conversation id.
+        useEffect(() => {
+            fetchConversationId();
+        }, [])
+    
+        //This fetches the conversation messages and is called every time conversation id changes, so in theory it should automatically open the chat.
+        //Doesn't update the chat automatically though, just opens it.
+        useEffect(() => {
+            fetchConversationMessages();
+        }, [conversationId])
 
     //Used for automatically open the correct conversation for admin.
     useEffect(() => {
