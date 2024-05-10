@@ -63,7 +63,7 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
     }
 
     const showShoppingcart = () => {
-        fetch(`${BASE_URL}/shoppingcart/shoppingcartitems/${loggedInUser.id}`, {
+        fetch(`${BASE_URL_CLOUD}/shoppingcart/shoppingcartitems/${loggedInUser.id}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -84,7 +84,7 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                 return alert("Jokin meni vikaan");
             }
 
-            fetch(`${BASE_URL}/shoppingcart/shoppingcartdelete/${data.id}`, {
+            fetch(`${BASE_URL_CLOUD}/shoppingcart/shoppingcartdelete/${data.id}`, {
                 method: "DELETE",
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -117,7 +117,7 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                 return alert("Ostoskori on tyhjä. Lisää tuotteita ennen tilauksen lähettämistä.");
             }
             try {
-                const response = fetch(`${BASE_URL}/shoppingcart/sendcart2`, {
+                const response = fetch(`${BASE_URL_CLOUD}/shoppingcart/sendcart2`, {
                     method: "POST",
                     headers: { "Content-type": "application/json" },
                     body: JSON.stringify({
@@ -129,7 +129,7 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                 if (!response.ok) {
                     return alert("Jokin meni vikaan");
                 } else {
-                    fetch(`${BASE_URL}/shoppingcart/shoppingcartdeleteall/${loggedInUser.id}`, { method: "DELETE" })
+                    fetch(`${BASE_URL_CLOUD}/shoppingcart/shoppingcartdeleteall/${loggedInUser.id}`, { method: "DELETE" })
                         .then(response => {
                             if (response.ok) {
                                 showShoppingcart();
@@ -162,7 +162,7 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
 
         if (window.confirm("Lähetetäänkö ostoskori?")) {
             try {
-                const response = await fetch(`${BASE_URL}/shoppingcart/sendcart`, {
+                const response = await fetch(`${BASE_URL_CLOUD}/shoppingcart/sendcart`, {
                     method: "POST",
                     headers: { "Content-type": "application/json" },
                     body: JSON.stringify({
@@ -173,7 +173,7 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                 });
 
                 if (response.ok) {
-                    const deleteResponse = await fetch(`${BASE_URL}/shoppingcart/shoppingcartdeleteall/${loggedInUser.id}`, { method: "DELETE" });
+                    const deleteResponse = await fetch(`${BASE_URL_CLOUD}/shoppingcart/shoppingcartdeleteall/${loggedInUser.id}`, { method: "DELETE" });
 
                     if (deleteResponse.ok) {
                         showShoppingcart();
