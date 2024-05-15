@@ -16,7 +16,7 @@ function DeleteUser() {
     const deleteUser = () => {
         const confirmation = window.confirm("Haluatko varmasti poistaa käyttäjäsi?");
         if (confirmation) {
-            fetch(`${BASE_URL_CLOUD}/user/deleteuser`, {
+            fetch(`${BASE_URL}/user/deleteuser`, {
                 method: "POST",
                 headers: { "Content-type": "application/json" },
                 body: JSON.stringify({

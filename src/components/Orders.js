@@ -10,7 +10,7 @@ function Orders() {
     const navigate = useNavigate();
 
     const getOrders = () => {
-        fetch(`${BASE_URL_CLOUD}/orders/getorderdata`, {
+        fetch(`${BASE_URL}/orders/getorderdata`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
@@ -39,7 +39,7 @@ function Orders() {
 
     const deleteOrder = (data) => {
         if (window.confirm("Haluatko varmasti poistaa Tilauksen?")) {
-            fetch(`${BASE_URL_CLOUD}/orders/deleteorder/${data}`,
+            fetch(`${BASE_URL}/orders/deleteorder/${data}`,
                 {
                     method: "DELETE",
                     headers: {

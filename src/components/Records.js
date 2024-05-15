@@ -11,7 +11,7 @@ function Records({ isLoggedIn, loggedInUser, onModelChange }) {
     const [records, setRecords] = useState([]);
 
     const getRecords = () => {
-        fetch(`${BASE_URL_CLOUD}/records`)
+        fetch(`${BASE_URL}/records`)
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -41,7 +41,7 @@ function Records({ isLoggedIn, loggedInUser, onModelChange }) {
 
     const deleteRecord = (data) => {
         if (window.confirm("Oletko varma että haluat poistaa levyn?")) {
-            fetch(`${BASE_URL_CLOUD}/records/${data.id}`, { method: "DELETE" })
+            fetch(`${BASE_URL}/records/${data.id}`, { method: "DELETE" })
                 .then(response => {
                     if (response.ok) {
                         getRecords();
@@ -55,7 +55,7 @@ function Records({ isLoggedIn, loggedInUser, onModelChange }) {
     const addToCart = async (data) => {
         console.log(`UserId: ${loggedInUser.id} itemId: ${data.id}`);
         try {
-            const response = await fetch(`${BASE_URL_CLOUD}/shoppingcart/addtocart`, {
+            const response = await fetch(`${BASE_URL}/shoppingcart/addtocart`, {
                 method: "POST",
                 headers: { "Content-type": "application/json" },
                 body: JSON.stringify({
@@ -83,7 +83,7 @@ function Records({ isLoggedIn, loggedInUser, onModelChange }) {
         let recordId = data.id
 
         if (soldStatus === 0) {
-            fetch(`${BASE_URL_CLOUD}/records/updatesoldstatustosold/${recordId}`)
+            fetch(`${BASE_URL}/records/updatesoldstatustosold/${recordId}`)
             .then(response => {
                 if (response.ok) {
                     getRecords();
@@ -97,7 +97,7 @@ function Records({ isLoggedIn, loggedInUser, onModelChange }) {
         }
 
         if (soldStatus === 1) {
-            fetch(`${BASE_URL_CLOUD}/records/updatesoldstatustonotsold/${recordId}`)
+            fetch(`${BASE_URL}/records/updatesoldstatustonotsold/${recordId}`)
             .then(response => {
                 if (response.ok) {
                     getRecords();
