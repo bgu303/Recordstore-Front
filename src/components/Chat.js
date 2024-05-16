@@ -118,6 +118,21 @@ function ChatRoom({ loggedInUser }) {
             })
             .then(responseData => {
                 setConversationMessages(responseData)
+                console.log(responseData)
+
+                // Filter out messages sent by the logged-in user
+                const messagesFromOtherUser = responseData.filter(message => message.sender_id !== loggedInUser.id);
+
+                // Get the latest message timestamp from the filtered messages
+                let latestMessageTimeStamp = messagesFromOtherUser[messagesFromOtherUser.length - 1]?.created_at;
+
+                // If there are no messages from the other user, use the timestamp of the last message in the original array
+                if (!latestMessageTimeStamp && responseData.length > 0) {
+                    latestMessageTimeStamp = responseData[responseData.length - 1].created_at;
+                }
+
+                // Save the latest message timestamp to localStorage
+                localStorage.setItem("latestMessage", latestMessageTimeStamp);
             })
     }
 
@@ -144,16 +159,16 @@ function ChatRoom({ loggedInUser }) {
         }
     }, [])
 
-        //Fetches the conversation id, it is needed in order to fetch the conversation messages later based on the conversation id.
-        useEffect(() => {
-            fetchConversationId();
-        }, [])
-    
-        //This fetches the conversation messages and is called every time conversation id changes, so in theory it should automatically open the chat.
-        //Doesn't update the chat automatically though, just opens it.
-        useEffect(() => {
-            fetchConversationMessages();
-        }, [conversationId])
+    //Fetches the conversation id, it is needed in order to fetch the conversation messages later based on the conversation id.
+    useEffect(() => {
+        fetchConversationId();
+    }, [])
+
+    //This fetches the conversation messages and is called every time conversation id changes, so in theory it should automatically open the chat.
+    //Doesn't update the chat automatically though, just opens it.
+    useEffect(() => {
+        fetchConversationMessages();
+    }, [conversationId])
 
     //Used for automatically open the correct conversation for admin.
     useEffect(() => {

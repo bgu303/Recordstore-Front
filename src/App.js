@@ -54,6 +54,16 @@ function App() {
     }
   }, []);
 
+  const messageChecker = () => {
+    console.log(localStorage.getItem("latestMessage"))
+  }
+
+  useEffect(() => {
+    const messageInterval = setInterval(messageChecker, 10000);
+    
+    return () => clearInterval(messageInterval); // Clear the interval when component unmounts or re-renders. Very important, without this the intervals "stack up".
+  }, []);
+
   return (
     <Router>
       <div>
