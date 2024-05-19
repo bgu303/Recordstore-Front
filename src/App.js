@@ -15,8 +15,11 @@ import "./App.css";
 import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
 import "./styling/Navbar.css";
+import { BASE_URL, BASE_URL_CLOUD } from './components/Apiconstants';
+import socket from './components/socket';
 
 function App() {
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState({
     email: "",
@@ -24,6 +27,9 @@ function App() {
     id: null,
     token: null
   });
+  const [conversationId, setConversationId] = useState(null)
+  const [conversationMessages, setConversationMessages] = useState([]);
+  const [newMessageState, setNewMessageState] = useState(false)
 
   const [customerInfo, setCustomerInfo] = useState({
     name: "",
@@ -54,15 +60,68 @@ function App() {
     }
   }, []);
 
-  const messageChecker = () => {
-    console.log(localStorage.getItem("latestMessage"))
+  //The fetching of conversation id and message logic is moved here from Chat component in order to track the websockets accordingly, wasnt possible before when websocket logic was inside Chat component.
+  const fetchConversationId = () => {
+    if (localStorage.getItem("loggedInUserRole") === "ADMIN") {
+      return;
+    }
+
+    fetch(`${BASE_URL}/chat/getconversationid/${localStorage.getItem("loggedInUserId")}`)
+      .then(response => {
+        if (response.ok) {
+          return response.json()
+        }
+      })
+      .then(data => {
+        setConversationId(data[0].id)
+      })
+  }
+
+  const fetchConversationMessages = () => {
+    //This is added because for whatever reason in cloud implementation it fetches the conversation messages with id 0.
+    //This prevents it from happening, don't know why this happens, maybe explanation will be found out later.
+    if (conversationId === null) {
+      return;
+    }
+    fetch(`${BASE_URL}/chat/getconversationmessages/${conversationId}`)
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error("Something went wrong");
+        }
+      })
+      .then(responseData => {
+        setConversationMessages(responseData)
+      })
   }
 
   useEffect(() => {
-    const messageInterval = setInterval(messageChecker, 10000);
-    
-    return () => clearInterval(messageInterval); // Clear the interval when component unmounts or re-renders. Very important, without this the intervals "stack up".
-  }, []);
+    if (localStorage.getItem("isLoggedIn") !== null) {
+      fetchConversationId()
+      fetchConversationMessages()
+    }
+  }, [isLoggedIn])
+
+  useEffect(() => {
+    if (conversationId) {
+      socket.emit('joinRoom', conversationId);
+    }
+  }, [conversationId]);
+
+  useEffect(() => {
+    socket.on("message", (message) => {
+      console.log("Received new message:", message);
+      if (message.sender_id != localStorage.getItem("loggedInUserId")) {
+        setNewMessageState(true)
+      }
+      setConversationMessages(prevMessages => [...prevMessages, message]);
+    });
+
+    return () => {
+      socket.off("message"); // Cleanup when component unmounts
+    };
+  }, [conversationId]); //This dependency array needs to be here. I don't quite understand why, but that is the way things are. :)
 
   return (
     <Router>
@@ -72,7 +131,10 @@ function App() {
             <Link to="/" className="nav-link">Etusivu</Link>
             <Link to="/records" className="nav-link">Levylista</Link>
             {isLoggedIn && <Link to="/shoppingcart" className="nav-link">Ostoskori</Link>}
-            {isLoggedIn && <Link to="/chat" className="nav-link">Chatti</Link>}
+            {isLoggedIn && <Link to="/chat" className="nav-link">
+              Chatti
+              {newMessageState && <span className="notification-badge"></span>}
+            </Link>}
             {isLoggedIn && loggedInUser.role !== "ADMIN" && <Link to="/ownorders" className="nav-link">Omat Tilaukseni</Link>}
             {isLoggedIn && loggedInUser.role === "ADMIN" && <Link to="/addrecord" className="nav-link">Lisää Levy</Link>}
             {isLoggedIn && loggedInUser.role === "ADMIN" && <Link to="/orders" className="nav-link">Tilaukset</Link>}
@@ -87,12 +149,12 @@ function App() {
           <Route path="/createuser" element={<CreateUser />} />
           <Route path="/login" element={<Login isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} />} />
           <Route path="/shoppingcart" element={<Shoppingcart loggedInUser={loggedInUser} customerInfo={customerInfo} setCustomerInfo={setCustomerInfo} cartTotal={cartTotal} setCartTotal={setCartTotal} />} />
-          <Route path="/chat" element={<ChatRoom loggedInUser={loggedInUser}/>} />
+          <Route path="/chat" element={<ChatRoom loggedInUser={loggedInUser} conversationId={conversationId} setConversationId={setConversationId} conversationMessages={conversationMessages} setConversationMessages={setConversationMessages} fetchConversationId={fetchConversationId} fetchConversationMessages={fetchConversationMessages} newMessageState={newMessageState} setNewMessageState={setNewMessageState} />} />
           <Route path="/addrecord" element={<AddRecord />} />
           <Route path="/orders" element={<Orders />} />
           <Route path="/ordersummary" element={<Ordersummary customerInfo={customerInfo} cartTotal={cartTotal} />} />
-          <Route path='/deleteuser' element={<DeleteUser loggedInUser={loggedInUser} /> } />
-          <Route path='/ownorders' element={<OwnOrders loggedInUser={loggedInUser} /> } />
+          <Route path='/deleteuser' element={<DeleteUser loggedInUser={loggedInUser} />} />
+          <Route path='/ownorders' element={<OwnOrders loggedInUser={loggedInUser} />} />
         </Routes>
       </div>
     </Router>

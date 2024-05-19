@@ -2,33 +2,13 @@ import { useState, useEffect, useRef } from 'react';
 import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
 import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
-import io from "socket.io-client";
+import socket from './socket';
 
-function ChatRoom({ loggedInUser }) {
+function ChatRoom({ loggedInUser, conversationId, setConversationId, conversationMessages, setConversationMessages, fetchConversationId, fetchConversationMessages, newMessageState, setNewMessageState  }) {
     const [message, setMessage] = useState("");
-    const [conversationId, setConversationId] = useState(null)
-    const [conversationMessages, setConversationMessages] = useState([]);
     const [allUsers, setAllUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState("");
     const messagesEndRef = useRef(null);
-
-    const socket = io(BASE_URL)
-
-    const fetchConversationId = () => {
-        if (localStorage.getItem("loggedInUserRole") === "ADMIN") {
-            return;
-        }
-
-        fetch(`${BASE_URL}/chat/getconversationid/${localStorage.getItem("loggedInUserId")}`)
-            .then(response => {
-                if (response.ok) {
-                    return response.json()
-                }
-            })
-            .then(data => {
-                setConversationId(data[0].id)
-            })
-    }
 
     const adminFetchConversationId = () => {
         if (loggedInUser.role === "USER") {
@@ -102,40 +82,6 @@ function ChatRoom({ loggedInUser }) {
         socket.emit("sendMessage", { message: message, sender_id: loggedInUser.id, conversationId: conversationId });
     }
 
-    const fetchConversationMessages = () => {
-        //This is added because for whatever reason in cloud implementation it fetches the conversation messages with id 0.
-        //This prevents it from happening, don't know why this happens, maybe explanation will be found out later.
-        if (conversationId === null) {
-            return;
-        }
-        fetch(`${BASE_URL}/chat/getconversationmessages/${conversationId}`)
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error("Something went wrong");
-                }
-            })
-            .then(responseData => {
-                setConversationMessages(responseData)
-                console.log(responseData)
-
-                // Filter out messages sent by the logged-in user
-                const messagesFromOtherUser = responseData.filter(message => message.sender_id !== loggedInUser.id);
-
-                // Get the latest message timestamp from the filtered messages
-                let latestMessageTimeStamp = messagesFromOtherUser[messagesFromOtherUser.length - 1]?.created_at;
-
-                // If there are no messages from the other user, use the timestamp of the last message in the original array
-                if (!latestMessageTimeStamp && responseData.length > 0) {
-                    latestMessageTimeStamp = responseData[responseData.length - 1].created_at;
-                }
-
-                // Save the latest message timestamp to localStorage
-                localStorage.setItem("latestMessage", latestMessageTimeStamp);
-            })
-    }
-
     const adminOpenConversation = () => {
         fetch(`${BASE_URL}/chat/admingetconversationmessages/${selectedUser}`)
             .then(response => {
@@ -165,7 +111,6 @@ function ChatRoom({ loggedInUser }) {
     }, [])
 
     //This fetches the conversation messages and is called every time conversation id changes, so in theory it should automatically open the chat.
-    //Doesn't update the chat automatically though, just opens it.
     useEffect(() => {
         fetchConversationMessages();
     }, [conversationId])
@@ -202,22 +147,8 @@ function ChatRoom({ loggedInUser }) {
     }
 
     useEffect(() => {
-        socket.on("message", (message) => {
-            console.log("Received new message:", message);
-            setConversationMessages(prevMessages => [...prevMessages, message]);
-        });
-
-        return () => {
-            socket.off("message"); // Cleanup when component unmounts
-        };
-    }, [conversationId]); //This dependency array needs to be here. I don't quite understand why, but that is the way things are. :)
-
-
-    useEffect(() => {
-        if (conversationId) {
-            socket.emit('joinRoom', conversationId);
-        }
-    }, [conversationId]);
+        setNewMessageState(false)
+    }, [])
 
     return (
         <>

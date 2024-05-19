@@ -36,3 +36,37 @@
     transform: rotate(360deg);
   }
 }
+
+.nav-container {
+  position: relative;
+  display: inline-block;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: black;
+  position: relative;
+  padding: 10px;
+}
+
+.notification-badge {
+  background-color: red;
+  color: white;
+  font-weight: bold;
+  border-radius: 50%;
+  padding: 5px 10px;
+  position: absolute;
+  top: -5px;
+  right: -10px;
+  font-size: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 12px;
+  text-align: center;
+}
+
+/* Optional: add some styling for when there are new messages */
+.nav-link.new-messages {
+  font-weight: bold;
+}

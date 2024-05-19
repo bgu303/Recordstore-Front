@@ -2,6 +2,7 @@ import * as React from 'react';
 import '../styling/Frontpage.css'
 
 function FrontPage() {
+    
     return (
         <>
             <div className="frontPageMainDiv">
