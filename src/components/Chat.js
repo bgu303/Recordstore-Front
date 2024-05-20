@@ -4,7 +4,7 @@ import { Button } from '@mui/material';
 import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
 import socket from './socket';
 
-function ChatRoom({ loggedInUser, conversationId, setConversationId, conversationMessages, setConversationMessages, fetchConversationId, fetchConversationMessages, newMessageState, setNewMessageState  }) {
+function ChatRoom({ loggedInUser, conversationId, setConversationId, conversationMessages, setConversationMessages, fetchConversationId, fetchConversationMessages, newMessageState, setNewMessageState }) {
     const [message, setMessage] = useState("");
     const [allUsers, setAllUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState("");
@@ -148,7 +148,14 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
 
     useEffect(() => {
         setNewMessageState(false)
-    }, [])
+    }, [newMessageState])
+
+    useEffect(() => {
+        return () => {
+            const currentTime = new Date().toISOString();
+            localStorage.setItem("unmountTime", currentTime);
+        };
+    }, []);
 
     return (
         <>

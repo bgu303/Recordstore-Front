@@ -50,20 +50,21 @@
 }
 
 .notification-badge {
-  background-color: red;
+  background-color: #f52b5d; /* Soft pink color */
   color: white;
   font-weight: bold;
   border-radius: 50%;
-  padding: 5px 10px;
+  width: 16px; /* Set equal width and height for a perfect circle */
+  height: 16px; /* Set equal width and height for a perfect circle */
   position: absolute;
-  top: -5px;
-  right: -10px;
-  font-size: 10px;
+  top: -4px; /* Adjusted position for the new size */
+  right: -4px; /* Adjusted position for the new size */
+  font-size: 8px; /* Smaller font size */
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 12px;
   text-align: center;
+  line-height: 1; /* Ensures proper vertical alignment */
 }
 
 /* Optional: add some styling for when there are new messages */

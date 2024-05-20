@@ -93,6 +93,27 @@ function App() {
       })
       .then(responseData => {
         setConversationMessages(responseData)
+
+        //Fetch the latest message, which is NOT from the user - compared to the timestamp fetched from the chat, to find out if new messages have arrived or not.
+        const adminMessages = responseData.filter(message => message.sender_id !== loggedInUser.id);
+
+        if (adminMessages.length > 0) {
+          const latestMessage = adminMessages[adminMessages.length - 1].created_at;
+
+          const unmountTime = localStorage.getItem("unmountTime");
+
+          if (unmountTime) {
+            const latestMessageDate = new Date(latestMessage);
+            const unmountTimeDate = new Date(unmountTime);
+
+            //If latestmessage is newer than last been in chat  -> setNewMessage is true -> Chat bubble is shown.
+            if (latestMessageDate > unmountTimeDate) {
+              console.log("The latest message is newer than the unmount time.");
+              setNewMessageState(true);
+            }
+            console.log("Unmount time is not available in localStorage.");
+          }
+        }
       })
   }
 
