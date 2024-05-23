@@ -115,10 +115,6 @@ function Records({ isLoggedIn, loggedInUser, onModelChange }) {
         getRecords();
     }, [isLoggedIn])
 
-    useEffect(() => {
-        console.log(localStorage.getItem("unmountTime"))
-      }, [])
-
     const [columnDefinitions, setColumnDefinitions] = useState([
         { field: "artist", headerName: "Artisti", filter: true, suppressMovable: true, width: 240 },
         { field: "title", headerName: "Levyn nimi", filter: true, suppressMovable: true, width: 270 },

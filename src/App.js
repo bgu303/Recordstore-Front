@@ -29,6 +29,8 @@ function App() {
   });
   const [conversationId, setConversationId] = useState(null)
   const [conversationMessages, setConversationMessages] = useState([]);
+  const [adminAllConversationMessages, setAdminAllConversationMessages] = useState([]);
+  const [adminConversationIds, setAdminConversationIds] = useState([]);
   const [newMessageState, setNewMessageState] = useState(false)
 
   const [customerInfo, setCustomerInfo] = useState({
@@ -83,6 +85,7 @@ function App() {
     if (conversationId === null) {
       return;
     }
+
     fetch(`${BASE_URL}/chat/getconversationmessages/${conversationId}`)
       .then(response => {
         if (response.ok) {
@@ -117,16 +120,70 @@ function App() {
       })
   }
 
+  const fetchConversationMessagesAdmin = () => {
+    if (localStorage.getItem("loggedInUserRole") !== "ADMIN") {
+      return;
+    }
+
+    fetch(`${BASE_URL}/chat/getallconversationmessages`)
+      .then(response => {
+        if (response.ok) {
+          return response.json()
+        } else {
+          throw new Error("Something went wrong while fetching all conversation messages");
+        }
+      })
+      .then(responseData => {
+        setAdminAllConversationMessages(responseData);
+      })
+  }
+
+  const fetchConversationIdsAdmin = () => {
+    if (localStorage.getItem("loggedInUserRole") !== "ADMIN") {
+      return;
+    }
+
+    fetch(`${BASE_URL}/chat/getallconversationids`)
+      .then(response => {
+        if (response.ok) {
+          return response.json()
+        } else {
+          throw new Error("Something went wrong while fetching all conversation ids.");
+        }
+      })
+      .then(responseData => {
+        setAdminConversationIds(responseData);
+      })
+
+  }
+
+  //This useEffect is ran if normal user logs in.
   useEffect(() => {
-    if (localStorage.getItem("isLoggedIn") !== null) {
-      fetchConversationId()
-      fetchConversationMessages()
+    if (localStorage.getItem("isLoggedIn") !== null && localStorage.getItem("loggedInUserRole") !== "ADMIN") {
+      fetchConversationId();
+      fetchConversationMessages();
+    }
+  }, [isLoggedIn])
+
+  //This useEffect is ran if admin logs in.
+  useEffect(() => {
+    if (localStorage.getItem("isLoggedIn") !== null && localStorage.getItem("loggedInUserRole") === "ADMIN") {
+      fetchConversationMessagesAdmin();
+      fetchConversationIdsAdmin();
+    }
+  }, [isLoggedIn])
+
+  useEffect(() => {
+    if (localStorage.getItem("isLoggedIn") !== null && localStorage.getItem("loggedInUserRole") === "ADMIN") {
+      adminConversationIds.forEach(id => {
+        socket.emit('joinRoom', id.id)
+      })
     }
   }, [isLoggedIn])
 
   useEffect(() => {
     if (conversationId) {
-      socket.emit('joinRoom', conversationId);
+      socket.emit("joinRoom", conversationId);
     }
   }, [conversationId]);
 
