@@ -135,6 +135,24 @@ function App() {
       })
       .then(responseData => {
         setAdminAllConversationMessages(responseData);
+
+        //Same message filtering is done for the admin. Filter admin messges --> Check if new messages from other users have arrived according to the timestamp.
+        const userMessages = responseData.filter(message => message.sender_id !== loggedInUser.id);
+
+        if (userMessages.length > 0) {
+          const latestMessage = userMessages[userMessages.length - 1].created_at;
+
+          const unmountTime = localStorage.getItem("unmountTime");
+
+          if (unmountTime) {
+            const latestMessageDate = new Date(latestMessage);
+            const unmountTimeDate = new Date(unmountTime);
+
+            if (latestMessageDate > unmountTimeDate) {
+              setNewMessageState(true);
+            }
+          }
+        }
       })
   }
 
@@ -187,19 +205,38 @@ function App() {
     }
   }, [conversationId]);
 
+
+  //This useEffect is used to handle the socket logic for non-admin users.
   useEffect(() => {
     socket.on("message", (message) => {
-      console.log("Received new message:", message);
-      if (message.sender_id != localStorage.getItem("loggedInUserId")) {
-        setNewMessageState(true)
+      if (message.conversationId === conversationId) {
+        setConversationMessages(prevMessages => [...prevMessages, message]);
+        setNewMessageState(true);
       }
-      setConversationMessages(prevMessages => [...prevMessages, message]);
     });
 
     return () => {
-      socket.off("message"); // Cleanup when component unmounts
+      socket.off("message");
     };
   }, [conversationId]); //This dependency array needs to be here. I don't quite understand why, but that is the way things are. :)
+
+  //Socket logic for admin user.
+  useEffect(() => {
+    if (localStorage.getItem("loggedInUserRole") !== "ADMIN") {
+      return;
+    }
+    socket.on("message", (message) => {
+      console.log("new message here")
+      adminConversationIds.forEach(id => {
+        if (message.conversationId == id.id) {
+          setNewMessageState(true);
+        }
+      })
+      return () => {
+        socket.off("message")
+      }
+    })
+  }, [])
 
   return (
     <Router>
