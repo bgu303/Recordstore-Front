@@ -27,11 +27,13 @@ function App() {
     id: null,
     token: null
   });
-  const [conversationId, setConversationId] = useState(null)
+  const [conversationId, setConversationId] = useState(null);
   const [conversationMessages, setConversationMessages] = useState([]);
   const [adminAllConversationMessages, setAdminAllConversationMessages] = useState([]);
   const [adminConversationIds, setAdminConversationIds] = useState([]);
-  const [newMessageState, setNewMessageState] = useState(false)
+  const [newMessageState, setNewMessageState] = useState(false);
+  const [adminNewMessageIds, setAdminNewMessageIds] = useState([]);
+  const [adminNewMessagesSinceLogin, setAdminNewMessagesSinceLogin] = useState([]);
 
   const [customerInfo, setCustomerInfo] = useState({
     name: "",
@@ -148,6 +150,14 @@ function App() {
             const latestMessageDate = new Date(latestMessage);
             const unmountTimeDate = new Date(unmountTime);
 
+            // Filter messages that arrived after the unmount time
+            const newMessagesArr = userMessages.filter(message => new Date(message.created_at) > unmountTimeDate);
+            setAdminNewMessagesSinceLogin(newMessagesArr);
+
+            // Extract unique sender IDs
+            const uniqueSenderIds = [...new Set(newMessagesArr.map(message => message.sender_id))];
+            setAdminNewMessageIds(uniqueSenderIds);
+
             if (latestMessageDate > unmountTimeDate) {
               setNewMessageState(true);
             }
@@ -155,6 +165,10 @@ function App() {
         }
       })
   }
+
+  useEffect(() => {
+    console.log(adminNewMessagesSinceLogin)
+  }, [isLoggedIn])
 
   const fetchConversationIdsAdmin = () => {
     if (localStorage.getItem("loggedInUserRole") !== "ADMIN") {
@@ -192,19 +206,14 @@ function App() {
   }, [isLoggedIn])
 
   useEffect(() => {
-    if (localStorage.getItem("isLoggedIn") !== null && localStorage.getItem("loggedInUserRole") === "ADMIN") {
-      adminConversationIds.forEach(id => {
-        socket.emit('joinRoom', id.id)
-      })
+    //This is here to stop admin joining to the socket when he joins a chat room, admin already is connected to every room socket, so only causes issues if he joins rooms again.
+    if (localStorage.getItem("loggedInUserRole") === "ADMIN") {
+      return;
     }
-  }, [isLoggedIn])
-
-  useEffect(() => {
     if (conversationId) {
       socket.emit("joinRoom", conversationId);
     }
   }, [conversationId]);
-
 
   //This useEffect is used to handle the socket logic for non-admin users.
   useEffect(() => {
@@ -225,18 +234,38 @@ function App() {
     if (localStorage.getItem("loggedInUserRole") !== "ADMIN") {
       return;
     }
-    socket.on("message", (message) => {
-      console.log("new message here")
+
+    const handleMessage = (message) => {
       adminConversationIds.forEach(id => {
-        if (message.conversationId == id.id) {
+        if (message.conversationId === id.id) {
           setNewMessageState(true);
+
+          // Add the conversationId to the adminNewMessageIds state if it doesn't already exist
+          setAdminNewMessageIds((prevIds) => {
+            if (!prevIds.includes(message.sender_id)) {
+              return [...prevIds, message.sender_id];
+            }
+            return prevIds;
+          });
         }
-      })
-      return () => {
-        socket.off("message")
-      }
-    })
-  }, [])
+      });
+    };
+
+    socket.on("message", handleMessage);
+
+    // Joining rooms for the admin user
+    adminConversationIds.forEach(id => {
+      socket.emit('joinRoom', id.id);
+    });
+
+    return () => {
+      socket.off("message", handleMessage);
+    };
+  }, [isLoggedIn, adminConversationIds]);
+
+  useEffect(() => {
+    console.log(adminNewMessageIds);
+  }, [adminNewMessageIds]);
 
   return (
     <Router>
@@ -264,7 +293,7 @@ function App() {
           <Route path="/createuser" element={<CreateUser />} />
           <Route path="/login" element={<Login isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} />} />
           <Route path="/shoppingcart" element={<Shoppingcart loggedInUser={loggedInUser} customerInfo={customerInfo} setCustomerInfo={setCustomerInfo} cartTotal={cartTotal} setCartTotal={setCartTotal} />} />
-          <Route path="/chat" element={<ChatRoom loggedInUser={loggedInUser} conversationId={conversationId} setConversationId={setConversationId} conversationMessages={conversationMessages} setConversationMessages={setConversationMessages} fetchConversationId={fetchConversationId} fetchConversationMessages={fetchConversationMessages} newMessageState={newMessageState} setNewMessageState={setNewMessageState} />} />
+          <Route path="/chat" element={<ChatRoom loggedInUser={loggedInUser} conversationId={conversationId} setConversationId={setConversationId} conversationMessages={conversationMessages} setConversationMessages={setConversationMessages} fetchConversationId={fetchConversationId} fetchConversationMessages={fetchConversationMessages} newMessageState={newMessageState} setNewMessageState={setNewMessageState} adminNewMessageIds={adminNewMessageIds} setAdminNewMessageIds={setAdminNewMessageIds} />} />
           <Route path="/addrecord" element={<AddRecord />} />
           <Route path="/orders" element={<Orders />} />
           <Route path="/ordersummary" element={<Ordersummary customerInfo={customerInfo} cartTotal={cartTotal} />} />

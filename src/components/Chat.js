@@ -4,7 +4,7 @@ import { Button } from '@mui/material';
 import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
 import socket from './socket';
 
-function ChatRoom({ loggedInUser, conversationId, setConversationId, conversationMessages, setConversationMessages, fetchConversationId, fetchConversationMessages, newMessageState, setNewMessageState }) {
+function ChatRoom({ loggedInUser, conversationId, setConversationId, conversationMessages, setConversationMessages, fetchConversationId, fetchConversationMessages, newMessageState, setNewMessageState, adminNewMessageIds, setAdminNewMessageIds }) {
     const [message, setMessage] = useState("");
     const [allUsers, setAllUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState("");
@@ -157,6 +157,10 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
         };
     }, []);
 
+    const messageClearer = () => {
+        setAdminNewMessageIds([])
+    }
+
     return (
         <>
             <div style={{ textAlign: "center" }}>
@@ -197,10 +201,15 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
                             value={selectedUser} onChange={handleUserChange}>
                             <option value="">Valitse käyttäjä kenen kanssa chatata</option>
                             {allUsers.map(user => (
-                                <option key={user.id} value={user.id}>{user.email}</option>
+                                <option
+                                key={user.id}
+                                value={user.id}
+                                style={adminNewMessageIds.includes(user.id) ? { backgroundColor: 'red' } : {}}
+                                >{user.email}</option>
                             ))}
                         </select>
                     </div>}
+                    {loggedInUser.role === "ADMIN" && <Button style={{ marginTop: 10 }} variant="contained" onClick={() => messageClearer()}>Viestit luettu</Button>}
                 </div>
             </div>
         </>
