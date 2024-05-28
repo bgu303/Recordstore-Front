@@ -71,3 +71,25 @@
 .nav-link.new-messages {
   font-weight: bold;
 }
+
+/* In your App.css or a separate CSS file */
+.select-container {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.select-container select {
+  width: 100%;
+  padding-right: 30px; /* space for the custom arrow */
+}
+
+.select-container::after {
+  content: '▼';
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none; /* Allow clicks to pass through */
+  color: #999; /* Arrow color */
+}

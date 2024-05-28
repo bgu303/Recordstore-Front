@@ -116,7 +116,7 @@ function App() {
               console.log("The latest message is newer than the unmount time.");
               setNewMessageState(true);
             }
-            console.log("Unmount time is not available in localStorage.");
+            //console.log("Unmount time is not available in localStorage.");
           }
         }
       })
@@ -166,10 +166,6 @@ function App() {
       })
   }
 
-  useEffect(() => {
-    console.log(adminNewMessagesSinceLogin)
-  }, [isLoggedIn])
-
   const fetchConversationIdsAdmin = () => {
     if (localStorage.getItem("loggedInUserRole") !== "ADMIN") {
       return;
@@ -215,8 +211,11 @@ function App() {
     }
   }, [conversationId]);
 
-  //This useEffect is used to handle the socket logic for non-admin users.
+  //This useEffect is used to handle the socket logic for non-admin users. 
   useEffect(() => {
+    if (localStorage.getItem("loggedInUserRole") === "ADMIN") {
+      return;
+    }
     socket.on("message", (message) => {
       if (message.conversationId === conversationId) {
         setConversationMessages(prevMessages => [...prevMessages, message]);
@@ -236,10 +235,17 @@ function App() {
     }
 
     const handleMessage = (message) => {
+
+      if (message.conversationId === conversationId) {
+        setConversationMessages(prevMessages => [...prevMessages, message]);
+        setNewMessageState(true);
+        return;
+      }
+
       adminConversationIds.forEach(id => {
         if (message.conversationId === id.id) {
           setNewMessageState(true);
-
+          
           // Add the conversationId to the adminNewMessageIds state if it doesn't already exist
           setAdminNewMessageIds((prevIds) => {
             if (!prevIds.includes(message.sender_id)) {
@@ -261,11 +267,7 @@ function App() {
     return () => {
       socket.off("message", handleMessage);
     };
-  }, [isLoggedIn, adminConversationIds]);
-
-  useEffect(() => {
-    console.log(adminNewMessageIds);
-  }, [adminNewMessageIds]);
+  }, [isLoggedIn, adminConversationIds, conversationId]);
 
   return (
     <Router>

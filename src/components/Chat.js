@@ -131,7 +131,10 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
     };
 
     const handleUserChange = (event) => {
+        //Filter the adminNewMessageIds, if chat is opened -> remove id from list --> color of the notification in the chat list turns off.
+        const updatedMessageIds = adminNewMessageIds.filter(id => id != event.target.value);
         setSelectedUser(event.target.value);
+        setAdminNewMessageIds(updatedMessageIds);
     }
 
     const handleKeyPress = (e) => {
@@ -156,10 +159,6 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
             localStorage.setItem("unmountTime", currentTime);
         };
     }, []);
-
-    const messageClearer = () => {
-        setAdminNewMessageIds([])
-    }
 
     return (
         <>
@@ -202,14 +201,13 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
                             <option value="">Valitse käyttäjä kenen kanssa chatata</option>
                             {allUsers.map(user => (
                                 <option
-                                key={user.id}
-                                value={user.id}
-                                style={adminNewMessageIds.includes(user.id) ? { backgroundColor: 'red' } : {}}
+                                    key={user.id}
+                                    value={user.id}
+                                    style={adminNewMessageIds.includes(user.id) ? { backgroundColor: "#f52b5d" } : {}}
                                 >{user.email}</option>
                             ))}
                         </select>
                     </div>}
-                    {loggedInUser.role === "ADMIN" && <Button style={{ marginTop: 10 }} variant="contained" onClick={() => messageClearer()}>Viestit luettu</Button>}
                 </div>
             </div>
         </>
