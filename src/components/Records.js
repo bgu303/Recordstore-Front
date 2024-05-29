@@ -9,6 +9,7 @@ import Sizefilter from './Sizefilter';
 
 function Records({ isLoggedIn, loggedInUser, onModelChange }) {
     const [records, setRecords] = useState([]);
+    const token = localStorage.getItem("jwtToken")
 
     const getRecords = () => {
         fetch(`${BASE_URL}/records`)
@@ -41,7 +42,13 @@ function Records({ isLoggedIn, loggedInUser, onModelChange }) {
 
     const deleteRecord = (data) => {
         if (window.confirm("Oletko varma että haluat poistaa levyn?")) {
-            fetch(`${BASE_URL}/records/${data.id}`, { method: "DELETE" })
+            fetch(`${BASE_URL}/records/${data.id}`, {
+                method: "DELETE",
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            })
                 .then(response => {
                     if (response.ok) {
                         getRecords();
@@ -83,31 +90,41 @@ function Records({ isLoggedIn, loggedInUser, onModelChange }) {
         let recordId = data.id
 
         if (soldStatus === 0) {
-            fetch(`${BASE_URL}/records/updatesoldstatustosold/${recordId}`)
-            .then(response => {
-                if (response.ok) {
-                    getRecords();
-                } else {
-                    console.error("Failed to update sold status");
+            fetch(`${BASE_URL}/records/updatesoldstatustosold/${recordId}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
                 }
             })
-            .catch(error => {
-                console.error("Error updating sold status:", error);
-            });
+                .then(response => {
+                    if (response.ok) {
+                        getRecords();
+                    } else {
+                        console.error("Failed to update sold status");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error updating sold status:", error);
+                });
         }
 
         if (soldStatus === 1) {
-            fetch(`${BASE_URL}/records/updatesoldstatustonotsold/${recordId}`)
-            .then(response => {
-                if (response.ok) {
-                    getRecords();
-                } else {
-                    console.error("Failed to update sold status");
+            fetch(`${BASE_URL}/records/updatesoldstatustonotsold/${recordId}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
                 }
             })
-            .catch(error => {
-                console.error("Error updating sold status:", error);
-            });
+                .then(response => {
+                    if (response.ok) {
+                        getRecords();
+                    } else {
+                        console.error("Failed to update sold status");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error updating sold status:", error);
+                });
         }
     }
 
@@ -119,7 +136,7 @@ function Records({ isLoggedIn, loggedInUser, onModelChange }) {
         { field: "artist", headerName: "Artisti", filter: true, suppressMovable: true, width: 240 },
         { field: "title", headerName: "Levyn nimi", filter: true, suppressMovable: true, width: 270 },
         { field: "label", headerName: "Levy-yhtiö", filter: true, suppressMovable: true, width: 200 },
-        { field: "size", headerName: "Koko", filter: Sizefilter,  suppressMovable: true, width: 120 },
+        { field: "size", headerName: "Koko", filter: Sizefilter, suppressMovable: true, width: 120 },
         { field: "lev", headerName: "Rec", filter: true, suppressMovable: true, width: 110 },
         { field: "kan", headerName: "PS", filter: true, suppressMovable: true, width: 110 },
         { field: "price", headerName: "Hinta", filter: true, suppressMovable: true, cellStyle: { textAlign: "right" }, width: 100 },
@@ -151,11 +168,13 @@ function Records({ isLoggedIn, loggedInUser, onModelChange }) {
             suppressMovable: true,
             hide: localStorage.getItem("loggedInUserRole") !== "ADMIN"
         },
-        { field: "sold", headerName: "Status", filter: true, suppressMovable: true, width: 120,
-        hide: localStorage.getItem("loggedInUserRole") !== "ADMIN",
-        cellRenderer: params => {
-            return params.value === 0 ? "Myytävänä" : "Myyty";
-        }},
+        {
+            field: "sold", headerName: "Status", filter: true, suppressMovable: true, width: 120,
+            hide: localStorage.getItem("loggedInUserRole") !== "ADMIN",
+            cellRenderer: params => {
+                return params.value === 0 ? "Myytävänä" : "Myyty";
+            }
+        },
         {
             cellRenderer: params => <Button size="small" variant="contained" color="success" onClick={() => changeStatus(params.data)}>Status</Button>,
             width: 120,

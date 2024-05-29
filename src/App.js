@@ -19,7 +19,6 @@ import { BASE_URL, BASE_URL_CLOUD } from './components/Apiconstants';
 import socket from './components/socket';
 
 function App() {
-
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState({
     email: "",
@@ -34,6 +33,7 @@ function App() {
   const [newMessageState, setNewMessageState] = useState(false);
   const [adminNewMessageIds, setAdminNewMessageIds] = useState([]);
   const [adminNewMessagesSinceLogin, setAdminNewMessagesSinceLogin] = useState([]);
+  const token = localStorage.getItem("jwtToken")
 
   const [customerInfo, setCustomerInfo] = useState({
     name: "",

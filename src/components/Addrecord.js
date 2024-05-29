@@ -8,6 +8,7 @@ import '../styling/Createuser.css';
 import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
 
 function AddRecord() {
+    const token = localStorage.getItem("jwtToken");
     const [newRecord, setNewRecord] = useState({
         artist: "",
         title: "",
@@ -25,7 +26,10 @@ function AddRecord() {
         try {
             const response = await fetch(`${BASE_URL}/records/addnewrecord`, {
                 method: "POST",
-                headers: { "Content-type": "application/json" },
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
                 body: JSON.stringify({
                     artist: newRecord.artist,
                     title: newRecord.title,

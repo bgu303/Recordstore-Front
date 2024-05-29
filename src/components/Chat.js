@@ -9,6 +9,7 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
     const [allUsers, setAllUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState("");
     const messagesEndRef = useRef(null);
+    const token = localStorage.getItem("jwtToken");
 
     const adminFetchConversationId = () => {
         if (loggedInUser.role === "USER") {
@@ -53,7 +54,10 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
 
         fetch(`${BASE_URL}/chat/sendmessage`, {
             method: "POST",
-            headers: { "Content-type": "application/json" },
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
             body: JSON.stringify({
                 userId: loggedInUser.id,
                 conversationId: conversationId,
@@ -71,7 +75,10 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
 
         fetch(`${BASE_URL}/chat/adminsendmessage`, {
             method: "POST",
-            headers: { "Content-type": "application/json" },
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
             body: JSON.stringify({
                 userId: loggedInUser.id,
                 selectedUser: selectedUser,
@@ -83,7 +90,12 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
     }
 
     const adminOpenConversation = () => {
-        fetch(`${BASE_URL}/chat/admingetconversationmessages/${selectedUser}`)
+        fetch(`${BASE_URL}/chat/admingetconversationmessages/${selectedUser}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        })
             .then(response => {
                 if (response.ok) {
                     return response.json();
