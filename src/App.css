@@ -50,21 +50,27 @@
 }
 
 .notification-badge {
-  background-color: #f52b5d; /* Soft pink color */
+  background-color: #f52b5d;
   color: white;
   font-weight: bold;
   border-radius: 50%;
   width: 16px; /* Set equal width and height for a perfect circle */
   height: 16px; /* Set equal width and height for a perfect circle */
   position: absolute;
-  top: -4px; /* Adjusted position for the new size */
-  right: -4px; /* Adjusted position for the new size */
-  font-size: 8px; /* Smaller font size */
+  top: -4px;
+  right: -4px;
+  font-size: 8px;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-  line-height: 1; /* Ensures proper vertical alignment */
+  line-height: 1;
+}
+
+.notification-badge-shoppingcart {
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
 }
 
 /* Optional: add some styling for when there are new messages */

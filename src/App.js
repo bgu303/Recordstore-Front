@@ -309,7 +309,7 @@ function App() {
           <nav className="navbar">
             <Link to="/" className="nav-link">Etusivu</Link>
             <Link to="/records" className="nav-link">Levylista</Link>
-            {isLoggedIn && <Link to="/shoppingcart" className="nav-link">Ostoskori {shoppingcartSize >= 0 && <span className="notification-badge">{shoppingcartSize}</span>}</Link>}
+            {isLoggedIn && <Link to="/shoppingcart" className="nav-link">Ostoskori {shoppingcartSize >= 0 && <span className="notification-badge-shoppingcart notification-badge">{shoppingcartSize}</span>}</Link>}
             {isLoggedIn && <Link to="/chat" className="nav-link">
               Chatti
               {newMessageState && <span className="notification-badge"></span>}

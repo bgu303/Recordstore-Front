@@ -1,7 +1,7 @@
 .navbar {
   display: flex;
   justify-content: space-around;
-  background: linear-gradient(90deg, #333, #444);
+  background-color: #444;
   padding-top: 10px;
   padding-bottom: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -14,11 +14,11 @@
   border-radius: 4px;
   transition: background-color 0.3s ease, transform 0.3s ease;
   background-color: #525252; /* Initial background color */
+  background: linear-gradient(180deg, #646464, #444);
 }
 
 .nav-link:hover {
-  background-color: #858585;
-  border-radius: 4px;
+  background: linear-gradient(180deg, #979797, #646464);
   transform: translateY(-3px);
 }
 
