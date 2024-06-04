@@ -26,6 +26,7 @@ function App() {
     id: null,
     token: null
   });
+
   const [conversationId, setConversationId] = useState(null);
   const [conversationMessages, setConversationMessages] = useState([]);
   const [adminAllConversationMessages, setAdminAllConversationMessages] = useState([]);
@@ -33,7 +34,12 @@ function App() {
   const [newMessageState, setNewMessageState] = useState(false);
   const [adminNewMessageIds, setAdminNewMessageIds] = useState([]);
   const [adminNewMessagesSinceLogin, setAdminNewMessagesSinceLogin] = useState([]);
-  const token = localStorage.getItem("jwtToken")
+  const [shoppingcart, setShoppingcart] = useState([]);
+  const [token, setToken] = useState(null)
+  const [shoppingcartSize, setShoppingcartSize] = useState(0);
+
+  //Idk if this will be used anymore, if anything I should make all of the things that use token use the token state as above ^ CURRENTLY USED ONLY IN LOGIN. Fix maybe?
+  const token1 = localStorage.getItem("jwtToken")
 
   const [customerInfo, setCustomerInfo] = useState({
     name: "",
@@ -88,7 +94,11 @@ function App() {
       return;
     }
 
-    fetch(`${BASE_URL}/chat/getconversationmessages/${conversationId}`)
+    fetch(`${BASE_URL}/chat/getconversationmessages/${conversationId}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
       .then(response => {
         if (response.ok) {
           return response.json();
@@ -235,7 +245,6 @@ function App() {
     }
 
     const handleMessage = (message) => {
-
       if (message.conversationId === conversationId) {
         setConversationMessages(prevMessages => [...prevMessages, message]);
         setNewMessageState(true);
@@ -245,7 +254,7 @@ function App() {
       adminConversationIds.forEach(id => {
         if (message.conversationId === id.id) {
           setNewMessageState(true);
-          
+
           // Add the conversationId to the adminNewMessageIds state if it doesn't already exist
           setAdminNewMessageIds((prevIds) => {
             if (!prevIds.includes(message.sender_id)) {
@@ -269,6 +278,30 @@ function App() {
     };
   }, [isLoggedIn, adminConversationIds, conversationId]);
 
+  // Function to show shopping cart
+  const showShoppingcart = () => {
+    console.log("kutsutaan")
+    fetch(`${BASE_URL}/shoppingcart/shoppingcartitems/${loggedInUser.id}`)
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error('Failed to fetch shopping cart items');
+        }
+      })
+      .then(responseData => {
+        setShoppingcartSize(responseData.length)
+      })
+      .catch(error => console.error('Error:', error));
+  };
+
+  // useEffect to trigger showShoppingcart
+  useEffect(() => {
+    if (loggedInUser.id) {
+      showShoppingcart();
+    }
+  }, [token, loggedInUser.id]);
+
   return (
     <Router>
       <div>
@@ -276,7 +309,7 @@ function App() {
           <nav className="navbar">
             <Link to="/" className="nav-link">Etusivu</Link>
             <Link to="/records" className="nav-link">Levylista</Link>
-            {isLoggedIn && <Link to="/shoppingcart" className="nav-link">Ostoskori</Link>}
+            {isLoggedIn && <Link to="/shoppingcart" className="nav-link">Ostoskori {shoppingcartSize >= 0 && <span className="notification-badge">{shoppingcartSize}</span>}</Link>}
             {isLoggedIn && <Link to="/chat" className="nav-link">
               Chatti
               {newMessageState && <span className="notification-badge"></span>}
@@ -291,10 +324,10 @@ function App() {
         </nav>
         <Routes>
           <Route path="/" element={<FrontPage />} />
-          <Route path="/records" element={<Records isLoggedIn={isLoggedIn} loggedInUser={loggedInUser} />} />
+          <Route path="/records" element={<Records isLoggedIn={isLoggedIn} loggedInUser={loggedInUser} showShoppingcart={showShoppingcart} />} />
           <Route path="/createuser" element={<CreateUser />} />
-          <Route path="/login" element={<Login isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} />} />
-          <Route path="/shoppingcart" element={<Shoppingcart loggedInUser={loggedInUser} customerInfo={customerInfo} setCustomerInfo={setCustomerInfo} cartTotal={cartTotal} setCartTotal={setCartTotal} />} />
+          <Route path="/login" element={<Login isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} setToken={setToken} />} />
+          <Route path="/shoppingcart" element={<Shoppingcart loggedInUser={loggedInUser} customerInfo={customerInfo} setCustomerInfo={setCustomerInfo} cartTotal={cartTotal} setCartTotal={setCartTotal} shoppingcart={shoppingcart} setShoppingcart={setShoppingcart} setShoppingcartSize={setShoppingcartSize}  />} />
           <Route path="/chat" element={<ChatRoom loggedInUser={loggedInUser} conversationId={conversationId} setConversationId={setConversationId} conversationMessages={conversationMessages} setConversationMessages={setConversationMessages} fetchConversationId={fetchConversationId} fetchConversationMessages={fetchConversationMessages} newMessageState={newMessageState} setNewMessageState={setNewMessageState} adminNewMessageIds={adminNewMessageIds} setAdminNewMessageIds={setAdminNewMessageIds} />} />
           <Route path="/addrecord" element={<AddRecord />} />
           <Route path="/orders" element={<Orders />} />

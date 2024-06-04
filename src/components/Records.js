@@ -7,7 +7,7 @@ import { Button } from '@mui/material';
 import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
 import Sizefilter from './Sizefilter';
 
-function Records({ isLoggedIn, loggedInUser, onModelChange }) {
+function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) {
     const [records, setRecords] = useState([]);
     const token = localStorage.getItem("jwtToken")
 
@@ -77,7 +77,9 @@ function Records({ isLoggedIn, loggedInUser, onModelChange }) {
                 }
                 return alert("Jokin meni vikaan lisätessä koriin");
             } else {
-                return alert("Koriin lisääminen onnistui!");
+                showShoppingcart();
+                alert("Koriin lisääminen onnistui!");
+                return;
             }
         } catch (error) {
             console.log(`Error adding to cart: ${error}`);

@@ -13,8 +13,7 @@ import { useNavigate } from "react-router-dom";
 import '../styling/Createuser.css';
 import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
 
-function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, setCartTotal }) {
-    const [shoppingcart, setShoppingcart] = useState([]);
+function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, setCartTotal, shoppingcart, setShoppingcart, setShoppingcartSize }) {
     const [shippingOptionChecker, setShippingOptionChecker] = useState(false);
     const navigate = useNavigate();
     const token = localStorage.getItem('jwtToken');
@@ -75,7 +74,10 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                     navigate("/records");
                 }
             })
-            .then(responseData => setShoppingcart(responseData))
+            .then(responseData => {
+                setShoppingcart(responseData)
+                setShoppingcartSize(responseData.length)
+            })
     }
 
     const deleteFromShoppingcart = (data) => {

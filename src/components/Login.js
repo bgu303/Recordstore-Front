@@ -9,7 +9,7 @@ import { jwtDecode } from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
 import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
 
-function Login({ isLoggedIn, setIsLoggedIn, loggedInUser, setLoggedInUser, conversationId, setConversationId, conversationMessages, setConversationMessages }) {
+function Login({ isLoggedIn, setIsLoggedIn, loggedInUser, setLoggedInUser, conversationId, setConversationId, conversationMessages, setConversationMessages, setToken }) {
     const [user, setUser] = useState({
         email: "",
         password: "",
@@ -57,6 +57,7 @@ function Login({ isLoggedIn, setIsLoggedIn, loggedInUser, setLoggedInUser, conve
             .then(data => {
                 const { token } = data;
                 console.log(token)
+                setToken(token);
                 const decodedToken = jwtDecode(token);
 
                 setLoggedInUser({
