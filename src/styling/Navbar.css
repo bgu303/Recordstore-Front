@@ -1,7 +1,7 @@
 .navbar {
   display: flex;
   justify-content: space-around;
-  background-color: #444;
+  background-color: #313131;
   padding-top: 10px;
   padding-bottom: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -12,20 +12,16 @@
   text-decoration: none;
   padding: 10px 40px;
   border-radius: 4px;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-  background-color: #525252; /* Initial background color */
-  background: linear-gradient(180deg, #646464, #444);
+  transition: transform 0.3s ease;
+  background-color: #525252;
+  background: linear-gradient(180deg, #757575, #313131);
+  position: relative; 
+  display: inline-block; 
+  border-bottom: 2px solid #313131; /* Initially same color as the background. */
 }
 
 .nav-link:hover {
-  background: linear-gradient(180deg, #979797, #646464);
   transform: translateY(-3px);
-}
-
-.nav-link.active {
-  background-color: #555;
-}
-
-.nav-link.active {
-  background-color: #555;
+  background: linear-gradient(180deg, #b9b9b9, #777777);
+  border-bottom-color: #b9b9b9; /* Change border color on hover */
 }

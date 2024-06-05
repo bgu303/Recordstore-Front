@@ -37,6 +37,12 @@ function App() {
   const [shoppingcart, setShoppingcart] = useState([]);
   const [token, setToken] = useState(null)
   const [shoppingcartSize, setShoppingcartSize] = useState(0);
+  const [clickedLink, setClickedLink] = useState('');
+
+  const handleNavLinkClick = (link) => {
+    setClickedLink(link);
+  };
+
 
   //Idk if this will be used anymore, if anything I should make all of the things that use token use the token state as above ^ CURRENTLY USED ONLY IN LOGIN. Fix maybe?
   const token1 = localStorage.getItem("jwtToken")
@@ -309,7 +315,7 @@ function App() {
           <nav className="navbar">
             <Link to="/" className="nav-link">Etusivu</Link>
             <Link to="/records" className="nav-link">Levylista</Link>
-            {isLoggedIn && <Link to="/shoppingcart" className="nav-link">Ostoskori {shoppingcartSize >= 0 && <span className="notification-badge-shoppingcart notification-badge">{shoppingcartSize}</span>}</Link>}
+            {isLoggedIn && loggedInUser.role !== "ADMIN" && <Link to="/shoppingcart" className="nav-link">Ostoskori {shoppingcartSize >= 0 && <span className="notification-badge-shoppingcart notification-badge">{shoppingcartSize}</span>}</Link>}
             {isLoggedIn && <Link to="/chat" className="nav-link">
               Chatti
               {newMessageState && <span className="notification-badge"></span>}
