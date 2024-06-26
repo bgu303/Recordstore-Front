@@ -63,8 +63,7 @@ function OwnOrders({ loggedInUser }) {
                 ) : (
                     Object.entries(orderData).map(([orderId, order]) => (
                         <div key={orderId} className="orderContainer">
-                            <h2>Tilauksen ID: {orderId}</h2>
-                            <h3>Tilaus saapunut: {formattedDate(order[0].order_date)}</h3>
+                            <h3>Tilaus lähetetty: {formattedDate(order[0].order_date)}</h3>
                             {order.length > 0 && (
                                 <>
                                     <p><b>Tilaajan Nimi:</b> {order[0].customer_name}</p>

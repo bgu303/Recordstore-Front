@@ -115,7 +115,9 @@ function Orders() {
                             })}
                         </ul>
                         <p>Hinta yhteensä: {getTotalPrice(order)}€</p>
+                        <div style={{ textAlign: "center" }}>
                         <Button color="error" variant="contained" onClick={() => deleteOrder(orderId)}>Poista</Button>
+                        </div>
                     </div>
                 ))}
             </div>

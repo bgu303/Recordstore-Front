@@ -3,6 +3,8 @@ import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
 import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
 import socket from './socket';
+import IconButton from '@mui/material/IconButton';
+import SendIcon from '@mui/icons-material/Send';
 
 function ChatRoom({ loggedInUser, conversationId, setConversationId, conversationMessages, setConversationMessages, fetchConversationId, fetchConversationMessages, newMessageState, setNewMessageState, adminNewMessageIds, setAdminNewMessageIds }) {
     const [message, setMessage] = useState("");
@@ -176,7 +178,7 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
         <>
             <div style={{ textAlign: "center" }}>
                 <h1>Chatti</h1>
-                <p>Kirjautunut käyttäjä: {loggedInUser.email}</p>
+                <p>Alla olevasta chatistä voit jutella PoppiMikon kanssa</p>
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                     <div style={{ border: "1px solid #ccc", borderRadius: "5px", padding: "10px", maxHeight: "500px", overflowY: "auto", width: "400px", marginBottom: "20px" }}>
                         {conversationMessages.map((message, index) => (
@@ -189,15 +191,33 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
                         ))}
                         <div ref={messagesEndRef} />
                     </div>
-                    <TextField
-                        label="Lähetä viesti"
-                        onChange={e => setMessage(e.target.value)}
-                        value={message}
-                        onKeyDown={handleKeyPress}
-                    ></TextField>
-                    {loggedInUser.role === "USER" && <Button style={{ marginTop: 10 }} variant="contained" color="success" onClick={() => sendMessage()}>Lähetä</Button>}
-                    {loggedInUser.role === "ADMIN" && <Button style={{ marginTop: 10 }} variant="contained" color="success" onClick={() => adminSendMessage()}>Lähetä Viesti</Button>}
-                    {loggedInUser.role === "ADMIN" && <Button style={{ marginTop: 10 }} variant="contained" onClick={() => adminOpenConversation()}>Avaa Viestiketju Henkilön Kanssa</Button>}
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                        <TextField
+                            label="Lähetä viesti"
+                            onChange={e => setMessage(e.target.value)}
+                            value={message}
+                            onKeyDown={handleKeyPress}
+                        />
+                        {loggedInUser.role === "USER" && (
+                            <IconButton
+                                style={{ marginLeft: 10 }}
+                                color="success"
+                                onClick={() => sendMessage()}
+                            >
+                                <SendIcon />
+                            </IconButton>
+                        )}
+                        {loggedInUser.role === "ADMIN" && (
+                            <IconButton
+                                style={{ marginLeft: 10 }}
+                                color="success"
+                                onClick={() => adminSendMessage()}
+                            >
+                                <SendIcon />
+                            </IconButton>
+                        )}
+                    </div>
+                    {/*{loggedInUser.role === "ADMIN" && <Button style={{ marginTop: 10 }} variant="contained" onClick={() => adminOpenConversation()}>Avaa Viestiketju Henkilön Kanssa</Button>}}*/}
                     {loggedInUser.role === "ADMIN" && <div>
                         <select
                             style={{

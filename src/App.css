@@ -37,18 +37,6 @@
   }
 }
 
-.nav-container {
-  position: relative;
-  display: inline-block;
-}
-
-.nav-link {
-  text-decoration: none;
-  color: black;
-  position: relative;
-  padding: 10px;
-}
-
 .notification-badge {
   background-color: #f52b5d;
   color: white;

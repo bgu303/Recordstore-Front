@@ -11,6 +11,7 @@ import ChatRoom from './components/Chat';
 import DeleteUser from './components/Deleteuser';
 import Orders from './components/Orders';
 import OwnOrders from './components/OwnOrders';
+import SendFeedback from './components/Feedback';
 import "./App.css";
 import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
@@ -37,12 +38,7 @@ function App() {
   const [shoppingcart, setShoppingcart] = useState([]);
   const [token, setToken] = useState(null)
   const [shoppingcartSize, setShoppingcartSize] = useState(0);
-  const [clickedLink, setClickedLink] = useState('');
-
-  const handleNavLinkClick = (link) => {
-    setClickedLink(link);
-  };
-
+  const [activePath, setActivePath] = useState("/");
 
   //Idk if this will be used anymore, if anything I should make all of the things that use token use the token state as above ^ CURRENTLY USED ONLY IN LOGIN. Fix maybe?
   const token1 = localStorage.getItem("jwtToken")
@@ -198,7 +194,6 @@ function App() {
       .then(responseData => {
         setAdminConversationIds(responseData);
       })
-
   }
 
   //This useEffect is ran if normal user logs in.
@@ -308,23 +303,111 @@ function App() {
     }
   }, [token, loggedInUser.id]);
 
+  const clickedLink = (path, setActivePath) => {
+    localStorage.setItem("path", path);
+    setActivePath(path);
+  };
+
+  useEffect(() => {
+    const savedPath = localStorage.getItem("path");
+    if (savedPath) {
+      setActivePath(savedPath);
+    }
+  }, []);
+
   return (
     <Router>
       <div>
         <nav>
           <nav className="navbar">
-            <Link to="/" className="nav-link">Etusivu</Link>
-            <Link to="/records" className="nav-link">Levylista</Link>
-            {isLoggedIn && loggedInUser.role !== "ADMIN" && <Link to="/shoppingcart" className="nav-link">Ostoskori {shoppingcartSize >= 0 && <span className="notification-badge-shoppingcart notification-badge">{shoppingcartSize}</span>}</Link>}
-            {isLoggedIn && <Link to="/chat" className="nav-link">
-              Chatti
-              {newMessageState && <span className="notification-badge"></span>}
-            </Link>}
-            {isLoggedIn && loggedInUser.role !== "ADMIN" && <Link to="/ownorders" className="nav-link">Omat Tilaukseni</Link>}
-            {isLoggedIn && loggedInUser.role === "ADMIN" && <Link to="/addrecord" className="nav-link">Lisää Levy</Link>}
-            {isLoggedIn && loggedInUser.role === "ADMIN" && <Link to="/orders" className="nav-link">Tilaukset</Link>}
-            {!isLoggedIn && <Link to="/createuser" className="nav-link">Luo Käyttäjä</Link>}
-            {!isLoggedIn && <Link to="/login" className="nav-link">Kirjaudu Sisään</Link>}
+            <Link
+              to="/"
+              className={`nav-link ${activePath === "/" ? "active" : ""}`}
+              onClick={() => clickedLink("/", setActivePath)}
+            >
+              Etusivu
+            </Link>
+            <Link
+              to="/records"
+              className={`nav-link ${activePath === "/records" ? "active" : ""}`}
+              onClick={() => clickedLink("/records", setActivePath)}
+            >
+              Levylista
+            </Link>
+            {isLoggedIn && loggedInUser.role !== "ADMIN" && (
+              <Link
+                to="/shoppingcart"
+                className={`nav-link ${activePath === "/shoppingcart" ? "active" : ""}`}
+                onClick={() => clickedLink("/shoppingcart", setActivePath)}
+              >
+                Ostoskori {shoppingcartSize >= 0 && <span className="notification-badge-shoppingcart notification-badge">{shoppingcartSize}</span>}
+              </Link>
+            )}
+            {isLoggedIn && (
+              <Link
+                to="/chat"
+                className={`nav-link ${activePath === "/chat" ? "active" : ""}`}
+                onClick={() => clickedLink("/chat", setActivePath)}
+              >
+                Chatti
+                {newMessageState && <span className="notification-badge"></span>}
+              </Link>
+            )}
+            {isLoggedIn && loggedInUser.role !== "ADMIN" && (
+              <Link
+                to="/ownorders"
+                className={`nav-link ${activePath === "/ownorders" ? "active" : ""}`}
+                onClick={() => clickedLink("/ownorders", setActivePath)}
+              >
+                Omat Tilaukseni
+              </Link>
+            )}
+            {isLoggedIn && loggedInUser.role === "ADMIN" && (
+              <>
+                <Link
+                  to="/addrecord"
+                  className={`nav-link ${activePath === "/addrecord" ? "active" : ""}`}
+                  onClick={() => clickedLink("/addrecord", setActivePath)}
+                >
+                  Lisää Levy
+                </Link>
+                <Link
+                  to="/orders"
+                  className={`nav-link ${activePath === "/orders" ? "active" : ""}`}
+                  onClick={() => clickedLink("/orders", setActivePath)}
+                >
+                  Tilaukset
+                </Link>
+              </>
+            )}
+            {!isLoggedIn && (
+              <>
+                <Link
+                  to="/createuser"
+                  className={`nav-link ${activePath === "/createuser" ? "active" : ""}`}
+                  onClick={() => clickedLink("/createuser", setActivePath)}
+                >
+                  Luo Käyttäjä
+                </Link>
+                <Link
+                  to="/login"
+                  className={`nav-link ${activePath === "/login" ? "active" : ""}`}
+                  onClick={() => clickedLink("/login", setActivePath)}
+                >
+                  Kirjaudu Sisään
+                </Link>
+
+              </>
+            )}
+            {isLoggedIn && loggedInUser.role !== "ADMIN" && (
+              <Link
+                to="/sendfeedback"
+                className={`nav-link ${activePath === "/sendfeedback" ? "active" : ""}`}
+                onClick={() => clickedLink("/sendfeedback", setActivePath)}
+              >
+                Lähetä Palautetta
+              </Link>
+            )}
             {isLoggedIn && <Logout setIsLoggedIn={setIsLoggedIn} setLoggedInUser={setLoggedInUser} />}
           </nav>
         </nav>
@@ -333,13 +416,14 @@ function App() {
           <Route path="/records" element={<Records isLoggedIn={isLoggedIn} loggedInUser={loggedInUser} showShoppingcart={showShoppingcart} />} />
           <Route path="/createuser" element={<CreateUser />} />
           <Route path="/login" element={<Login isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} setToken={setToken} />} />
-          <Route path="/shoppingcart" element={<Shoppingcart loggedInUser={loggedInUser} customerInfo={customerInfo} setCustomerInfo={setCustomerInfo} cartTotal={cartTotal} setCartTotal={setCartTotal} shoppingcart={shoppingcart} setShoppingcart={setShoppingcart} setShoppingcartSize={setShoppingcartSize}  />} />
+          <Route path="/shoppingcart" element={<Shoppingcart loggedInUser={loggedInUser} customerInfo={customerInfo} setCustomerInfo={setCustomerInfo} cartTotal={cartTotal} setCartTotal={setCartTotal} shoppingcart={shoppingcart} setShoppingcart={setShoppingcart} setShoppingcartSize={setShoppingcartSize} />} />
           <Route path="/chat" element={<ChatRoom loggedInUser={loggedInUser} conversationId={conversationId} setConversationId={setConversationId} conversationMessages={conversationMessages} setConversationMessages={setConversationMessages} fetchConversationId={fetchConversationId} fetchConversationMessages={fetchConversationMessages} newMessageState={newMessageState} setNewMessageState={setNewMessageState} adminNewMessageIds={adminNewMessageIds} setAdminNewMessageIds={setAdminNewMessageIds} />} />
           <Route path="/addrecord" element={<AddRecord />} />
           <Route path="/orders" element={<Orders />} />
           <Route path="/ordersummary" element={<Ordersummary customerInfo={customerInfo} cartTotal={cartTotal} />} />
           <Route path='/deleteuser' element={<DeleteUser loggedInUser={loggedInUser} />} />
           <Route path='/ownorders' element={<OwnOrders loggedInUser={loggedInUser} />} />
+          <Route path='/sendfeedback' element={<SendFeedback loggedInUser={loggedInUser} />} />
         </Routes>
       </div>
     </Router>
