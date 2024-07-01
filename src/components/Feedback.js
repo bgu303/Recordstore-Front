@@ -24,7 +24,7 @@ function SendFeedback({ loggedInUser }) {
                 })
             })
             if (!response.ok) {
-                return alert("Jokin menui vikaan palautetta lähettäessä.");
+                return alert("Jokin meni vikaan palautetta lähettäessä.");
             } else {
                 setFeetbackMessage("")
             }

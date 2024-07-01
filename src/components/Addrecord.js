@@ -21,6 +21,7 @@ function AddRecord() {
         discogs: "",
         sold: false
     })
+    const [file, setFile] = useState(null);
 
     const addNewRecord = async () => {
         try {
@@ -61,6 +62,64 @@ function AddRecord() {
             }
         } catch (error) {
             console.log(`Error in adding record: ${error}`);
+        }
+    }
+
+    const handleFileChange = (e) => {
+        setFile(e.target.files[0])
+    }
+
+    const handleFileUpload = () => {
+        if (!file) {
+            return alert("Lisää tiedosto");
+        }
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const text = e.target.result;
+                parseData(text);
+            }
+            reader.readAsText(file);
+        }
+    }
+
+    const parseData = (data) => {
+        const rows = data.split("\n");
+        const parsedData = rows.map(row => {
+            const columns = row.split(";");
+            return {
+                artist: columns[0],
+                size: columns[1],
+                label: columns[2],
+                title: columns[3],
+                kan: columns[4],
+                lev: columns[5],
+                price: parseFloat(columns[6]),
+                discogs: columns[7],
+                genre: columns[8],
+            }
+        })
+        sendDataToServer(parsedData);
+    }
+
+    const sendDataToServer = async (parsedData) => {
+        try {
+            const response = await fetch(`${BASE_URL}/records/addrecords`, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ records: parsedData })
+            })
+            if (!response.ok) {
+                return alert("Jokin meni vikaan lisätessä levyjä.");
+            } else {
+                setFile(null)
+                return alert("Levyt lisätty onnistuneesti.");
+            }
+        } catch (error) {
+            console.log(`Error uploading data: ${error}`);
+            alert("Error uploading data");
         }
     }
 
@@ -105,6 +164,11 @@ function AddRecord() {
                     value={newRecord.discogs}
                 />
                 <Button color="success" variant="contained" onClick={() => addNewRecord()}>Lisää Levy</Button>
+                <div>
+                    <h3>Lataa enemmän levyjä kerralla</h3>
+                    <input type="file" accept=".txt,.csv" onChange={handleFileChange} />
+                    <Button color="success" variant="contained" onClick={() => handleFileUpload()}>Lataa Levyt</Button>
+                </div>
             </div>
         </>
     )
