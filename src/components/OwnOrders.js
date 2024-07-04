@@ -1,9 +1,16 @@
 import { useEffect, useState } from "react";
 import { BASE_URL, BASE_URL_CLOUD } from "./Apiconstants";
+import { useNavigate } from "react-router-dom";
 
 function OwnOrders({ loggedInUser }) {
-
     const [orderData, setOrderData] = useState([]);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!localStorage.getItem("isLoggedIn")) {
+            navigate("/records")
+        }
+    }, [])
 
     useEffect(() => {
         getOrders();

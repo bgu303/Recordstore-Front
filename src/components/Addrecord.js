@@ -1,13 +1,15 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import "ag-grid-community/styles/ag-grid.css";
 import 'ag-grid-community/styles/ag-theme-material.css';
 import { Button } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import '../styling/Createuser.css';
+import { useNavigate } from "react-router-dom";
 import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
 
-function AddRecord() {
+function AddRecord({ loggedInUser }) {
+    const navigate = useNavigate();
     const token = localStorage.getItem("jwtToken");
     const [newRecord, setNewRecord] = useState({
         artist: "",
@@ -22,6 +24,12 @@ function AddRecord() {
         sold: false
     })
     const [file, setFile] = useState(null);
+
+    useEffect(() => {
+        if (!localStorage.getItem("isLoggedIn") || localStorage.getItem("loggedInUserRole") !== "ADMIN") {
+            navigate("/records")
+        }
+    }, [])
 
     const addNewRecord = async () => {
         try {
@@ -84,29 +92,45 @@ function AddRecord() {
     }
 
     const parseData = (data) => {
-        const rows = data.split("\n");
-        const parsedData = rows.map(row => {
-            const columns = row.split(";");
-            return {
-                artist: columns[0],
-                size: columns[1],
-                label: columns[2],
-                title: columns[3],
-                kan: columns[4],
-                lev: columns[5],
-                price: parseFloat(columns[6]),
-                discogs: columns[7],
-                genre: columns[8],
-            }
-        })
+        // Normalize the terms 12", 7", and 10" and remove unnecessary quotation marks
+        const cleanedData = data.replace(/"12""/g, '12"')
+                                .replace(/"7""/g, '7"')
+                                .replace(/"10""/g, '10"')
+                                .replace(/""/g, '"');
+    
+        // Split rows
+        const rows = cleanedData.split("\n");
+    
+        // Function to trim quotation marks from the start and end of a string
+        const trimQuotes = (str) => str ? str.replace(/^"|"$/g, '') : str;
+    
+        const parsedData = rows
+            .map(row => {
+                const columns = row.split(";");
+                return {
+                    artist: columns[0],
+                    size: columns[1],  // Preserving quotation marks for size
+                    label: trimQuotes(columns[2]),
+                    title: trimQuotes(columns[3]),
+                    kan: columns[4],
+                    lev: columns[5],
+                    price: parseFloat(columns[6]),
+                    discogs: columns[7],
+                    genre: columns[8],
+                };
+            })
+            .filter(row => row.artist && row.size && row.label && row.title && row.kan && row.lev && !isNaN(row.price) && row.discogs && row.genre);
+    
+        console.log(parsedData);
         sendDataToServer(parsedData);
-    }
+    };
 
     const sendDataToServer = async (parsedData) => {
         try {
             const response = await fetch(`${BASE_URL}/records/addrecords`, {
                 method: "POST",
                 headers: {
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ records: parsedData })

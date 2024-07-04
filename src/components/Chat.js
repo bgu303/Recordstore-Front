@@ -5,6 +5,7 @@ import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
 import socket from './socket';
 import IconButton from '@mui/material/IconButton';
 import SendIcon from '@mui/icons-material/Send';
+import { useNavigate } from "react-router-dom";
 
 function ChatRoom({ loggedInUser, conversationId, setConversationId, conversationMessages, setConversationMessages, fetchConversationId, fetchConversationMessages, newMessageState, setNewMessageState, adminNewMessageIds, setAdminNewMessageIds }) {
     const [message, setMessage] = useState("");
@@ -12,6 +13,13 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
     const [selectedUser, setSelectedUser] = useState("");
     const messagesEndRef = useRef(null);
     const token = localStorage.getItem("jwtToken");
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!localStorage.getItem("isLoggedIn")) {
+            navigate("/records")
+        }
+    }, [])
 
     const adminFetchConversationId = () => {
         if (loggedInUser.role === "USER") {

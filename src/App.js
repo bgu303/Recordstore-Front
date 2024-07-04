@@ -72,9 +72,9 @@ function App() {
     }
   }, []);
 
-  //The fetching of conversation id and message logic is moved here from Chat component in order to track the websockets accordingly, wasnt possible before when websocket logic was inside Chat component.
+  //The fetching of conversation id and message logic is moved here from Chat component in order to track the websockets accordingly, wasn't possible before when websocket logic was inside Chat component.
   const fetchConversationId = () => {
-    if (localStorage.getItem("loggedInUserRole") === "ADMIN") {
+    if (!isLoggedIn || localStorage.getItem("loggedInUserRole") === "ADMIN") {
       return;
     }
 
@@ -82,12 +82,22 @@ function App() {
       .then(response => {
         if (response.ok) {
           return response.json()
+        } else {
+          throw new Error("Failed to fetch conversation ID");
         }
       })
       .then(data => {
-        setConversationId(data[0].id)
+        if (data.length > 0) {
+          setConversationId(data[0].id);
+        } else {
+          console.error("No conversation ID found");
+        }
       })
+      .catch(error => {
+        console.error("Error fetching conversation ID:", error);
+      });
   }
+
 
   const fetchConversationMessages = () => {
     //This is added because for whatever reason in cloud implementation it fetches the conversation messages with id 0.
@@ -418,9 +428,9 @@ function App() {
           <Route path="/login" element={<Login isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} setToken={setToken} />} />
           <Route path="/shoppingcart" element={<Shoppingcart loggedInUser={loggedInUser} customerInfo={customerInfo} setCustomerInfo={setCustomerInfo} cartTotal={cartTotal} setCartTotal={setCartTotal} shoppingcart={shoppingcart} setShoppingcart={setShoppingcart} setShoppingcartSize={setShoppingcartSize} />} />
           <Route path="/chat" element={<ChatRoom loggedInUser={loggedInUser} conversationId={conversationId} setConversationId={setConversationId} conversationMessages={conversationMessages} setConversationMessages={setConversationMessages} fetchConversationId={fetchConversationId} fetchConversationMessages={fetchConversationMessages} newMessageState={newMessageState} setNewMessageState={setNewMessageState} adminNewMessageIds={adminNewMessageIds} setAdminNewMessageIds={setAdminNewMessageIds} />} />
-          <Route path="/addrecord" element={<AddRecord />} />
+          <Route path="/addrecord" element={<AddRecord loggedInUser={loggedInUser} />} />
           <Route path="/orders" element={<Orders />} />
-          <Route path="/ordersummary" element={<Ordersummary customerInfo={customerInfo} cartTotal={cartTotal} />} />
+          <Route path="/ordersummary" element={<Ordersummary customerInfo={customerInfo} cartTotal={cartTotal} loggedInUser={loggedInUser} />} />
           <Route path='/deleteuser' element={<DeleteUser loggedInUser={loggedInUser} />} />
           <Route path='/ownorders' element={<OwnOrders loggedInUser={loggedInUser} />} />
           <Route path='/sendfeedback' element={<SendFeedback loggedInUser={loggedInUser} />} />

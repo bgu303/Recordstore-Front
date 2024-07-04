@@ -1,10 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TextField, Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
 
 function SendFeedback({ loggedInUser }) {
     const [feedbackMessage, setFeetbackMessage] = useState("");
     const token = localStorage.getItem("jwtToken");
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!localStorage.getItem("isLoggedIn")) {
+            navigate("/records")
+        }
+    }, [])
 
     const sendFeedbackMessage = async () => {
         if (feedbackMessage.trim().length <= 0) {

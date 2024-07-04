@@ -1,11 +1,17 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import '../styling/Ordersummary.css'
 
-function Ordersummary({ customerInfo, cartTotal }) {
+function Ordersummary({ loggedInUser, customerInfo, cartTotal }) {
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!localStorage.getItem("isLoggedIn")) {
+            navigate("/records")
+        }
+    }, [])
 
     const returnFrontpage = () => {
         navigate("/records")

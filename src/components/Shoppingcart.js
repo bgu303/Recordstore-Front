@@ -19,6 +19,12 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
     const token = localStorage.getItem('jwtToken');
 
     useEffect(() => {
+        if (!localStorage.getItem("isLoggedIn")) {
+            navigate("/records")
+        }
+    }, [])
+
+    useEffect(() => {
         showShoppingcart();
     }, [loggedInUser.id]);
 
