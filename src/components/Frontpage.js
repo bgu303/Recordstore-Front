@@ -1,8 +1,44 @@
 import * as React from 'react';
+import { useState, useEffect } from 'react';
 import '../styling/Frontpage.css'
+import { AgGridReact } from 'ag-grid-react';
+import "ag-grid-community/styles/ag-grid.css";
+import 'ag-grid-community/styles/ag-theme-material.css';
+import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
 
 function FrontPage() {
-    
+
+    const [records, setRecords] = useState([]);
+    const columnDefs = [
+        { headerName: "Artisti", field: "artist", width: 240 },
+        { headerName: "Levyn nimi", field: "title", width: 240 },
+        { headerName: "Hinta", field: "price", width: 100, cellStyle: { textAlign: "right" } }
+    ];
+
+    const getRecords = () => {
+        fetch(`${BASE_URL}/records`)
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error("Something went wrong");
+                }
+            })
+            .then(responseData => {
+                const shuffled = responseData.sort(() => 0.5 - Math.random());
+                const selectedRecords = shuffled.slice(0, 10);
+                setRecords(selectedRecords);
+            })
+            .catch(error => {
+                console.log(error.message);
+                setRecords([]);
+            });
+    }
+
+    useEffect(() => {
+        getRecords();
+    }, []);
+
     return (
         <>
             <div className="frontPageMainDiv">
@@ -31,8 +67,18 @@ function FrontPage() {
                         <b>- PO</b> = No, tämä nyt on sitten se huonoin luokitus ja tarkoittaa sitä, että naarmuja on jo huomattavasti tai kansi huonossa kunnossa. Levy on ehjä, ei puutu palasia tms, mutta jäljet varmastikin kuuluvat. Mutta näissäkin voi olla positiivisia yllätyksiä (??). Kannessa taasen voi olla repeämiä tai muutenkin huonossa hapessa.
                     </p>
                 </div>
+                <div className="section">
+                    <h2 className="homePageTitles">Suosituksia</h2>
+                    <div className="ag-theme-material trainings" style={{ height: 800, width: 580 }}>
+                        <AgGridReact
+                            columnDefs={columnDefs}
+                            rowData={records}>
+                        </AgGridReact>
+                    </div>
+                </div>
             </div>
         </>
+
     );
 }
 

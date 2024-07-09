@@ -5,6 +5,7 @@ import 'ag-grid-community/styles/ag-theme-material.css';
 import { Button } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import '../styling/Createuser.css';
+import { AgGridReact } from 'ag-grid-react';
 import { useNavigate } from "react-router-dom";
 import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
 
@@ -22,7 +23,8 @@ function AddRecord({ loggedInUser }) {
         genre: "",
         discogs: "",
         sold: false
-    })
+    });
+    const [newRecords, setNewRecords] = useState([]);
     const [file, setFile] = useState(null);
 
     useEffect(() => {
@@ -94,22 +96,22 @@ function AddRecord({ loggedInUser }) {
     const parseData = (data) => {
         // Normalize the terms 12", 7", and 10" and remove unnecessary quotation marks
         const cleanedData = data.replace(/"12""/g, '12"')
-                                .replace(/"7""/g, '7"')
-                                .replace(/"10""/g, '10"')
-                                .replace(/""/g, '"');
-    
+            .replace(/"7""/g, '7"')
+            .replace(/"10""/g, '10"')
+            .replace(/""/g, '"');
+
         // Split rows
         const rows = cleanedData.split("\n");
-    
+
         // Function to trim quotation marks from the start and end of a string
         const trimQuotes = (str) => str ? str.replace(/^"|"$/g, '') : str;
-    
+
         const parsedData = rows
             .map(row => {
                 const columns = row.split(";");
                 return {
                     artist: columns[0],
-                    size: columns[1],  // Preserving quotation marks for size
+                    size: columns[1],
                     label: trimQuotes(columns[2]),
                     title: trimQuotes(columns[3]),
                     kan: columns[4],
@@ -119,13 +121,15 @@ function AddRecord({ loggedInUser }) {
                     genre: columns[8],
                 };
             })
-            .filter(row => row.artist && row.size && row.label && row.title && row.kan && row.lev && !isNaN(row.price) && row.discogs && row.genre);
-    
-        console.log(parsedData);
-        sendDataToServer(parsedData);
+            //Filters rows that dont have artist, so empty row at the end of the file.
+            .filter(row => row.artist);
+        setNewRecords(parsedData);
     };
 
-    const sendDataToServer = async (parsedData) => {
+    const sendDataToServer = async () => {
+        if (newRecords.length === 0) {
+            return alert("Lisää tiedosto ja paina Esikatsele ennen levyjen lataamista serverille.");
+        }
         try {
             const response = await fetch(`${BASE_URL}/records/addrecords`, {
                 method: "POST",
@@ -133,7 +137,7 @@ function AddRecord({ loggedInUser }) {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ records: parsedData })
+                body: JSON.stringify({ records: newRecords })
             })
             if (!response.ok) {
                 return alert("Jokin meni vikaan lisätessä levyjä.");
@@ -147,51 +151,32 @@ function AddRecord({ loggedInUser }) {
         }
     }
 
+    const columns = [
+        { headerName: "Artisti", field: "artist", width: 240 },
+        { headerName: "Levyn nimi", field: "title" },
+        { headerName: "Levy-yhtiö", field: "label" },
+        { headerName: "Koko", field: "size" },
+        { headerName: "Rec", field: "lev", width: 110 },
+        { headerName: "PS", field: "kan", width: 110 },
+        { headerName: "Hinta", field: "price" },
+        { headerName: "Discogs", field: "discogs" },
+        { headerName: "Genre", field: "genre" }
+    ];
+
     return (
         <>
             <div className="mainDiv">
-                <h3>Lisää levy</h3>
-                <TextField label="Artisti"
-                    onChange={e => setNewRecord({ ...newRecord, artist: e.target.value })}
-                    value={newRecord.artist}
-                />
-                <TextField label="Levyn nimi"
-                    onChange={e => setNewRecord({ ...newRecord, title: e.target.value })}
-                    value={newRecord.title}
-                />
-                <TextField label="Levy-yhtiö"
-                    onChange={e => setNewRecord({ ...newRecord, label: e.target.value })}
-                    value={newRecord.label}
-                />
-                <TextField label="Koko"
-                    onChange={e => setNewRecord({ ...newRecord, size: e.target.value })}
-                    value={newRecord.size}
-                />
-                <TextField label="Lev"
-                    onChange={e => setNewRecord({ ...newRecord, lev: e.target.value })}
-                    value={newRecord.lev}
-                />
-                <TextField label="Kan"
-                    onChange={e => setNewRecord({ ...newRecord, kan: e.target.value })}
-                    value={newRecord.kan}
-                />
-                <TextField label="Hinta"
-                    onChange={e => setNewRecord({ ...newRecord, price: e.target.value })}
-                    value={newRecord.price}
-                />
-                <TextField label="Genre"
-                    onChange={e => setNewRecord({ ...newRecord, genre: e.target.value })}
-                    value={newRecord.genre}
-                />
-                <TextField label="discogs"
-                    onChange={e => setNewRecord({ ...newRecord, discogs: e.target.value })}
-                    value={newRecord.discogs}
-                />
-                <Button color="success" variant="contained" onClick={() => addNewRecord()}>Lisää Levy</Button>
+                <h3>Lisää levyjä</h3>
                 <div>
-                    <h3>Lataa enemmän levyjä kerralla</h3>
                     <input type="file" accept=".txt,.csv" onChange={handleFileChange} />
-                    <Button color="success" variant="contained" onClick={() => handleFileUpload()}>Lataa Levyt</Button>
+                    <Button color="success" variant="contained" onClick={() => handleFileUpload()}>Esikatsele</Button>
+                    <Button color="success" variant="contained" onClick={() => sendDataToServer()}>Lataa Levyt</Button>
+                </div>
+                <div className="ag-theme-material" style={{ height: "750px", width: "95%", margin: "auto", fontSize: 11 }}>
+                    <AgGridReact
+                        rowData={newRecords}
+                        columnDefs={columns}
+                    />
                 </div>
             </div>
         </>
