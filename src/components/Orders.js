@@ -87,7 +87,7 @@ function Orders() {
         <>
             <div className="mainDiv">
                 <h1>Tilaukset</h1>
-                {Object.entries(orderData).map(([orderId, order]) => (
+                {Object.entries(orderData).reverse().map(([orderId, order]) => (
                     <div key={orderId} className="orderContainer">
                         <h2>Tilauksen ID: {orderId}</h2>
                         <h3>Tilaus saapunut: {formattedDate(order[0].order_date)}</h3>

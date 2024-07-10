@@ -13,8 +13,10 @@ function OwnOrders({ loggedInUser }) {
     }, [])
 
     useEffect(() => {
-        getOrders();
-    }, [])
+        if (loggedInUser && loggedInUser.id) {
+            getOrders();
+        }
+    }, [loggedInUser]);
 
     const getOrders = () => {
         fetch(`${BASE_URL}/orders/getorderdatabyid/${loggedInUser.id}`)
@@ -68,7 +70,7 @@ function OwnOrders({ loggedInUser }) {
                 {Object.keys(orderData).length === 0 ? (
                     <h4>Ei aktiivisia tilauksia.</h4>
                 ) : (
-                    Object.entries(orderData).map(([orderId, order]) => (
+                    Object.entries(orderData).reverse().map(([orderId, order]) => (
                         <div key={orderId} className="orderContainer">
                             <h3>Tilaus lähetetty: {formattedDate(order[0].order_date)}</h3>
                             {order.length > 0 && (

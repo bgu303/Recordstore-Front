@@ -7,12 +7,12 @@ import 'ag-grid-community/styles/ag-theme-material.css';
 import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
 
 function FrontPage() {
-
     const [records, setRecords] = useState([]);
+    const [randomRecords, setRandomRecords] = useState([]);
     const columnDefs = [
-        { headerName: "Artisti", field: "artist", width: 240 },
-        { headerName: "Levyn nimi", field: "title", width: 240 },
-        { headerName: "Hinta", field: "price", width: 100, cellStyle: { textAlign: "right" } }
+        { headerName: "Artisti", field: "artist", width: 240, filter: false, suppressMovable: true, sortable: false },
+        { headerName: "Levyn nimi", field: "title", width: 240, filter: false, suppressMovable: true, sortable: false },
+        { headerName: "Hinta", field: "price", width: 100, cellStyle: { textAlign: "right" }, filter: false, suppressMovable: true, sortable: false }
     ];
 
     const getRecords = () => {
@@ -25,9 +25,8 @@ function FrontPage() {
                 }
             })
             .then(responseData => {
-                const shuffled = responseData.sort(() => 0.5 - Math.random());
-                const selectedRecords = shuffled.slice(0, 10);
-                setRecords(selectedRecords);
+                setRecords(responseData);
+                getRandomRecords();
             })
             .catch(error => {
                 console.log(error.message);
@@ -38,6 +37,21 @@ function FrontPage() {
     useEffect(() => {
         getRecords();
     }, []);
+
+    useEffect(() => {
+        getRandomRecords();
+    }, [records])
+
+    useEffect(() => {
+        const intervalId = setInterval(getRandomRecords, 8000);
+        return () => clearInterval(intervalId);
+    }, [records]);
+
+    const getRandomRecords = () => {
+        const shuffled = records.sort(() => 0.5 - Math.random());
+        const selectedRecords = shuffled.slice(0, 10);
+        setRandomRecords(selectedRecords)
+    }
 
     return (
         <>
@@ -72,7 +86,7 @@ function FrontPage() {
                     <div className="ag-theme-material trainings" style={{ height: 800, width: 580 }}>
                         <AgGridReact
                             columnDefs={columnDefs}
-                            rowData={records}>
+                            rowData={randomRecords}>
                         </AgGridReact>
                     </div>
                 </div>

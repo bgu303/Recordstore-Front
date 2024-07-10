@@ -8,13 +8,13 @@ function Ordersummary({ loggedInUser, customerInfo, cartTotal }) {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!localStorage.getItem("isLoggedIn")) {
+        if (!localStorage.getItem("isLoggedIn") || customerInfo.name === "") {
             navigate("/records")
         }
     }, [])
 
     const returnFrontpage = () => {
-        navigate("/records")
+        navigate("/ownorders")
     }
 
     return (
@@ -28,7 +28,7 @@ function Ordersummary({ loggedInUser, customerInfo, cartTotal }) {
                 <p>Tiluksen maksutapa: <b>{customerInfo.paymentOption}</b></p>
                 <p>Tilauksen hinta yhteensä: <b>{cartTotal} euroa.</b></p>
                 <p>Kiitos tilauksestasi. Sinuun ollaan henkilökohtaisesti yhteydessä.</p>
-                <Button size="large" color="success" variant="contained" onClick={() => returnFrontpage()}>Palaa levylistaan</Button>
+                <p>Pääset näkemään omat tilauksesi <span style={{ color: "green", cursor: "pointer", fontWeight: "bold" }} onClick={() => returnFrontpage()}>TÄSTÄ</span></p>
             </div>
         </>
     )
