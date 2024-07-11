@@ -12,12 +12,18 @@ import DeleteUser from './components/Deleteuser';
 import Orders from './components/Orders';
 import OwnOrders from './components/OwnOrders';
 import SendFeedback from './components/Feedback';
+import SearchRecords from './components/SearchRecords';
+import SearchedRecords from './components/SearchedRecords';
 import "./App.css";
 import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
+import { TextField } from '@mui/material';
 import "./styling/Navbar.css";
+import SearchIcon from '@mui/icons-material/Search';
+import IconButton from '@mui/material/IconButton';
 import { BASE_URL, BASE_URL_CLOUD } from './components/Apiconstants';
 import socket from './components/socket';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -39,6 +45,9 @@ function App() {
   const [token, setToken] = useState(null)
   const [shoppingcartSize, setShoppingcartSize] = useState(0);
   const [activePath, setActivePath] = useState("/");
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchResults, setSearchResults] = useState([]);
+
 
   //Idk if this will be used anymore, if anything I should make all of the things that use token use the token state as above ^ CURRENTLY USED ONLY IN LOGIN. Fix maybe?
   const token1 = localStorage.getItem("jwtToken")
@@ -291,7 +300,6 @@ function App() {
 
   // Function to show shopping cart
   const showShoppingcart = () => {
-    console.log("kutsutaan")
     fetch(`${BASE_URL}/shoppingcart/shoppingcartitems/${loggedInUser.id}`)
       .then(response => {
         if (response.ok) {
@@ -314,6 +322,7 @@ function App() {
   }, [token, loggedInUser.id]);
 
   const clickedLink = (path, setActivePath) => {
+    setSearchOpen(false);
     localStorage.setItem("path", path);
     setActivePath(path);
   };
@@ -325,11 +334,19 @@ function App() {
     }
   }, []);
 
+  const openSearch = () => {
+    if (searchOpen === true) {
+      setSearchOpen(false);
+    } else {
+      setSearchOpen(true);
+    }
+  }
+
   return (
     <Router>
       <div>
-        <nav>
-          <nav className="navbar">
+        <nav className="navbar">
+          <div className="nav-left">
             <Link
               to="/"
               className={`nav-link ${activePath === "/" ? "active" : ""}`}
@@ -344,15 +361,6 @@ function App() {
             >
               Levylista
             </Link>
-            {isLoggedIn && loggedInUser.role !== "ADMIN" && (
-              <Link
-                to="/shoppingcart"
-                className={`nav-link ${activePath === "/shoppingcart" ? "active" : ""}`}
-                onClick={() => clickedLink("/shoppingcart", setActivePath)}
-              >
-                Ostoskori {shoppingcartSize >= 0 && <span className="notification-badge-shoppingcart notification-badge">{shoppingcartSize}</span>}
-              </Link>
-            )}
             {isLoggedIn && (
               <Link
                 to="/chat"
@@ -390,6 +398,38 @@ function App() {
                 </Link>
               </>
             )}
+            {isLoggedIn && loggedInUser.role !== "ADMIN" && (
+              <Link
+                to="/sendfeedback"
+                className={`nav-link ${activePath === "/sendfeedback" ? "active" : ""}`}
+                onClick={() => clickedLink("/sendfeedback", setActivePath)}
+              >
+                Lähetä Palautetta
+              </Link>
+            )}
+            {loggedInUser.role !== "ADMIN" && (
+              <>
+                <IconButton style={{ color: "white" }} onClick={() => openSearch()}>
+                  <SearchIcon />
+                </IconButton>
+                {searchOpen && (
+                  <SearchRecords setSearchOpen={setSearchOpen} searchResults={searchResults} setSearchResults={setSearchResults} />
+                )}
+              </>
+            )}
+
+          </div>
+          <div className="nav-right">
+            {isLoggedIn && loggedInUser.role !== "ADMIN" && (
+              <Link
+                to="/shoppingcart"
+                className={`nav-link nav-link-shoppingcart ${activePath === "/shoppingcart" ? "active" : ""}`}
+                onClick={() => clickedLink("/shoppingcart", setActivePath)}
+              >
+                <ShoppingCartIcon />
+                {shoppingcartSize >= 0 && <span className="notification-badge-shoppingcart notification-badge">{shoppingcartSize}</span>}
+              </Link>
+            )}
             {!isLoggedIn && (
               <>
                 <Link
@@ -406,20 +446,12 @@ function App() {
                 >
                   Kirjaudu Sisään
                 </Link>
-
               </>
             )}
-            {isLoggedIn && loggedInUser.role !== "ADMIN" && (
-              <Link
-                to="/sendfeedback"
-                className={`nav-link ${activePath === "/sendfeedback" ? "active" : ""}`}
-                onClick={() => clickedLink("/sendfeedback", setActivePath)}
-              >
-                Lähetä Palautetta
-              </Link>
+            {isLoggedIn && (
+              <Logout setIsLoggedIn={setIsLoggedIn} setLoggedInUser={setLoggedInUser} />
             )}
-            {isLoggedIn && <Logout setIsLoggedIn={setIsLoggedIn} setLoggedInUser={setLoggedInUser} />}
-          </nav>
+          </div>
         </nav>
         <Routes>
           <Route path="/" element={<FrontPage />} />
@@ -434,10 +466,12 @@ function App() {
           <Route path='/deleteuser' element={<DeleteUser loggedInUser={loggedInUser} />} />
           <Route path='/ownorders' element={<OwnOrders loggedInUser={loggedInUser} />} />
           <Route path='/sendfeedback' element={<SendFeedback loggedInUser={loggedInUser} />} />
+          <Route path='/search' element={<SearchedRecords searchResults={searchResults} loggedInUser={loggedInUser} showShoppingcart={showShoppingcart} />} />
         </Routes>
       </div>
     </Router>
   );
+
 }
 
 export default App;

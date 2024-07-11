@@ -1,5 +1,7 @@
 import { Button } from '@mui/material';
 import { useNavigate } from "react-router-dom";
+import IconButton from '@mui/material/IconButton';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 function Logout({ setIsLoggedIn, setLoggedInUser }) {
     const navigate = useNavigate();
@@ -25,20 +27,14 @@ function Logout({ setIsLoggedIn, setLoggedInUser }) {
     }
 
     return (
-        <Button
-            onClick={handleLogout}
-            sx={{
-                background: 'linear-gradient(180deg, #646464, #444)',
-                color: 'white',
-                transition: 'background-color 0.3s ease, transform 0.3s ease',
-                '&:hover': {
-                    background: 'linear-gradient(180deg, #646464, #979797)',
-                    transform: 'translateY(-3px)'
-                }
-            }}
-        >
-            Kirjaudu ulos
-        </Button>
+        <div style={{ cursor: "pointer" }} onClick={() => handleLogout()}>
+            <span style={{ color: "white" }}>Kirjaudu ulos</span><IconButton
+                style={{ marginLeft: 10, color: "white" }}
+                
+            >
+                <LogoutIcon />
+            </IconButton>
+        </div>
     )
 }
 
