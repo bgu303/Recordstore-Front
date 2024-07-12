@@ -14,6 +14,8 @@ import OwnOrders from './components/OwnOrders';
 import SendFeedback from './components/Feedback';
 import SearchRecords from './components/SearchRecords';
 import SearchedRecords from './components/SearchedRecords';
+import TermsOfUse from './components/Termsofuse';
+import PrivacyStatement from './components/Privacystatement';
 import "./App.css";
 import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
@@ -467,6 +469,8 @@ function App() {
           <Route path='/ownorders' element={<OwnOrders loggedInUser={loggedInUser} />} />
           <Route path='/sendfeedback' element={<SendFeedback loggedInUser={loggedInUser} />} />
           <Route path='/search' element={<SearchedRecords searchResults={searchResults} loggedInUser={loggedInUser} showShoppingcart={showShoppingcart} />} />
+          <Route path="/termsofuse" element={<TermsOfUse /> }/>
+          <Route path="/privacystatement" element={<PrivacyStatement /> }/>
         </Routes>
       </div>
     </Router>

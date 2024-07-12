@@ -135,20 +135,20 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
     }, [isLoggedIn])
 
     const [columnDefinitions, setColumnDefinitions] = useState([
-        { field: "artist", headerName: "Artisti", filter: true, suppressMovable: true, width: 240 },
-        { field: "title", headerName: "Levyn nimi", filter: true, suppressMovable: true, width: 270 },
-        { field: "label", headerName: "Levy-yhtiö", filter: true, suppressMovable: true, width: 200 },
-        { field: "size", headerName: "Koko", filter: Sizefilter, suppressMovable: true, width: 120 },
-        { field: "lev", headerName: "Rec", filter: true, suppressMovable: true, width: 110 },
-        { field: "kan", headerName: "PS", filter: true, suppressMovable: true, width: 110 },
+        { field: "artist", headerName: "Artisti", filter: true, suppressMovable: true, flex: 2 },
+        { field: "title", headerName: "Levyn nimi", filter: true, suppressMovable: true, flex: 2 },
+        { field: "label", headerName: "Levy-yhtiö", filter: true, suppressMovable: true, flex: 2 },
+        { field: "size", headerName: "Koko", filter: Sizefilter, suppressMovable: true, flex: 1 },
+        { field: "lev", headerName: "Rec", filter: true, suppressMovable: true, flex: 1 },
+        { field: "kan", headerName: "PS", filter: true, suppressMovable: true, flex: 1 },
         { field: "price", headerName: "Hinta", filter: true, suppressMovable: true, cellStyle: { textAlign: "right" }, width: 100 },
-        { field: "genre", headerName: "Genre", filter: true, suppressMovable: true, width: 150 },
+        { field: "genre", headerName: "Genre", filter: true, suppressMovable: true, flex: 1 },
         {
             field: "discogs",
             headerName: "Discogs",
             filter: true,
             suppressMovable: true,
-            width: 110,
+            flex: 1,
             cellRenderer: params => (
                 <div
                     style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}
@@ -160,18 +160,18 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
         },
         {
             cellRenderer: params => <Button size="small" variant="contained" color="success" onClick={() => addToCart(params.data)}>Lisää Koriin</Button>,
-            width: 160,
+            flex: 1,
             suppressMovable: true,
             hide: !localStorage.getItem("isLoggedIn") || localStorage.getItem("loggedInUserRole") === "ADMIN"
         },
         {
             cellRenderer: params => <Button size="small" variant="contained" color="error" onClick={() => deleteRecord(params.data)}>Poista</Button>,
-            width: 130,
+            flex: 1,
             suppressMovable: true,
             hide: localStorage.getItem("loggedInUserRole") !== "ADMIN"
         },
         {
-            field: "sold", headerName: "Status", filter: true, suppressMovable: true, width: 120,
+            field: "sold", headerName: "Status", filter: true, suppressMovable: true, flex: 1,
             hide: localStorage.getItem("loggedInUserRole") !== "ADMIN",
             cellRenderer: params => {
                 return params.value === 0 ? "Myytävänä" : "Myyty";
@@ -179,7 +179,7 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
         },
         {
             cellRenderer: params => <Button size="small" variant="contained" color="success" onClick={() => changeStatus(params.data)}>Status</Button>,
-            width: 120,
+            flex: 1,
             suppressMovable: true,
             hide: localStorage.getItem("loggedInUserRole") !== "ADMIN"
         },

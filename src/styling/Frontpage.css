@@ -18,7 +18,8 @@
 .homePageTitles {
     margin-bottom: 10px;
     color: #002470;
-    border-bottom: 2px solid #002470;;
+    border-bottom: 2px solid #002470;
+    ;
     padding-bottom: 5px;
 }
 
@@ -28,4 +29,22 @@
 
 b {
     color: #002470;
+}
+
+footer {
+    background-color: #313131;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    position: relative;
+    bottom: 0;
+}
+
+.frontPageClickable {
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.frontPageClickable:hover {
+    text-decoration: underline;
 }

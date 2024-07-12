@@ -103,7 +103,6 @@ function OwnOrders({ loggedInUser }) {
             </div>
         </>
     );
-
 }
 
 export default OwnOrders;

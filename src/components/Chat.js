@@ -192,7 +192,7 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
                         {conversationMessages.map((message, index) => (
                             <div key={index} style={{ marginBottom: "10px", textAlign: message.sender_id === loggedInUser.id ? "right" : "left" }}>
                                 <div style={{ padding: "5px", backgroundColor: message.sender_id === loggedInUser.id ? "#DCF8C6" : "#E0E0E0", borderRadius: "5px", display: "inline-block" }}>
-                                    <strong>{message.sender_id === loggedInUser.id ? "You" : message.sender_id === 14 ? "PoppiMikko" : message.sender_id}</strong><br />
+                                    <strong>{message.sender_id === loggedInUser.id ? "Sinä" : message.sender_id === 14 ? "PoppiMikko" : message.sender_id}</strong><br />
                                     {message.message}
                                 </div>
                             </div>

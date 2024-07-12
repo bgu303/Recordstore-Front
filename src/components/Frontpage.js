@@ -4,9 +4,12 @@ import '../styling/Frontpage.css'
 import { AgGridReact } from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
 import 'ag-grid-community/styles/ag-theme-material.css';
+import { useNavigate } from "react-router-dom";
 import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
+import Footer from './Footer';
 
 function FrontPage() {
+    const navigate = useNavigate();
     const [records, setRecords] = useState([]);
     const [randomRecords, setRandomRecords] = useState([]);
     const columnDefs = [
@@ -53,6 +56,18 @@ function FrontPage() {
         setRandomRecords(selectedRecords)
     }
 
+    const toLinkedIn = () => {
+        window.open("https://www.linkedin.com/in/jukka-vesanto/", "_blank");
+    }
+
+    const goToTermsOfUse = () => {
+        navigate("/termsofuse")
+    }
+
+    const goToPrivacyStatement = () => {
+        navigate("/privacystatement")
+    }
+
     return (
         <>
             <div className="frontPageMainDiv">
@@ -91,8 +106,8 @@ function FrontPage() {
                     </div>
                 </div>
             </div>
+            <Footer />
         </>
-
     );
 }
 

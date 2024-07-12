@@ -42,19 +42,19 @@ function SearchedRecords({ searchResults, loggedInUser, showShoppingcart }) {
     }
 
     const [columnDefinitions, setColumnDefinitions] = useState([
-        { field: "artist", headerName: "Artisti", suppressMovable: true, width: 240 },
-        { field: "title", headerName: "Levyn nimi", suppressMovable: true, width: 270 },
-        { field: "label", headerName: "Levy-yhtiö", suppressMovable: true, width: 200 },
-        { field: "size", headerName: "Koko", suppressMovable: true, width: 120 },
-        { field: "lev", headerName: "Rec", suppressMovable: true, width: 110 },
-        { field: "kan", headerName: "PS", suppressMovable: true, width: 110 },
+        { field: "artist", headerName: "Artisti", suppressMovable: true, flex: 2 },
+        { field: "title", headerName: "Levyn nimi", suppressMovable: true,  flex: 2 },
+        { field: "label", headerName: "Levy-yhtiö", suppressMovable: true, flex: 1 },
+        { field: "size", headerName: "Koko", suppressMovable: true, flex: 1 },
+        { field: "lev", headerName: "Rec", suppressMovable: true, flex: 1 },
+        { field: "kan", headerName: "PS", suppressMovable: true, flex: 1 },
         { field: "price", headerName: "Hinta", suppressMovable: true, cellStyle: { textAlign: "right" }, width: 100 },
         { field: "genre", headerName: "Genre", suppressMovable: true, width: 150 },
         {
             field: "discogs",
             headerName: "Discogs",
             suppressMovable: true,
-            width: 110,
+            flex: 1,
             cellRenderer: params => (
                 <div
                     style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}
@@ -66,7 +66,7 @@ function SearchedRecords({ searchResults, loggedInUser, showShoppingcart }) {
         },
         {
             cellRenderer: params => <Button size="small" variant="contained" color="success" onClick={() => addToCart(params.data)}>Lisää Koriin</Button>,
-            width: 160,
+            flex: 1,
             suppressMovable: true,
             hide: !localStorage.getItem("isLoggedIn") || localStorage.getItem("loggedInUserRole") === "ADMIN"
         },
