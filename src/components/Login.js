@@ -72,7 +72,7 @@ function Login({ isLoggedIn, setIsLoggedIn, loggedInUser, setLoggedInUser, conve
                     password: ""
                 });
                 setTimeout(() => {
-                    navigate("/records")
+                    navigate("/")
                 }, 300);
             })
             .catch(error => {

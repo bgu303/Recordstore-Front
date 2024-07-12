@@ -298,7 +298,7 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                             />
                         )}
                     </div>
-                    <div style={{ textAlign: "center" }}>
+                    <div style={{ textAlign: "center", marginBottom: "15px" }}>
                         <Button size="large" color="success" variant="contained" onClick={() => sendOrder()}>Lähetä</Button>
                     </div>
                 </>

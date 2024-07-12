@@ -9,7 +9,7 @@ function PrivacyStatement() {
 
     return (
         <>
-            <div style={{ padding: "20px", maxWidth: "800px", margin: "auto" }}>
+            <div style={{ padding: "20px", maxWidth: "800px", margin: "auto", height: "110vh" }}>
                 <h3 style={{ borderBottom: "2px solid #333", paddingBottom: "10px" }}>Tietosuojaseloste</h3>
                 <p style={{ fontSize: "14px", color: "#666" }}>Viimeksi päivitetty: 12. heinäkuuta 2024</p>
 
@@ -52,7 +52,9 @@ function PrivacyStatement() {
                     </ul>
                 </div>
             </div>
-            <Footer />
+            <div>
+                <Footer />
+            </div>
         </>
     );
 }

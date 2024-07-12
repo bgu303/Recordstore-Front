@@ -197,7 +197,7 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
     return (
         <>
             <h1 style={{ textAlign: "center" }}>Levykaupan levylista</h1>
-            <div className="ag-theme-material trainings" style={{ height: "750px", width: "95%", margin: "auto", fontSize: 11 }}>
+            <div className="ag-theme-material trainings" style={{ height: "80vh", width: "95%", margin: "auto", fontSize: 11 }}>
                 <AgGridReact
                     reactiveCustomComponents
                     rowData={records}

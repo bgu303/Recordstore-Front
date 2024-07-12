@@ -6,6 +6,7 @@ import socket from './socket';
 import IconButton from '@mui/material/IconButton';
 import SendIcon from '@mui/icons-material/Send';
 import { useNavigate } from "react-router-dom";
+import { format } from 'date-fns';
 
 function ChatRoom({ loggedInUser, conversationId, setConversationId, conversationMessages, setConversationMessages, fetchConversationId, fetchConversationMessages, newMessageState, setNewMessageState, adminNewMessageIds, setAdminNewMessageIds }) {
     const [message, setMessage] = useState("");
@@ -14,6 +15,7 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
     const messagesEndRef = useRef(null);
     const token = localStorage.getItem("jwtToken");
     const navigate = useNavigate();
+    const currentTime = new Date().toISOString(); // This will give the current time in ISO 8601 format
 
     useEffect(() => {
         if (!localStorage.getItem("isLoggedIn")) {
@@ -75,7 +77,7 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
             })
         })
         setMessage("");
-        socket.emit("sendMessage", { message: message, sender_id: loggedInUser.id, conversationId: conversationId });
+        socket.emit("sendMessage", { message: message, sender_id: loggedInUser.id, conversationId: conversationId, created_at: currentTime });
     }
 
     const adminSendMessage = () => {
@@ -96,7 +98,7 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
             })
         })
         setMessage("");
-        socket.emit("sendMessage", { message: message, sender_id: loggedInUser.id, conversationId: conversationId });
+        socket.emit("sendMessage", { message: message, sender_id: loggedInUser.id, conversationId: conversationId, created_at: currentTime });
     }
 
     const adminOpenConversation = () => {
@@ -187,13 +189,19 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
             <div style={{ textAlign: "center" }}>
                 <h1>Chatti</h1>
                 <p>Alla olevasta chatistä voit jutella PoppiMikon kanssa</p>
+                <p>Viesteihisi vastataan mahdollisimman pian.</p>
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                     <div style={{ border: "1px solid #ccc", borderRadius: "5px", padding: "10px", maxHeight: "500px", overflowY: "auto", width: "400px", marginBottom: "20px" }}>
                         {conversationMessages.map((message, index) => (
                             <div key={index} style={{ marginBottom: "10px", textAlign: message.sender_id === loggedInUser.id ? "right" : "left" }}>
-                                <div style={{ padding: "5px", backgroundColor: message.sender_id === loggedInUser.id ? "#DCF8C6" : "#E0E0E0", borderRadius: "5px", display: "inline-block" }}>
-                                    <strong>{message.sender_id === loggedInUser.id ? "Sinä" : message.sender_id === 14 ? "PoppiMikko" : message.sender_id}</strong><br />
-                                    {message.message}
+                                <div style={{ display: "flex", flexDirection: "column", alignItems: message.sender_id === loggedInUser.id ? "flex-end" : "flex-start" }}>
+                                    <div style={{ padding: "8px", backgroundColor: message.sender_id === loggedInUser.id ? "#DCF8C6" : "#E0E0E0", borderRadius: "5px", boxShadow: "0 1px 3px rgba(0,0,0,0.2)" }}>
+                                        <strong style={{ fontSize: "14px", color: "#333" }}>{message.sender_id === loggedInUser.id ? "Sinä" : message.sender_id === 14 ? "PoppiMikko" : ""}</strong>
+                                        <span style={{ fontSize: "14px", color: "#666", marginTop: "5px", display: "block" }}>{message.message}</span>
+                                    </div>
+                                    <div style={{ fontSize: "10px", color: "#aaa", marginTop: "5px", alignSelf: message.sender_id === loggedInUser.id ? "flex-end" : "flex-start" }}>
+                                        {format(new Date(message.created_at), 'dd.MM.yyyy HH:mm')}
+                                    </div>
                                 </div>
                             </div>
                         ))}
@@ -225,29 +233,30 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
                             </IconButton>
                         )}
                     </div>
-                    {/*{loggedInUser.role === "ADMIN" && <Button style={{ marginTop: 10 }} variant="contained" onClick={() => adminOpenConversation()}>Avaa Viestiketju Henkilön Kanssa</Button>}}*/}
-                    {loggedInUser.role === "ADMIN" && <div>
-                        <select
-                            style={{
-                                padding: 10,
-                                fontSize: 14,
-                                border: "1px solid #ccc",
-                                borderRadius: 5,
-                                width: '100%',
-                                marginBottom: 5,
-                                marginTop: 10
-                            }}
-                            value={selectedUser} onChange={handleUserChange}>
-                            <option value="">Valitse käyttäjä kenen kanssa chatata</option>
-                            {allUsers.map(user => (
-                                <option
-                                    key={user.id}
-                                    value={user.id}
-                                    style={adminNewMessageIds.includes(user.id) ? { backgroundColor: "#f52b5d" } : {}}
-                                >{user.email}</option>
-                            ))}
-                        </select>
-                    </div>}
+                    {loggedInUser.role === "ADMIN" && (
+                        <div>
+                            <select
+                                style={{
+                                    padding: 10,
+                                    fontSize: 14,
+                                    border: "1px solid #ccc",
+                                    borderRadius: 5,
+                                    width: '100%',
+                                    marginBottom: 5,
+                                    marginTop: 10
+                                }}
+                                value={selectedUser} onChange={handleUserChange}>
+                                <option value="">Valitse käyttäjä kenen kanssa chatata</option>
+                                {allUsers.map(user => (
+                                    <option
+                                        key={user.id}
+                                        value={user.id}
+                                        style={adminNewMessageIds.includes(user.id) ? { backgroundColor: "#f52b5d" } : {}}
+                                    >{user.email}</option>
+                                ))}
+                            </select>
+                        </div>
+                    )}
                 </div>
             </div>
         </>

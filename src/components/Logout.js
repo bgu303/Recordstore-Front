@@ -29,8 +29,7 @@ function Logout({ setIsLoggedIn, setLoggedInUser }) {
     return (
         <div style={{ cursor: "pointer" }} onClick={() => handleLogout()}>
             <span style={{ color: "white" }}>Kirjaudu ulos</span><IconButton
-                style={{ marginLeft: 10, color: "white" }}
-                
+                style={{ marginLeft: 10, color: "white" }}  
             >
                 <LogoutIcon />
             </IconButton>
