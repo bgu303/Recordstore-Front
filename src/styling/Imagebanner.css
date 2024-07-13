@@ -1,0 +1,56 @@
+.banner-container {
+    position: relative;
+    width: 90%;
+    overflow: hidden;
+    margin: auto;
+    margin-top: 20px;
+}
+
+.scroll-container {
+    display: flex;
+    animation: scroll 45s linear infinite; /* Adjusted duration slightly longer */
+}
+
+.image {
+    min-width: 200px;
+    border-radius: 5px;
+    height: 150px;
+    margin-right: 10px;
+    background-color: lightgray;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    color: white;
+}
+
+.banner-container::before,
+.banner-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 50px;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.banner-container::before {
+    left: 0;
+    background: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+}
+
+.banner-container::after {
+    right: 0;
+    background: linear-gradient(to left, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}

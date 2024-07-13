@@ -60,8 +60,3 @@
   height: 16px;
   font-size: 12px;
 }
-
-/* Optional: add some styling for when there are new messages */
-.nav-link.new-messages {
-  font-weight: bold;
-}

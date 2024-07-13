@@ -351,7 +351,7 @@ function App() {
           <div className="nav-left">
             <Link
               to="/"
-              className={`nav-link ${activePath === "/" ? "active" : ""}`}
+              className={`nav-link logo ${activePath === "/" ? "active" : ""}`}
               onClick={() => clickedLink("/", setActivePath)}
             >
               Etusivu
@@ -469,8 +469,8 @@ function App() {
           <Route path='/ownorders' element={<OwnOrders loggedInUser={loggedInUser} />} />
           <Route path='/sendfeedback' element={<SendFeedback loggedInUser={loggedInUser} />} />
           <Route path='/search' element={<SearchedRecords searchResults={searchResults} loggedInUser={loggedInUser} showShoppingcart={showShoppingcart} />} />
-          <Route path="/termsofuse" element={<TermsOfUse /> }/>
-          <Route path="/privacystatement" element={<PrivacyStatement /> }/>
+          <Route path="/termsofuse" element={<TermsOfUse />} />
+          <Route path="/privacystatement" element={<PrivacyStatement />} />
         </Routes>
       </div>
     </Router>

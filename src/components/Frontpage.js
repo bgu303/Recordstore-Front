@@ -7,6 +7,7 @@ import 'ag-grid-community/styles/ag-theme-material.css';
 import { useNavigate } from "react-router-dom";
 import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
 import Footer from './Footer';
+import ImageBanner from './Imagebanner';
 
 function FrontPage() {
     const navigate = useNavigate();
@@ -56,25 +57,14 @@ function FrontPage() {
         setRandomRecords(selectedRecords)
     }
 
-    const toLinkedIn = () => {
-        window.open("https://www.linkedin.com/in/jukka-vesanto/", "_blank");
-    }
-
-    const goToTermsOfUse = () => {
-        navigate("/termsofuse")
-    }
-
-    const goToPrivacyStatement = () => {
-        navigate("/privacystatement")
-    }
-
     return (
         <>
+        <ImageBanner />
             <div className="frontPageMainDiv">
                 <h1>Tervetuloa PoppiMikon levykauppaan</h1>
                 <p>Alta löydät hieman ohjeistusta levyjen ostoon liittyen</p>
             </div>
-            <div className="contentSection">
+            <div className="contentSection" style={{ height: "90vh" }}>
                 <div className="section">
                     <h2 className="homePageTitles">Hinnoittelu</h2>
                     <p className="homePageParagraph">

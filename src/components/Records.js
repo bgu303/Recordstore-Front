@@ -148,7 +148,7 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
             headerName: "Discogs",
             filter: true,
             suppressMovable: true,
-            flex: 1,
+            width: 110,
             cellRenderer: params => (
                 <div
                     style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}
@@ -160,7 +160,7 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
         },
         {
             cellRenderer: params => <Button size="small" variant="contained" color="success" onClick={() => addToCart(params.data)}>Lisää Koriin</Button>,
-            flex: 1,
+            flex: 1.5,
             suppressMovable: true,
             hide: !localStorage.getItem("isLoggedIn") || localStorage.getItem("loggedInUserRole") === "ADMIN"
         },
