@@ -59,10 +59,10 @@ function FrontPage() {
 
     return (
         <>
-        <ImageBanner />
+        
             <div className="frontPageMainDiv">
                 <h1>Tervetuloa PoppiMikon levykauppaan</h1>
-                <p>Alta löydät hieman ohjeistusta levyjen ostoon liittyen</p>
+                <ImageBanner />
             </div>
             <div className="contentSection" style={{ height: "90vh" }}>
                 <div className="section">
