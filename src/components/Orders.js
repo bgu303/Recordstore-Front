@@ -8,6 +8,7 @@ function Orders() {
     const [orderData, setOrderData] = useState([]);
     const token = localStorage.getItem('jwtToken');
     const navigate = useNavigate();
+    const [orderStatus, setOrderStatus] = useState("");
 
     const getOrders = () => {
         fetch(`${BASE_URL_CLOUD}/orders/getorderdata`, {
@@ -83,6 +84,27 @@ function Orders() {
         return `${day}.${month}.${year}. Kello ${hours}:${minutes}`;
     };
 
+    const handleStatusChange = (e) => {
+        setOrderStatus(e.target.value)
+    }
+
+    const changeStatus = (id) => {
+        if (orderStatus === "") {
+            return;
+        }
+        fetch(`${BASE_URL_CLOUD}/orders/changeorderstatus/${id}/${orderStatus}`)
+            .then(response => {
+                if (!response.ok) {
+                    console.log("Failed to update Status.");
+                } else {
+                    getOrders();
+                }
+            })
+            .catch(error => {
+                console.log("Error updating Status:", error);
+            })
+    }
+
     return (
         <>
             <div className="mainDiv">
@@ -115,8 +137,19 @@ function Orders() {
                             })}
                         </ul>
                         <p>Hinta yhteensä: {getTotalPrice(order)}€</p>
+                        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '15px' }}>
+                            <label style={{ marginRight: '10px' }}>Muuta Status</label>
+                            <select value={orderStatus} style={{ marginRight: '10px' }} onChange={handleStatusChange}>
+                                <option value="">Valitse Status</option>
+                                <option value="Käsittelyssä">Käsittelyssä</option>
+                                <option value="Toimitettu">Toimitettu</option>
+                            </select>
+                            <button onClick={() => changeStatus(order[0].id)} style={{ padding: '5px 10px', fontSize: '12px' }}>Muuta status</button>
+                        </div>
+                        <h4>Status: {order[0].order_status}</h4>
+
                         <div style={{ textAlign: "center" }}>
-                        <Button color="error" variant="contained" onClick={() => deleteOrder(orderId)}>Poista</Button>
+                            <Button color="error" variant="contained" onClick={() => deleteOrder(orderId)}>Poista</Button>
                         </div>
                     </div>
                 ))}

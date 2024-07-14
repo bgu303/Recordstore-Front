@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { BASE_URL, BASE_URL_CLOUD } from "./Apiconstants";
 import { useNavigate } from "react-router-dom";
+import '../styling/Ownorderlist.css'
 
 function OwnOrders({ loggedInUser }) {
     const [orderData, setOrderData] = useState([]);
     const navigate = useNavigate();
+    const steps = ["Vastaanotettu", "Käsittelyssä", "Toimitettu"];
 
     useEffect(() => {
         if (!localStorage.getItem("isLoggedIn")) {
@@ -97,6 +99,17 @@ function OwnOrders({ loggedInUser }) {
                                 })}
                             </ul>
                             <p>Hinta yhteensä: {getTotalPrice(order)}€</p>
+                            <h4>
+                                Tilauksen seuranta: {steps.map((step, index) => (
+                                    <span
+                                        key={index}
+                                        className={`status-step ${step === order[0].order_status ? 'active' : ''}`}
+                                    >
+                                        {step}
+                                        {index < steps.length - 1 && <>&nbsp;→&nbsp;</>}
+                                    </span>
+                                ))}
+                            </h4>
                         </div>
                     ))
                 )}

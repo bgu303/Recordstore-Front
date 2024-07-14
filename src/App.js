@@ -88,8 +88,9 @@ function App() {
     if (!isLoggedIn || localStorage.getItem("loggedInUserRole") === "ADMIN") {
       return;
     }
+    console.log(localStorage.getItem("loggedInUserId"))
 
-    fetch(`${BASE_URL}/chat/getconversationid/${localStorage.getItem("loggedInUserId")}`)
+    fetch(`${BASE_URL_CLOUD}/chat/getconversationid/${localStorage.getItem("loggedInUserId")}`)
       .then(response => {
         if (response.ok) {
           return response.json()
@@ -117,7 +118,7 @@ function App() {
       return;
     }
 
-    fetch(`${BASE_URL}/chat/getconversationmessages/${conversationId}`, {
+    fetch(`${BASE_URL_CLOUD}/chat/getconversationmessages/${conversationId}`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
@@ -160,7 +161,7 @@ function App() {
       return;
     }
 
-    fetch(`${BASE_URL}/chat/getallconversationmessages`)
+    fetch(`${BASE_URL_CLOUD}/chat/getallconversationmessages`)
       .then(response => {
         if (response.ok) {
           return response.json()
@@ -204,7 +205,7 @@ function App() {
       return;
     }
 
-    fetch(`${BASE_URL}/chat/getallconversationids`)
+    fetch(`${BASE_URL_CLOUD}/chat/getallconversationids`)
       .then(response => {
         if (response.ok) {
           return response.json()
@@ -302,7 +303,10 @@ function App() {
 
   // Function to show shopping cart
   const showShoppingcart = () => {
-    fetch(`${BASE_URL}/shoppingcart/shoppingcartitems/${loggedInUser.id}`)
+    if (localStorage.getItem("loggedInUserRole") === "ADMIN") {
+      return;
+    }
+    fetch(`${BASE_URL_CLOUD}/shoppingcart/shoppingcartitems/${loggedInUser.id}`)
       .then(response => {
         if (response.ok) {
           return response.json();
