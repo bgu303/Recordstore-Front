@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import '../styling/Imagebanner.css';
 import images from '../styling/Images';
 
@@ -11,6 +11,9 @@ const ImageBanner = () => {
   const scrollContainerRef = useRef(null);
   const randomImagesRef = useRef(getRandomImages(images, 10));
   const animationRef = useRef(null);
+
+  const [showPreview, setShowPreview] = useState(false);
+  const [previewImage, setPreviewImage] = useState(null);
 
   useEffect(() => {
     const scrollContainer = scrollContainerRef.current;
@@ -25,40 +28,44 @@ const ImageBanner = () => {
       scrollContainer.style.transform = `translateX(${scrollAmount}px)`;
       animationRef.current = requestAnimationFrame(scrollImages);
     };
-
     scrollImages();
-
-    const handleMouseEnter = () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-      }
-    };
-
-    const handleMouseLeave = () => {
-      scrollImages();
-    };
-
-    scrollContainer.addEventListener('mouseenter', handleMouseEnter);
-    scrollContainer.addEventListener('mouseleave', handleMouseLeave);
-
-    return () => {
-      scrollContainer.removeEventListener('mouseenter', handleMouseEnter);
-      scrollContainer.removeEventListener('mouseleave', handleMouseLeave);
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-      }
-    };
   }, []);
 
   const randomImages = randomImagesRef.current;
+
+  const openPreview = (imageUrl) => {
+    setPreviewImage(imageUrl);
+    setShowPreview(true);
+  };
+
+  const closePreview = () => {
+    setShowPreview(false);
+    setPreviewImage(null);
+  };
 
   return (
     <div className="banner-container">
       <div className="scroll-container" ref={scrollContainerRef}>
         {randomImages.concat(randomImages).map((imageUrl, index) => (
-          <img key={index} src={imageUrl} alt={`Picture missing`} className="image" />
+          <img
+            key={index}
+            src={imageUrl}
+            alt={`Picture missing`}
+            className="image"
+            onClick={() => openPreview(imageUrl)}
+          />
         ))}
       </div>
+      {showPreview && (
+        <div className="preview-overlay" onClick={closePreview}>
+          <div className="preview-container">
+            <img src={previewImage} alt="Preview" className="preview-image" />
+            <button className="close-preview" onClick={closePreview}>
+              X
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

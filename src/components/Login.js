@@ -37,7 +37,7 @@ function Login({ isLoggedIn, setIsLoggedIn, loggedInUser, setLoggedInUser, conve
             return alert("Täytä molemmat kentät");
         }
 
-        fetch(`${BASE_URL}/user/login`, {
+        fetch(`${BASE_URL_CLOUD}/user/login`, {
             method: "POST",
             headers: { "Content-type": "application/json" },
             body: JSON.stringify({

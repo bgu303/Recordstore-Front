@@ -17,7 +17,7 @@ function SearchedRecords({ searchResults, loggedInUser, showShoppingcart }) {
     const addToCart = async (data) => {
         console.log(`UserId: ${loggedInUser.id} itemId: ${data.id}`);
         try {
-            const response = await fetch(`${BASE_URL}/shoppingcart/addtocart`, {
+            const response = await fetch(`${BASE_URL_CLOUD}/shoppingcart/addtocart`, {
                 method: "POST",
                 headers: { "Content-type": "application/json" },
                 body: JSON.stringify({

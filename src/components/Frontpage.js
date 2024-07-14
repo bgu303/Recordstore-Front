@@ -20,7 +20,7 @@ function FrontPage() {
     ];
 
     const getRecords = () => {
-        fetch(`${BASE_URL}/records`)
+        fetch(`${BASE_URL_CLOUD}/records`)
             .then(response => {
                 if (response.ok) {
                     return response.json();
