@@ -107,6 +107,15 @@ function OwnOrders({ loggedInUser }) {
                                     >
                                         {step}
                                         {index < steps.length - 1 && <>&nbsp;→&nbsp;</>}
+                                        {step === "Vastaanotettu" && order[0].order_status === "Vastaanotettu" && (
+                                            <div className="tooltip">Tilaus on vastaanotettu, mutta PoppiMikko ei ole ottanut sitä vielä käsittelyyn.</div>
+                                        )}
+                                        {step === "Käsittelyssä" && order[0].order_status === "Käsittelyssä" && (
+                                            <div className="tooltip">Tilaus on käsittelyssä. Käsittelyaika on 1-3 arkipäivää.</div>
+                                        )}
+                                        {step === "Toimitettu" && order[0].order_status === "Toimitettu" && (
+                                            <div className="tooltip">Tilaus on toimitettu.</div>
+                                        )}
                                     </span>
                                 ))}
                             </h4>

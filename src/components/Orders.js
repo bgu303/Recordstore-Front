@@ -105,6 +105,19 @@ function Orders() {
             })
     }
 
+    const getStatusColor = (status) => {
+        switch (status) {
+            case "Vastaanotettu":
+                return "red";
+            case "Käsittelyssä":
+                return "#FFA500";
+            case "Toimitettu":
+                return "green";
+            default:
+                return "black";
+        }
+    }
+
     return (
         <>
             <div className="mainDiv">
@@ -144,10 +157,22 @@ function Orders() {
                                 <option value="Käsittelyssä">Käsittelyssä</option>
                                 <option value="Toimitettu">Toimitettu</option>
                             </select>
-                            <button onClick={() => changeStatus(order[0].id)} style={{ padding: '5px 10px', fontSize: '12px' }}>Muuta status</button>
-                        </div>
-                        <h4>Status: {order[0].order_status}</h4>
+                            <button
+                                onClick={() => changeStatus(order[0].id)}
+                                style={{
+                                    padding: "5px 10px",
+                                    fontSize: "12px",
+                                    background: "white",
+                                    borderRadius: "5px",
+                                    color: "inherit",
+                                    cursor: "pointer"
+                                }}
+                            >
+                                Muuta status
+                            </button>
 
+                        </div>
+                        <h4>Status: <span style={{ color: getStatusColor(order[0].order_status) }}>{order[0].order_status}</span></h4>
                         <div style={{ textAlign: "center" }}>
                             <Button color="error" variant="contained" onClick={() => deleteOrder(orderId)}>Poista</Button>
                         </div>
