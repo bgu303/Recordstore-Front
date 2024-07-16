@@ -59,7 +59,7 @@ function FrontPage() {
 
     return (
         <>
-        
+
             <div className="frontPageMainDiv">
                 <h1>Tervetuloa PoppiMikon levykauppaan</h1>
                 <ImageBanner />
@@ -87,14 +87,36 @@ function FrontPage() {
                     </p>
                 </div>
                 <div className="section">
-                    <h2 className="homePageTitles">Suosituksia</h2>
-                    <div className="ag-theme-material trainings" style={{ height: 800, width: 580 }}>
-                        <AgGridReact
-                            columnDefs={columnDefs}
-                            rowData={randomRecords}>
-                        </AgGridReact>
+                    <div className="section">
+                        <h2 className="homePageTitles">PoppiMikon ilmoitukset</h2>
+                        <div>
+                            <p className="homePageParagraph">
+                                Tässä osiossa on PoppiMikon uusimmat ilmoitukset. Pysy ajan tasalla uusimmista uutisista ja päivityksistä!
+                            </p>
+                            <ul className="ulFrontPage">
+                                <li>PoppiMikko on kesälomalla 30.8 asti. Palataan Asiaan syksymmällä!</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div className="section" style={{ height: "45vh" }}>
+                        <h2 className="homePageTitles">PoppiMikon soittolistoja</h2>
+                        <div>
+                            <h4>Spotify</h4>
+                            <p className="homePageParagraph">
+                            <a className="homePageAnchorTag" href="https://open.spotify.com/playlist/37i9dQZF1DXb57FjYWz00c" target="_blank">PoppiMikon Spotify Jams 80s</a><br/>
+                            <a className="homePageAnchorTag" href="https://open.spotify.com/playlist/37i9dQZF1DXbTxeAdrVG2l" target="_blank">PoppiMikon Spotify Jams 90s</a>
+                            </p>
+                        </div>
+                        <div>
+                            <h4>Youtube</h4>
+                            <p className="homePageParagraph">
+                                <a className="homePageAnchorTag" href="https://www.youtube.com/watch?v=cOni7oqw2y4&list=PLAZ44MfkpzxBpy5lfbjhipUOcDB7QqItT" target="_blank">PoppiMikon Bängerit 2024</a><br/>
+                                <a className="homePageAnchorTag" href="https://www.youtube.com/playlist?list=PLetgZKHHaF-bTruP0M6ZgXY9_S4maKoX9" target="_blank">PoppiMikon Youtube Greatest Hits Collection</a>
+                            </p>
+                        </div>
                     </div>
                 </div>
+
             </div>
             <Footer />
         </>

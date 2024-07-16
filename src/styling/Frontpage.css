@@ -22,7 +22,7 @@
 }
 
 .homePageParagraph {
-    line-height: 1.6;
+    line-height: 1.3;
 }
 
 b {
@@ -45,4 +45,25 @@ footer {
 
 .frontPageClickable:hover {
     text-decoration: underline;
+}
+
+.homePageAnchorTag {
+    color: #1bd8f5; /* Initial color */
+    text-decoration: none;
+    background-image: linear-gradient(to right, #002470, #ff7e5f, #ff0000);
+    -webkit-background-clip: text;
+    color: transparent;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.homePageAnchorTag:hover {
+    text-shadow: 0 0 5px rgba(255, 126, 95, 0.5), 0 0 10px rgba(255, 126, 95, 0.5);
+}
+
+.homePageAnchorTag:visited {
+    color: inherit;
+}
+
+.ulFrontPage {
+    display: inline;
 }

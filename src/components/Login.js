@@ -24,13 +24,14 @@ function Login({ isLoggedIn, setIsLoggedIn, loggedInUser, setLoggedInUser, conve
     const navigate = useNavigate();
 
     useEffect(() => {
-        localStorage.setItem("isLoggedIn", isLoggedIn);
-        localStorage.setItem("loggedInUserId", loggedInUser.id);
-        localStorage.setItem("loggedInUserEmail", loggedInUser.email);
-        localStorage.setItem("loggedInUserRole", loggedInUser.role);
-        localStorage.setItem("jwtToken", loggedInUser.token)
+        if (isLoggedIn === true) {
+            localStorage.setItem("isLoggedIn", isLoggedIn);
+            localStorage.setItem("loggedInUserId", loggedInUser.id);
+            localStorage.setItem("loggedInUserEmail", loggedInUser.email);
+            localStorage.setItem("loggedInUserRole", loggedInUser.role);
+            localStorage.setItem("jwtToken", loggedInUser.token)
+        }
     }, [isLoggedIn])
-
 
     const login = () => {
         if (user.email.trim() === "" || user.password.trim() === "") {

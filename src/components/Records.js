@@ -86,6 +86,11 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
         }
     }
 
+    useEffect(() => {
+        console.log(localStorage.getItem("isLoggedIn"));
+        console.log(localStorage.getItem("loggedInUserRole"));
+    }, [])
+
     const changeStatus = (data) => {
         //If data.sold === 0, it means that the value is false, and the record hasnt been sold. If data.sold === 1, it means the value is true, and the record has been sold
         let soldStatus = data.sold;

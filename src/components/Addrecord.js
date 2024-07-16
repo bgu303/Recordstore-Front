@@ -165,7 +165,7 @@ function AddRecord({ loggedInUser }) {
 
     return (
         <>
-            <div className="mainDiv">
+            <div style={{ textAlign: "center" }}>
                 <h3>Lisää levyjä</h3>
                 <div>
                     <input type="file" accept=".txt,.csv" onChange={handleFileChange} />
