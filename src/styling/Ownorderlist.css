@@ -1,3 +1,13 @@
+.mainDivOwnOrders {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    gap: 10px;
+    padding: 20px;
+}
+
 .status-step {
     display: inline;
     padding: 5px;

@@ -68,7 +68,7 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
     }
 
     const showShoppingcart = () => {
-        fetch(`${BASE_URL_CLOUD}/shoppingcart/shoppingcartitems/${loggedInUser.id}`, {
+        fetch(`${BASE_URL_CLOUD}/shoppingcart/shoppingcartitems/${localStorage.getItem("loggedInUserId")}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -231,14 +231,17 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                         <TextField label="Koko nimi"
                             onChange={e => setCustomerInfo({ ...customerInfo, name: e.target.value })}
                             value={customerInfo.name}
+                            style={{ backgroundColor: "white", borderRadius: 10 }}
                         />
                         <TextField label="Puhelinnumero"
                             onChange={e => setCustomerInfo({ ...customerInfo, phoneNumber: e.target.value })}
                             value={customerInfo.phoneNumber}
+                            style={{ backgroundColor: "white", borderRadius: 10 }}
                         />
                         <TextField label="Sähköposti"
                             onChange={e => setCustomerInfo({ ...customerInfo, email: e.target.value })}
                             value={customerInfo.email}
+                            style={{ backgroundColor: "white", borderRadius: 10 }}
                         />
                         <div>
                             <FormControl>
@@ -295,11 +298,12 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                                 value={customerInfo.address}
                                 multiline
                                 rows={4}
+                                style={{ backgroundColor: "white", borderRadius: 10 }}
                             />
                         )}
-                    </div>
-                    <div style={{ textAlign: "center", marginBottom: "15px" }}>
-                        <Button size="large" color="success" variant="contained" onClick={() => sendOrder()}>Lähetä</Button>
+                        <div style={{ textAlign: "center", marginBottom: "15px" }}>
+                            <Button size="large" color="success" variant="contained" onClick={() => sendOrder()}>Lähetä</Button>
+                        </div>
                     </div>
                 </>
             )}

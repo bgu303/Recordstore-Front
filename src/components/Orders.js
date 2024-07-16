@@ -120,7 +120,7 @@ function Orders() {
 
     return (
         <>
-            <div className="mainDiv">
+            <div className="mainDivAllOrders">
                 <h1>Tilaukset</h1>
                 {Object.entries(orderData).reverse().map(([orderId, order]) => (
                     <div key={orderId} className="orderContainer">

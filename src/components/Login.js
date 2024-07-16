@@ -77,12 +77,16 @@ function Login({ isLoggedIn, setIsLoggedIn, loggedInUser, setLoggedInUser, conve
             })
             .catch(error => {
                 console.log(`Error logging in: ${error}`);
-                alert("Jokin meni vikaan.");
+                alert("Salasana tai käyttäjänimi väärin.");
             });
     };
 
     const navigateDeleteUser = () => {
-        navigate("/deleteuser")
+        navigate("/deleteuser");
+    }
+
+    const navigateCreateUser = () => {
+        navigate("/createuser");
     }
 
     //If user presses enter key on either TextField -> tries to login.
@@ -95,24 +99,40 @@ function Login({ isLoggedIn, setIsLoggedIn, loggedInUser, setLoggedInUser, conve
     return (
         <>
             <div className="mainDiv">
-                <h3>Kirjaudu sisään</h3>
+                <h3>Kirjaudu</h3>
                 <TextField
-                    label="Sähköposti tai käyttäjänimi"
+                    label="Sähköposti"
+                    size="small"
                     onChange={e => setUser({ ...user, email: e.target.value })}
                     value={user.email}
                     onKeyDown={handleKeyPress}
+                    style={{ backgroundColor: "white", borderRadius: 10 }}
                 />
-                <TextField label="Salasana"
+                <TextField
+                    label="Salasana"
+                    size="small"
                     type="password"
                     onChange={e => setUser({ ...user, password: e.target.value })}
                     value={user.password}
                     onKeyDown={handleKeyPress}
+                    style={{ backgroundColor: "white", borderRadius: 10 }}
                 />
-                <Button color="success" variant="contained" onClick={() => login()}>Kirjaudu Sisään</Button>
-                <p>Haluatko poistaa käyttäjäsi? Voit tehdä sen <span onClick={() => navigateDeleteUser()} style={{ color: "blue", fontWeight: "bold", cursor: "pointer" }}>TÄSTÄ</span> linkistä.</p>
+                <Button color="success" variant="contained" onClick={() => login()} style={{ borderRadius: "15px", marginTop: "10px" }}>Kirjaudu</Button>
+                <hr className="separator" />
+                <div className="frontPagePDiv">
+                    <div className="infoBox">
+                        <p>Et ole luonut käyttäjää vielä?</p>
+                        <p>Voit tehdä sen <span onClick={() => navigateCreateUser()} style={{ color: "#1bd8f5", fontWeight: "bold", cursor: "pointer" }}>Täältä.</span></p>
+                    </div>
+                    <div className="infoBox">
+                        <p>Haluatko poistaa käyttäjäsi?</p>
+                        <p>Voit tehdä sen <span onClick={() => navigateDeleteUser()} style={{ color: "red", fontWeight: "bold", cursor: "pointer" }}>TÄSTÄ</span> linkistä.</p>
+                    </div>
+                </div>
             </div>
         </>
-    )
+    );
+
 }
 
 export default Login;
