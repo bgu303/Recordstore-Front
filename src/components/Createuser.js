@@ -74,32 +74,41 @@ function CreateUser() {
         <>
             <div className="mainDiv">
                 <h3>Luo Käyttäjä</h3>
-                <TextField
-                    label="Sähköposti"
-                    size="small"
-                    onChange={e => setUser({ ...user, email: e.target.value })}
-                    value={user.email}
-                    onKeyDown={handleKeyPress}
-                    style={{ backgroundColor: "white", borderRadius: 10 }}
-                />
-                <TextField
-                    label="Salasana"
-                    size="small"
-                    type="password"
-                    onChange={e => setUser({ ...user, password: e.target.value })}
-                    value={user.password}
-                    onKeyDown={handleKeyPress}
-                    style={{ backgroundColor: "white", borderRadius: 10 }}
-                />
-                <TextField
-                    label="Salasana uudelleen"
-                    size="small"
-                    type="password"
-                    onChange={e => setUser({ ...user, confirmPassword: e.target.value })}
-                    value={user.confirmPassword}
-                    onKeyDown={handleKeyPress}
-                    style={{ backgroundColor: "white", borderRadius: 10 }}
-                />
+                <div>
+                    <label style={{ fontWeight: "bold", display: "block", marginBottom: 10 }}>Sähköposti*</label>
+                    <TextField
+                        label="Sähköposti"
+                        size="small"
+                        onChange={e => setUser({ ...user, email: e.target.value })}
+                        value={user.email}
+                        onKeyDown={handleKeyPress}
+                        style={{ backgroundColor: "white", borderRadius: 10 }}
+                    />
+                </div>
+                <div>
+                <label style={{ fontWeight: "bold", display: "block", marginBottom: 10 }}>Salasana*</label>
+                    <TextField
+                        label="Salasana"
+                        size="small"
+                        type="password"
+                        onChange={e => setUser({ ...user, password: e.target.value })}
+                        value={user.password}
+                        onKeyDown={handleKeyPress}
+                        style={{ backgroundColor: "white", borderRadius: 10 }}
+                    />
+                </div>
+                <div>
+                <label style={{ fontWeight: "bold", display: "block", marginBottom: 10 }}>Salasana uudelleen*</label>
+                    <TextField
+                        label="Salasana uudelleen"
+                        size="small"
+                        type="password"
+                        onChange={e => setUser({ ...user, confirmPassword: e.target.value })}
+                        value={user.confirmPassword}
+                        onKeyDown={handleKeyPress}
+                        style={{ backgroundColor: "white", borderRadius: 10 }}
+                    />
+                </div>
                 <Button color="success" variant="contained" style={{ borderRadius: "15px", marginTop: "10px" }} onClick={() => createUser()}>Luo käyttäjä</Button>
             </div>
         </>

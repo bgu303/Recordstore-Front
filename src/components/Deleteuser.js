@@ -48,21 +48,27 @@ function DeleteUser() {
         <>
             <div className="mainDiv">
                 <h2>Poista käyttäjä</h2>
-                <TextField
-                    label="Sähköposti"
-                    size="small"
-                    onChange={e => setUser({ ...user, email: e.target.value })}
-                    value={user.email}
-                    style={{ backgroundColor: "white", borderRadius: 10 }}
-                />
-                <TextField
-                    label="Salasana"
-                    size="small"
-                    onChange={e => setUser({ ...user, password: e.target.value })}
-                    value={user.password}
-                    type="password"
-                    style={{ backgroundColor: "white", borderRadius: 10 }}
-                />
+                <div>
+                    <label style={{ fontWeight: "bold", display: "block", marginBottom: 10 }}>Sähköposti*</label>
+                    <TextField
+                        label="Sähköposti"
+                        size="small"
+                        onChange={e => setUser({ ...user, email: e.target.value })}
+                        value={user.email}
+                        style={{ backgroundColor: "white", borderRadius: 10 }}
+                    />
+                </div>
+                <div>
+                    <label style={{ fontWeight: "bold", display: "block", marginBottom: 10 }}>Sähköposti*</label>
+                    <TextField
+                        label="Salasana"
+                        size="small"
+                        onChange={e => setUser({ ...user, password: e.target.value })}
+                        value={user.password}
+                        type="password"
+                        style={{ backgroundColor: "white", borderRadius: 10 }}
+                    />
+                </div>
                 <p><span style={{ fontWeight: "bold" }}>HUOM! </span>Käyttäjän poistamista EI voi perua.</p>
                 <Button color="error" variant="contained" onClick={() => deleteUser()}>Poista Käyttäjä</Button>
             </div>

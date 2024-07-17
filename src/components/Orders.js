@@ -136,11 +136,12 @@ function Orders() {
                                 <p><b>Osoite:</b> {order[0].customer_address}</p>
                             </>
                         )}
+                        <hr className="separator" />
                         <ul>
-                            <h3>Tuotteet</h3>
+                            <h3 style={{ textAlign: "center" }}>Tuotteet</h3>
                             {order.map(item => {
                                 return (
-                                    <li key={item.record_id}>
+                                    <li style={{ marginBottom: "10px", lineHeight: "1.5rem" }} key={item.record_id}>
                                         <b>Artisti/Bändi:</b> {item.artist}<br />
                                         <b>Levyn nimi:</b> {item.title}<br />
                                         <b>Koko:</b> {item.size}<br />
@@ -150,6 +151,7 @@ function Orders() {
                             })}
                         </ul>
                         <p>Hinta yhteensä: {getTotalPrice(order)}€</p>
+                        <hr className="separator" />
                         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '15px' }}>
                             <label style={{ marginRight: '10px' }}>Muuta Status</label>
                             <select value={orderStatus} style={{ marginRight: '10px' }} onChange={handleStatusChange}>
