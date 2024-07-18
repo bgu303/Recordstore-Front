@@ -48,7 +48,7 @@ footer {
 }
 
 .homePageAnchorTag {
-    color: #1bd8f5; /* Initial color */
+    color: #1bd8f5;
     text-decoration: none;
     background-image: linear-gradient(to right, #002470, #ff7e5f, #ff0000);
     -webkit-background-clip: text;
@@ -66,4 +66,10 @@ footer {
 
 .ulFrontPage {
     display: inline;
+}
+
+.vertical-line {
+    width: 3px;
+    background: linear-gradient(to bottom, rgb(244, 252, 255), #002470, rgb(244, 252, 255));
+    margin: 10px;
 }

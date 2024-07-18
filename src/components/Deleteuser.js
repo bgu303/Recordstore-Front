@@ -70,7 +70,7 @@ function DeleteUser() {
                     />
                 </div>
                 <p><span style={{ fontWeight: "bold" }}>HUOM! </span>Käyttäjän poistamista EI voi perua.</p>
-                <Button color="error" variant="contained" onClick={() => deleteUser()}>Poista Käyttäjä</Button>
+                <Button color="error" variant="contained" style={{ borderRadius: 15 }} onClick={() => deleteUser()}>Poista Käyttäjä</Button>
             </div>
         </>
     )

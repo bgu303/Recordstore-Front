@@ -191,7 +191,7 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
                 <p>Alla olevasta chatistä voit jutella PoppiMikon kanssa</p>
                 <p>Viesteihisi vastataan mahdollisimman pian.</p>
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                    <div style={{ border: "1px solid #ccc", borderRadius: "5px", padding: "10px", maxHeight: "500px", overflowY: "auto", width: "400px", marginBottom: "20px" }}>
+                    <div style={{ border: "1px solid #ccc", borderRadius: "5px", padding: "10px", height: "500px", overflowY: "auto", width: "400px", marginBottom: "20px" }}>
                         {conversationMessages.map((message, index) => (
                             <div key={index} style={{ marginBottom: "10px", textAlign: message.sender_id === loggedInUser.id ? "right" : "left" }}>
                                 <div style={{ display: "flex", flexDirection: "column", alignItems: message.sender_id === loggedInUser.id ? "flex-end" : "flex-start" }}>

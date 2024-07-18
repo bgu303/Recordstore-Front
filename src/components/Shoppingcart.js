@@ -287,7 +287,7 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                                     <FormControlLabel
                                         value="Nouto Vuosaaresta"
                                         control={<Radio />}
-                                        label="Nouto Vuosaresta"
+                                        label="Nouto Vuosaaresta"
                                     />
                                 </RadioGroup>
                             </FormControl>

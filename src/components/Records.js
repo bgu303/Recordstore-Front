@@ -6,10 +6,18 @@ import 'ag-grid-community/styles/ag-theme-material.css';
 import { Button } from '@mui/material';
 import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
 import Sizefilter from './Sizefilter';
+import '../styling/Records.css'
+import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
+import CircularProgress from '@mui/material/CircularProgress';
 
 function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) {
     const [records, setRecords] = useState([]);
     const token = localStorage.getItem("jwtToken")
+    const [showPicture, setShowPicture] = useState(false);
+    const [discogsImageUrl, setDiscogsImageUrl] = useState("");
+    const [isImageLoading, setIsImageLoading] = useState(false);
+    const [imageLoadTimeout, setImageLoadTimeout] = useState(false);
+    const DISCOGS_API_KEY = process.env.REACT_APP_DISCOGS_API_KEY;
 
     const getRecords = () => {
         fetch(`${BASE_URL_CLOUD}/records`)
@@ -37,7 +45,9 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
         const discogsSubStr = data.substring(1);
         fetch(`https://api.discogs.com/releases/${discogsSubStr}`)
             .then(response => response.json())
-            .then(responseData => window.open(responseData.uri))
+            .then(responseData => {
+                window.open(responseData.uri)
+            })
     }
 
     const deleteRecord = (data) => {
@@ -60,13 +70,13 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
     }
 
     const addToCart = async (data) => {
-        console.log(`UserId: ${loggedInUser.id} itemId: ${data.id}`);
+        console.log(data)
         try {
             const response = await fetch(`${BASE_URL_CLOUD}/shoppingcart/addtocart`, {
                 method: "POST",
                 headers: { "Content-type": "application/json" },
                 body: JSON.stringify({
-                    userId: loggedInUser.id,
+                    userId: localStorage.getItem("loggedInUserId"),
                     recordId: data.id
                 })
             })
@@ -78,18 +88,13 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
                 return alert("Jokin meni vikaan lisätessä koriin");
             } else {
                 showShoppingcart();
-                alert("Koriin lisääminen onnistui!");
+                alert(`Ostoskoriin lisääminen onnistui!\nArtisti: ${data.artist}\nLevyn nimi: ${data.title}\nKoko: ${data.size}\nKannen kunto: ${data.kan}\nLevyn kunto: ${data.lev}\nHinta: ${data.price}`);
                 return;
             }
         } catch (error) {
             console.log(`Error adding to cart: ${error}`);
         }
     }
-
-    useEffect(() => {
-        console.log(localStorage.getItem("isLoggedIn"));
-        console.log(localStorage.getItem("loggedInUserRole"));
-    }, [])
 
     const changeStatus = (data) => {
         //If data.sold === 0, it means that the value is false, and the record hasnt been sold. If data.sold === 1, it means the value is true, and the record has been sold
@@ -143,7 +148,7 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
         { field: "artist", headerName: "Artisti", filter: true, suppressMovable: true, flex: 2 },
         { field: "title", headerName: "Levyn nimi", filter: true, suppressMovable: true, flex: 2 },
         { field: "label", headerName: "Levy-yhtiö", filter: true, suppressMovable: true, flex: 2 },
-        { field: "size", headerName: "Koko", filter: Sizefilter, suppressMovable: true, flex: 1 },
+        { field: "size", headerName: "Koko", filter: true, suppressMovable: true, flex: 1 },
         { field: "lev", headerName: "Rec", filter: true, suppressMovable: true, flex: 1 },
         { field: "kan", headerName: "PS", filter: true, suppressMovable: true, flex: 1 },
         { field: "price", headerName: "Hinta", filter: true, suppressMovable: true, cellStyle: { textAlign: "right" }, width: 100 },
@@ -156,12 +161,25 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
             width: 110,
             cellRenderer: params => (
                 <div
-                    style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}
+                    className="discogsLink"
                     onClick={() => handleDiscogsLink(params.data.discogs)}
                 >
                     {params.data.discogs}
                 </div>
             ),
+        },
+        {
+            cellRenderer: params => (
+                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%" }}>
+                    <InsertPhotoIcon
+                        style={{ cursor: "pointer", color: "#4682B4" }}
+                        onClick={() => displayImage(params.data)}
+                    />
+                </div>
+            ),
+            width: 90,
+            suppressMovable: true,
+            hide: !localStorage.getItem("isLoggedIn") || localStorage.getItem("loggedInUserRole") === "ADMIN"
         },
         {
             cellRenderer: params => <Button size="small" variant="contained" color="success" onClick={() => addToCart(params.data)}>Lisää Koriin</Button>,
@@ -196,7 +214,51 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
 
     //This needs to be added in order to use custom filtering tools.
     const gridOptions = {
-        reactiveCustomComponents: true
+        reactiveCustomComponents: true,
+    };
+
+
+    const closePicture = () => {
+        setShowPicture(false);
+        setDiscogsImageUrl("");
+    }
+
+    const displayImage = (data) => {
+        setShowPicture(true);
+        setIsImageLoading(true);
+        setImageLoadTimeout(false);
+        console.log(DISCOGS_API_KEY)
+
+        const discogsId = data.discogs.slice(1);
+        const url = `https://api.discogs.com/releases/${discogsId}`;
+
+        fetch(url, {
+            method: "GET",
+            headers: {
+                "Authorization": `Discogs token=${DISCOGS_API_KEY}`
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                return response.json();
+            })
+            .then(data => {
+                const imageUrl = data.images && data.images.length > 0 ? data.images[0].uri : null;
+                if (imageUrl) {
+                    setDiscogsImageUrl(imageUrl);
+                    setIsImageLoading(false);
+                } else {
+                    setIsImageLoading(false);
+                    setImageLoadTimeout(true);
+                }
+            })
+            .catch(error => {
+                console.error('Fetch error:', error);
+                setIsImageLoading(false);
+                setImageLoadTimeout(true);
+            });
     }
 
     return (
@@ -213,8 +275,29 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
                     gridOptions={gridOptions}
                 />
             </div>
+            {showPicture && (
+                <div className="discogsPictureDiv" onClick={closePicture}>
+                    <div className="discogsPicture">
+                        {isImageLoading ? (
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                <CircularProgress size={24} style={{ marginRight: '10px' }} />
+                                <p>Ladataan kuvaa...</p>
+                            </div>
+                        ) : imageLoadTimeout ? (
+                            <p>Kuva ei saatavilla.</p>
+                        ) : discogsImageUrl ? (
+                            <>
+                                <img src={discogsImageUrl} alt="Discogs Release" style={{ maxWidth: "100%", maxHeight: "100%" }} />
+                                <p style={{ fontSize: "0.8em", marginTop: "10px" }}>Huom: Myytävän levyn kunto voi olla eri kuin kuvassa. Katso levyn kuntoluokitus listauksesta.</p>
+                            </>
+                        ) : (
+                            <p>Kuva ei saatavilla.</p>
+                        )}
+                    </div>
+                </div>
+            )}
         </>
-    )
+    );
 }
 
 export default Records;

@@ -22,6 +22,9 @@ function CreateUser() {
         if (user.email.trim() === "" || user.password.trim() === "" || user.confirmPassword === "") {
             return alert("Täytä kaikki kentät.");
         }
+        if (user.email.length >= 50) {
+            return alert("Käytä lyhyempää sähköpostiosoitetta")
+        }
         if (user.password !== user.confirmPassword) {
             return alert("Salasanat eivät ole samat");
         }
@@ -70,6 +73,10 @@ function CreateUser() {
         }
     }
 
+    const goToTermsAndServices = () => {
+        navigate("/termsofuse")
+    }
+
     return (
         <>
             <div className="mainDiv">
@@ -110,6 +117,7 @@ function CreateUser() {
                     />
                 </div>
                 <Button color="success" variant="contained" style={{ borderRadius: "15px", marginTop: "10px" }} onClick={() => createUser()}>Luo käyttäjä</Button>
+                <p>Luomalla käyttäjän hyväksyt <span style={{ cursor: "pointer", color: "purple", fontWeight: "bold" }} onClick={goToTermsAndServices}>Käyttöehdot.</span></p>
             </div>
         </>
     )
