@@ -59,12 +59,11 @@ function FrontPage() {
 
     return (
         <>
-
             <div className="frontPageMainDiv">
                 <h1>Tervetuloa PoppiMikon levykauppaan</h1>
                 <ImageBanner />
             </div>
-            <div className="contentSection" style={{ height: "90vh" }}>
+            <div className="contentSection">
                 <div className="section">
                     <h2 className="homePageTitles">Hinnoittelu</h2>
                     <p className="homePageParagraph">
@@ -119,11 +118,11 @@ function FrontPage() {
                         </div>
                     </div>
                 </div>
-
             </div>
             <Footer />
         </>
     );
+
 }
 
 export default FrontPage;
