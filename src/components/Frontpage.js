@@ -60,7 +60,7 @@ function FrontPage() {
     return (
         <>
             <div className="frontPageMainDiv">
-                <h1>Tervetuloa PoppiMikon levykauppaan</h1>
+                <h1 className="frontPageTitle">Tervetuloa PoppiMikon levykauppaan</h1>
                 <ImageBanner />
             </div>
             <div className="contentSection">
@@ -122,7 +122,6 @@ function FrontPage() {
             <Footer />
         </>
     );
-
 }
 
 export default FrontPage;

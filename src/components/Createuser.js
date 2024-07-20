@@ -117,7 +117,7 @@ function CreateUser() {
                     />
                 </div>
                 <Button color="success" variant="contained" style={{ borderRadius: "15px", marginTop: "10px" }} onClick={() => createUser()}>Luo käyttäjä</Button>
-                <p>Luomalla käyttäjän hyväksyt <span style={{ cursor: "pointer", color: "purple", fontWeight: "bold" }} onClick={goToTermsAndServices}>Käyttöehdot.</span></p>
+                <p style={{ textAlign: "center" }}>Luomalla käyttäjän hyväksyt <span style={{ cursor: "pointer", color: "purple", fontWeight: "bold" }} onClick={goToTermsAndServices}>Käyttöehdot.</span></p>
             </div>
         </>
     )

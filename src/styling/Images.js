@@ -19,8 +19,6 @@ const images = [
     "https://cdns-images.dzcdn.net/images/cover/779ffe59b6b13f5953acf43db0c48e46/1900x1900-000000-80-0-0.jpg",
     "https://levyikkuna.fi/tiedostot/119/kuva/tuote/600/36360.jpg",
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKwQjMH3WnwquMNX9YeIQ3hr3fRCDZuBmf0w&s",
-    
-
   ];
 
   export default images;

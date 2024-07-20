@@ -8,8 +8,8 @@ function TermsOfUse() {
     }, []);
 
     return (
-        <>
-            <div style={{ padding: "20px", maxWidth: "800px", margin: "auto", height: "100vh" }}>
+        <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+            <div style={{ flex: "1", padding: "20px", maxWidth: "800px", margin: "auto" }}>
                 <h3 style={{ borderBottom: "2px solid #333", paddingBottom: "10px" }}>Käyttöehdot</h3>
                 <p style={{ fontSize: "14px", color: "#666" }}>Viimeksi päivitetty: 12. heinäkuuta 2024</p>
 
@@ -45,7 +45,7 @@ function TermsOfUse() {
                 </div>
             </div>
             <Footer />
-        </>
+        </div>
     );
 }
 

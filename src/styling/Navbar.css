@@ -1,6 +1,6 @@
 .navbar {
   display: flex;
-  justify-content: flex-end; /* Aligns everything to the right */
+  justify-content: flex-end;
   background-color: #313131;
   padding-top: 10px;
   padding-bottom: 10px;
@@ -18,13 +18,13 @@
   display: inline-block; 
   margin-left: 10px; 
   margin-right: 10px;
-  line-height: 1.5; /* Adjust line-height */
-  vertical-align: middle; /* Align vertically */
-  transform-origin: center; /* Ensure the scaling happens from the center */
+  line-height: 1.5;
+  vertical-align: middle;
+  transform-origin: center; 
 }
 
 .nav-link:hover {
-  transform: scale(1.2); /* Scale up on hover */
+  transform: scale(1.2);
 }
 
 .nav-link.active {

@@ -101,7 +101,7 @@ function Login({ isLoggedIn, setIsLoggedIn, loggedInUser, setLoggedInUser, conve
         <div className="mainDiv">
             <h3>Kirjaudu</h3>
             <div className="formGroup">
-                <label style={{ fontWeight: "bold", display: "block", marginBottom: 10 }}>Sähköposti*</label>
+                <label className="formLabel">Sähköposti*</label>
                 <TextField
                     id="email"
                     label="Sähköposti"
@@ -113,7 +113,7 @@ function Login({ isLoggedIn, setIsLoggedIn, loggedInUser, setLoggedInUser, conve
                 />
             </div>
             <div className="formGroup">
-            <label style={{ fontWeight: "bold", display: "block", marginBottom: 10 }}>Salasana*</label>
+                <label className="formLabel">Salasana*</label>
                 <TextField
                     id="password"
                     label="Salasana"
