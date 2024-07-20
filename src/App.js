@@ -433,7 +433,7 @@ function App() {
                   gap: '10px' // Space between items
                 }}>
                   <IconButton
-                    style={{ color: 'white' }}
+                    style={{ color: 'white', paddingLeft: 15 }}
                     onClick={() => openSearch()}
                   >
                     <SearchIcon />
@@ -449,6 +449,7 @@ function App() {
                 </div>
               )}
             </div>
+            <div className="searchUnderline"></div>
           </div>
           <div className="nav-right">
             {isLoggedIn && loggedInUser.role !== "ADMIN" && (
@@ -465,14 +466,14 @@ function App() {
               <>
                 <Link
                   to="/createuser"
-                  className={`nav-link ${activePath === "/createuser" ? "active" : ""}`}
+                  className={`nav-link nav-linkMobile nav-linkMobileCreateUser ${activePath === "/createuser" ? "active" : ""}`}
                   onClick={() => clickedLink("/createuser", setActivePath)}
                 >
                   Luo Käyttäjä
                 </Link>
                 <Link
                   to="/login"
-                  className={`nav-link ${activePath === "/login" ? "active" : ""}`}
+                  className={`nav-link nav-linkMobile ${activePath === "/login" ? "active" : ""}`}
                   onClick={() => clickedLink("/login", setActivePath)}
                 >
                   Kirjaudu Sisään
