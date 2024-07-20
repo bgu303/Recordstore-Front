@@ -45,11 +45,25 @@
   margin-right: 75px;
 }
 
-/* Mobile styles */
+.hamburgerMenuButton {
+  display: none;
+}
+
 @media (max-width: 768px) {
   .navbar {
     flex-direction: column;
     align-items: flex-start;
+    display: none;
+  }
+
+  .navbar.isOpen {
+    display: block;
+  }
+
+  .hamburgerMenuButton {
+    display: block;
+    text-align: left;
+    background-color: #313131;
   }
 
   .nav-left, .nav-right {
@@ -68,5 +82,9 @@
 
   .nav-link-shoppingcart {
     margin-right: 0;
+    position: fixed; /* Fixed positioning for the shopping cart */
+    top: 0px; /* 5px from the top */
+    right: 0px; /* 5px from the right */
+    z-index: 1000; /* Ensure it's on top of other elements */
   }
 }

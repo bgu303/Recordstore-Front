@@ -1,0 +1,36 @@
+.search-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  
+  .search-textfield {
+    background-color: white;
+    border-radius: 10px;
+    flex: 1; 
+    min-width: 150px;
+  }
+  
+  .search-span {
+    color: white;
+    cursor: pointer;
+    padding: 5px 10px;
+  }
+  
+  @media (max-width: 768px) {
+    .search-container {
+      gap: 5px;
+    }
+  
+    .search-textfield {
+      width: auto; 
+      font-size: 0.8rem;
+      padding: 6px;
+    }
+  
+    .search-span {
+      font-size: 0.8rem;
+    }
+  }
+  

@@ -2,8 +2,9 @@ import { TextField } from "@mui/material";
 import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import '../styling/Searchrecords.css';
 
-function SearchRecords({ setSearchOpen, searchResults, setSearchResults }) {
+function SearchRecords({ setSearchOpen, searchResults, setSearchResults, setIsOpen }) {
     const [searchTerm, setSearchTerm] = useState("");
     const navigate = useNavigate();
 
@@ -11,6 +12,7 @@ function SearchRecords({ setSearchOpen, searchResults, setSearchResults }) {
         if (searchTerm.trim() === "") {
             return;
         }
+        setIsOpen((open) => !open);
 
         fetch(`${BASE_URL_CLOUD}/search/${encodeURIComponent(searchTerm)}`)
             .then(response => {
@@ -38,17 +40,18 @@ function SearchRecords({ setSearchOpen, searchResults, setSearchResults }) {
     }
 
     return (
-        <>
-            <TextField onChange={e => setSearchTerm(e.target.value)}
-                value={searchTerm}
-                size="small"
-                style={{ backgroundColor: "white", borderRadius: 10 }}
-                onKeyDown={handleKeyPress}
-                placeholder="Hae levyistä..."
-            />
-            <span onClick={() => searchRecords()} style={{ color: "white", marginLeft: 10, cursor: "pointer" }}>Hae</span>
-        </>
-    );
+        <div className="search-container">
+          <TextField
+            className="search-textfield"
+            onChange={e => setSearchTerm(e.target.value)}
+            value={searchTerm}
+            size="small"
+            onKeyDown={handleKeyPress}
+            placeholder="Hae levyistä..."
+          />
+          <span className="search-span" onClick={() => searchRecords()}>Hae</span>
+        </div>
+      );
 }
 
 export default SearchRecords;

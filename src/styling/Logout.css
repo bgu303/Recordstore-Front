@@ -1,0 +1,9 @@
+.logoutDiv {
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .logoutDiv {
+        margin: auto;
+    }
+  }

@@ -23,6 +23,7 @@ import { TextField } from '@mui/material';
 import "./styling/Navbar.css";
 import SearchIcon from '@mui/icons-material/Search';
 import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
 import { BASE_URL, BASE_URL_CLOUD } from './components/Apiconstants';
 import socket from './components/socket';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -49,6 +50,7 @@ function App() {
   const [activePath, setActivePath] = useState("/");
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
 
 
   //Idk if this will be used anymore, if anything I should make all of the things that use token use the token state as above ^ CURRENTLY USED ONLY IN LOGIN. Fix maybe?
@@ -331,6 +333,7 @@ function App() {
     setSearchOpen(false);
     localStorage.setItem("path", path);
     setActivePath(path);
+    setIsOpen((open) => !open);
   };
 
   useEffect(() => {
@@ -348,10 +351,19 @@ function App() {
     }
   }
 
+  const toggleMenu = () => {
+    setIsOpen((open) => !open);
+  }
+
   return (
     <Router>
       <div>
-        <nav className="navbar">
+        <div className="hamburgerMenuButton" >
+          <IconButton onClick={() => toggleMenu()} style={{ color: "white" }}>
+            <MenuIcon />
+          </IconButton>
+        </div>
+        <nav className={`navbar ${isOpen ? "isOpen" : ""}`}>
           <div className="nav-left">
             <Link
               to="/"
@@ -413,17 +425,30 @@ function App() {
                 Lähetä Palautetta
               </Link>
             )}
-            {loggedInUser.role !== "ADMIN" && (
-              <>
-                <IconButton style={{ color: "white" }} onClick={() => openSearch()}>
-                  <SearchIcon />
-                </IconButton>
-                {searchOpen && (
-                  <SearchRecords setSearchOpen={setSearchOpen} searchResults={searchResults} setSearchResults={setSearchResults} />
-                )}
-              </>
-            )}
-
+            <div>
+              {loggedInUser.role !== "ADMIN" && (
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px' // Space between items
+                }}>
+                  <IconButton
+                    style={{ color: 'white' }}
+                    onClick={() => openSearch()}
+                  >
+                    <SearchIcon />
+                  </IconButton>
+                  {searchOpen && (
+                    <SearchRecords
+                      setSearchOpen={setSearchOpen}
+                      searchResults={searchResults}
+                      setSearchResults={setSearchResults}
+                      setIsOpen={setIsOpen}
+                    />
+                  )}
+                </div>
+              )}
+            </div>
           </div>
           <div className="nav-right">
             {isLoggedIn && loggedInUser.role !== "ADMIN" && (
