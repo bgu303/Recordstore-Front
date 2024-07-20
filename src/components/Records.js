@@ -11,6 +11,7 @@ import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import CircularProgress from '@mui/material/CircularProgress';
 
 function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) {
+    const [columnDefinitions, setColumnDefinitions] = useState([]);
     const [records, setRecords] = useState([]);
     const token = localStorage.getItem("jwtToken")
     const [showPicture, setShowPicture] = useState(false);
@@ -144,72 +145,86 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
         getRecords();
     }, [isLoggedIn])
 
-    const [columnDefinitions, setColumnDefinitions] = useState([
-        { field: "artist", headerName: "Artisti", filter: true, suppressMovable: true, flex: 2 },
-        { field: "title", headerName: "Levyn nimi", filter: true, suppressMovable: true, flex: 2 },
-        { field: "label", headerName: "Levy-yhtiö", filter: true, suppressMovable: true, flex: 2 },
-        { field: "size", headerName: "Koko", filter: true, suppressMovable: true, flex: 1 },
-        { field: "lev", headerName: "Rec", filter: true, suppressMovable: true, flex: 1 },
-        { field: "kan", headerName: "PS", filter: true, suppressMovable: true, flex: 1 },
-        { field: "price", headerName: "Hinta", filter: true, suppressMovable: true, cellStyle: { textAlign: "right" }, width: 100 },
-        { field: "genre", headerName: "Genre", filter: true, suppressMovable: true, flex: 1 },
-        {
-            field: "discogs",
-            headerName: "Discogs",
-            filter: true,
-            suppressMovable: true,
-            width: 110,
-            cellRenderer: params => (
-                <div
-                    className="discogsLink"
-                    onClick={() => handleDiscogsLink(params.data.discogs)}
-                >
-                    {params.data.discogs}
-                </div>
-            ),
-        },
-        {
-            cellRenderer: params => (
-                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%" }}>
-                    <InsertPhotoIcon
-                        style={{ cursor: "pointer", color: "#4682B4" }}
-                        onClick={() => displayImage(params.data)}
-                    />
-                </div>
-            ),
-            width: 90,
-            suppressMovable: true,
-            hide: !localStorage.getItem("isLoggedIn") || localStorage.getItem("loggedInUserRole") === "ADMIN"
-        },
-        {
-            cellRenderer: params => <Button size="small" variant="contained" color="success" onClick={() => addToCart(params.data)}>Lisää Koriin</Button>,
-            flex: 1.5,
-            suppressMovable: true,
-            hide: !localStorage.getItem("isLoggedIn") || localStorage.getItem("loggedInUserRole") === "ADMIN"
-        },
-        {
-            cellRenderer: params => <Button size="small" variant="contained" color="error" onClick={() => deleteRecord(params.data)}>Poista</Button>,
-            flex: 1,
-            suppressMovable: true,
-            hide: localStorage.getItem("loggedInUserRole") !== "ADMIN"
-        },
-        {
-            field: "sold", headerName: "Status", filter: true, suppressMovable: true, flex: 1,
-            hide: localStorage.getItem("loggedInUserRole") !== "ADMIN",
-            cellRenderer: params => {
-                return params.value === 0 ? "Myytävänä" : "Myyty";
-            }
-        },
-        {
-            cellRenderer: params => <Button size="small" variant="contained" color="success" onClick={() => changeStatus(params.data)}>Status</Button>,
-            flex: 1,
-            suppressMovable: true,
-            hide: localStorage.getItem("loggedInUserRole") !== "ADMIN"
-        },
-    ]);
+    useEffect(() => {
+        const updateColumnDefinitions = () => {
+            const isMobile = window.innerWidth <= 768;
+            
+            setColumnDefinitions([
+                { field: "artist", headerName: "Artisti", filter: true, suppressMovable: true, width: isMobile ? 190 : undefined, flex: isMobile ? undefined : 2 },
+                { field: "title", headerName: "Levyn nimi", filter: true, suppressMovable: true, width: isMobile ? 190 : undefined, flex: isMobile ? undefined : 2 },
+                { field: "label", headerName: "Levy-yhtiö", filter: true, suppressMovable: true, width: isMobile ? 190 : undefined, flex: isMobile ? undefined : 2 },
+                { field: "size", headerName: "Koko", filter: true, suppressMovable: true, width: isMobile ? 120 : undefined, flex: isMobile ? undefined : 1 },
+                { field: "lev", headerName: "Rec", filter: true, suppressMovable: true, width: isMobile ? 120 : undefined, flex: isMobile ? undefined : 1 },
+                { field: "kan", headerName: "PS", filter: true, suppressMovable: true, width: isMobile ? 120 : undefined, flex: isMobile ? undefined : 1 },
+                { field: "price", headerName: "Hinta", filter: true, suppressMovable: true, cellStyle: { textAlign: "right" }, width: isMobile ? 100 : undefined, flex: isMobile ? undefined : 1 },
+                { field: "genre", headerName: "Genre", filter: true, suppressMovable: true, width: isMobile ? 120 : undefined, flex: isMobile ? undefined : 1 },
+                {
+                    field: "discogs",
+                    headerName: "Discogs",
+                    filter: true,
+                    suppressMovable: true,
+                    width: isMobile ? 120 : undefined,
+                    cellRenderer: params => (
+                        <div
+                            className="discogsLink"
+                            onClick={() => handleDiscogsLink(params.data.discogs)}
+                        >
+                            {params.data.discogs}
+                        </div>
+                    ),
+                },
+                {
+                    cellRenderer: params => (
+                        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%" }}>
+                            <InsertPhotoIcon
+                                style={{ cursor: "pointer", color: "#4682B4" }}
+                                onClick={() => displayImage(params.data)}
+                            />
+                        </div>
+                    ),
+                    width: isMobile ? 80 : 90,
+                    suppressMovable: true,
+                    hide: !localStorage.getItem("isLoggedIn") || localStorage.getItem("loggedInUserRole") === "ADMIN"
+                },
+                {
+                    cellRenderer: params => <Button size="small" variant="contained" color="success" onClick={() => addToCart(params.data)}>Lisää Koriin</Button>,
+                    width: isMobile ? 170 : undefined,
+                    flex: isMobile ? undefined : 1.5,
+                    suppressMovable: true,
+                    hide: !localStorage.getItem("isLoggedIn") || localStorage.getItem("loggedInUserRole") === "ADMIN"
+                },
+                {
+                    cellRenderer: params => <Button size="small" variant="contained" color="error" onClick={() => deleteRecord(params.data)}>Poista</Button>,
+                    width: isMobile ? 170 : undefined,
+                    flex: isMobile ? undefined : 1,
+                    suppressMovable: true,
+                    hide: localStorage.getItem("loggedInUserRole") !== "ADMIN"
+                },
+                {
+                    field: "sold", headerName: "Status", filter: true, suppressMovable: true, width: isMobile ? 150 : undefined,
+                    hide: localStorage.getItem("loggedInUserRole") !== "ADMIN",
+                    cellRenderer: params => {
+                        return params.value === 0 ? "Myytävänä" : "Myyty";
+                    }
+                },
+                {
+                    cellRenderer: params => <Button size="small" variant="contained" color="success" onClick={() => changeStatus(params.data)}>Status</Button>,
+                    width: isMobile ? 150 : undefined,
+                    flex: isMobile ? undefined : 1,
+                    suppressMovable: true,
+                    hide: localStorage.getItem("loggedInUserRole") !== "ADMIN"
+                },
+            ]);
+        };
+
+        updateColumnDefinitions();
+        window.addEventListener("resize", updateColumnDefinitions);
+
+        return () => window.removeEventListener("resize", updateColumnDefinitions);
+    }, []);
 
     const finnishTranslations = {
-        filterOoo: 'Hae...',
+        filterOoo: "Hae...",
     };
 
     //This needs to be added in order to use custom filtering tools.
@@ -227,7 +242,6 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
         setShowPicture(true);
         setIsImageLoading(true);
         setImageLoadTimeout(false);
-        console.log(DISCOGS_API_KEY)
 
         const discogsId = data.discogs.slice(1);
         const url = `https://api.discogs.com/releases/${discogsId}`;
@@ -255,7 +269,7 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
                 }
             })
             .catch(error => {
-                console.error('Fetch error:', error);
+                console.error("Fetch error:", error);
                 setIsImageLoading(false);
                 setImageLoadTimeout(true);
             });

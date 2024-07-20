@@ -24,3 +24,12 @@
     cursor: pointer;
     font-size: 0.8rem;
 }
+
+@media (max-width: 768px) {
+    .ag-theme-material {
+        width: 100% !important;
+    }
+    .ag-header-cell, .ag-cell {
+        font-size: 0.7rem;
+    }
+}

@@ -14,6 +14,7 @@ import '../styling/Createuser.css';
 import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
 
 function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, setCartTotal, shoppingcart, setShoppingcart, setShoppingcartSize }) {
+    const [columnDefinitions, setColumnDefinitions] = useState([]);
     const [shippingOptionChecker, setShippingOptionChecker] = useState(false);
     const navigate = useNavigate();
     const token = localStorage.getItem('jwtToken');
@@ -200,16 +201,30 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
     }
 
 
-    const [columnDefinitions, setColumnDefinitions] = useState([
-        { field: "artist", headerName: "Artisti", filter: true, suppressMovable: true, flex: 1 },
-        { field: "title", headerName: "Levyn nimi", filter: true, suppressMovable: true, flex: 1 },
-        { field: "size", headerName: "Koko", filter: true, suppressMovable: true, flex: 1 },
-        { field: "price", headerName: "Hinta", filter: true, suppressMovable: true, flex: 1 },
-        {
-            cellRenderer: params => <Button size="small" color="error" variant="contained" onClick={() => deleteFromShoppingcart(params.data)}>Poista</Button>,
-            flex: 1,
-        },
-    ]);
+    
+
+    useEffect(() => {
+        const updateColumnDefinitions = () => {
+            const isMobile = window.innerWidth <= 768;
+            setColumnDefinitions([
+                { field: "artist", headerName: "Artisti", filter: true, suppressMovable: true, width: isMobile ? 190 : undefined, flex: isMobile ? undefined : 2 },
+                { field: "title", headerName: "Levyn nimi", filter: true, suppressMovable: true, width: isMobile ? 190 : undefined, flex: isMobile ? undefined : 2 },
+                { field: "size", headerName: "Koko", filter: true, suppressMovable: true, width: isMobile ? 120 : undefined, flex: isMobile ? undefined : 2 },
+                { field: "price", headerName: "Hinta", filter: true, suppressMovable: true, cellStyle: { textAlign: "right" }, width: isMobile ? 100 : undefined, flex: isMobile ? undefined : 1 },
+                {
+                    cellRenderer: params => <Button size="small" color="error" variant="contained" onClick={() => deleteFromShoppingcart(params.data)}>Poista</Button>,
+                    width: isMobile ? 170 : undefined,
+                    flex: isMobile ? undefined : 1,
+                },
+            ]);
+        }
+
+        updateColumnDefinitions();
+        window.addEventListener("resize", updateColumnDefinitions);
+
+        return () => window.removeEventListener("resize", updateColumnDefinitions);
+        
+    }, [])
 
     return (
         <>

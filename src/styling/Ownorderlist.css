@@ -46,3 +46,47 @@
     visibility: visible;
     opacity: 1;
 }
+
+@media (max-width: 768px) {
+    .mainDivOwnOrders {
+        padding: 10px;
+    }
+    
+    .orderContainer {
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+    
+    .status-step {
+        display: block;
+        margin: 5px 0;
+        font-size: 0.9rem;
+    }
+    
+    .tooltip {
+        width: auto;
+        font-size: 0.7rem;
+    }
+    
+    ul {
+        padding: 0;
+    }
+    
+    li {
+        margin-bottom: 15px;
+        margin-left: 10px;
+    }
+
+    h2 {
+        font-size: 1.2rem;
+    }
+    
+    h3 {
+        font-size: 1rem;
+    }
+    
+    h4 {
+        font-size: 1rem;
+    }
+}

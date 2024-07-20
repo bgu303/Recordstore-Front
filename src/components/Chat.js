@@ -7,6 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import SendIcon from '@mui/icons-material/Send';
 import { useNavigate } from "react-router-dom";
 import { format } from 'date-fns';
+import '../styling/Chat.css';
 
 function ChatRoom({ loggedInUser, conversationId, setConversationId, conversationMessages, setConversationMessages, fetchConversationId, fetchConversationMessages, newMessageState, setNewMessageState, adminNewMessageIds, setAdminNewMessageIds }) {
     const [message, setMessage] = useState("");
@@ -186,20 +187,24 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
 
     return (
         <>
-            <div style={{ textAlign: "center" }}>
-                <h1>Chatti</h1>
-                <p>Alla olevasta chatistä voit jutella PoppiMikon kanssa</p>
-                <p>Viesteihisi vastataan mahdollisimman pian.</p>
+            <div className="chat-container">
+                <h1 className="chatTitle">Chatti</h1>
+                <p className="chatParagraph">Alla olevasta chatistä voit jutella PoppiMikon kanssa</p>
+                <p className="chatParagraph">Viesteihisi vastataan mahdollisimman pian.</p>
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                    <div style={{ border: "1px solid #ccc", borderRadius: "5px", padding: "10px", height: "500px", overflowY: "auto", width: "400px", marginBottom: "20px" }}>
+                    <div className="chat-box">
                         {conversationMessages.map((message, index) => (
-                            <div key={index} style={{ marginBottom: "10px", textAlign: message.sender_id === loggedInUser.id ? "right" : "left" }}>
+                            <div key={index} className={`message ${message.sender_id === loggedInUser.id ? 'message-right' : ''}`}>
                                 <div style={{ display: "flex", flexDirection: "column", alignItems: message.sender_id === loggedInUser.id ? "flex-end" : "flex-start" }}>
-                                    <div style={{ padding: "8px", backgroundColor: message.sender_id === loggedInUser.id ? "#DCF8C6" : "#E0E0E0", borderRadius: "5px", boxShadow: "0 1px 3px rgba(0,0,0,0.2)" }}>
-                                        <strong style={{ fontSize: "14px", color: "#333" }}>{message.sender_id === loggedInUser.id ? "Sinä" : message.sender_id === 14 ? "PoppiMikko" : ""}</strong>
-                                        <span style={{ fontSize: "14px", color: "#666", marginTop: "5px", display: "block" }}>{message.message}</span>
+                                    <div className={`message-content ${message.sender_id === loggedInUser.id ? 'message-sent' : 'message-received'}`}>
+                                        <strong style={{ fontSize: "14px", color: "#333" }}>
+                                            {message.sender_id === loggedInUser.id ? "Sinä" : message.sender_id === 14 ? "PoppiMikko" : ""}
+                                        </strong>
+                                        <span style={{ fontSize: "14px", color: "#666", marginTop: "5px", display: "block" }}>
+                                            {message.message}
+                                        </span>
                                     </div>
-                                    <div style={{ fontSize: "10px", color: "#aaa", marginTop: "5px", alignSelf: message.sender_id === loggedInUser.id ? "flex-end" : "flex-start" }}>
+                                    <div className="message-time">
                                         {format(new Date(message.created_at), 'dd.MM.yyyy HH:mm')}
                                     </div>
                                 </div>
@@ -236,23 +241,19 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
                     {loggedInUser.role === "ADMIN" && (
                         <div>
                             <select
-                                style={{
-                                    padding: 10,
-                                    fontSize: 14,
-                                    border: "1px solid #ccc",
-                                    borderRadius: 5,
-                                    width: '100%',
-                                    marginBottom: 5,
-                                    marginTop: 10
-                                }}
-                                value={selectedUser} onChange={handleUserChange}>
+                                className="select-user"
+                                value={selectedUser}
+                                onChange={handleUserChange}
+                            >
                                 <option value="">Valitse käyttäjä kenen kanssa chatata</option>
                                 {allUsers.map(user => (
                                     <option
                                         key={user.id}
                                         value={user.id}
                                         style={adminNewMessageIds.includes(user.id) ? { backgroundColor: "#f52b5d" } : {}}
-                                    >{user.email}</option>
+                                    >
+                                        {user.email}
+                                    </option>
                                 ))}
                             </select>
                         </div>
@@ -261,6 +262,7 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
             </div>
         </>
     );
+    
 }
 
 export default ChatRoom;
