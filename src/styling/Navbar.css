@@ -78,11 +78,14 @@
     z-index: 1000;
     background-color: #313131;
     padding-top: 10px;
-    padding-bottom: 10px;
+    padding-bottom: 10px;    
   }
 
   .navbar.isOpen {
-    display: flex;
+    display: block;
+    position: fixed;
+    width: 100%;
+    margin-top: 50px;
   }
 
   .hamburgerMenuButton {
@@ -97,7 +100,7 @@
     z-index: 1001;
     width: 100%;
     text-align: left;
-    box-sizing: border-box; /* Ensure padding is included in the element’s total width/height */
+    box-sizing: border-box;
   }
 
   .nav-left,
@@ -121,7 +124,7 @@
 
   .searchUnderline {
     width: 80%;
-    margin-top: 50px;
+    margin-top: 25px;
     margin-left: auto;
     margin-right: auto;
     height: 1px;
