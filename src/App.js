@@ -333,7 +333,7 @@ function App() {
     setSearchOpen(false);
     localStorage.setItem("path", path);
     setActivePath(path);
-    setIsOpen((open) => !open);
+    setIsOpen(!isOpen);
   };
 
   useEffect(() => {
@@ -352,7 +352,7 @@ function App() {
   }
 
   const toggleMenu = () => {
-    setIsOpen((open) => !open);
+    setIsOpen(!isOpen);
   }
 
   return (
@@ -425,12 +425,12 @@ function App() {
                 Lähetä Palautetta
               </Link>
             )}
-            <div>
+            <div className="searchBarDiv first">
               {loggedInUser.role !== "ADMIN" && (
                 <div style={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '10px' // Space between items
+                  gap: '10px'
                 }}>
                   <IconButton
                     style={{ color: 'white', paddingLeft: 15 }}
@@ -443,7 +443,6 @@ function App() {
                       setSearchOpen={setSearchOpen}
                       searchResults={searchResults}
                       setSearchResults={setSearchResults}
-                      setIsOpen={setIsOpen}
                     />
                   )}
                 </div>
@@ -455,9 +454,7 @@ function App() {
             {isLoggedIn && loggedInUser.role !== "ADMIN" && (
               <Link
                 to="/shoppingcart"
-                className={`nav-link nav-link-shoppingcart ${activePath === "/shoppingcart" ? "active" : ""}`}
-                onClick={() => clickedLink("/shoppingcart", setActivePath)}
-              >
+                className={`nav-link nav-link-shoppingcart first ${activePath === "/shoppingcart" ? "active" : ""}`}>
                 <ShoppingCartIcon />
                 {shoppingcartSize >= 0 && <span className="notification-badge-shoppingcart notification-badge">{shoppingcartSize}</span>}
               </Link>
@@ -485,6 +482,40 @@ function App() {
             )}
           </div>
         </nav>
+        <div className="mobileDiv">
+          {isLoggedIn && loggedInUser.role !== "ADMIN" && (
+            <Link
+              to="/shoppingcart"
+              className={`nav-link nav-link-shoppingcart second ${activePath === "/shoppingcart" ? "active" : ""}`}>
+              <ShoppingCartIcon />
+              {shoppingcartSize >= 0 && <span className="notification-badge-shoppingcart notification-badge">{shoppingcartSize}</span>}
+            </Link>
+          )}
+          <div className="searchBarDiv second">
+            {loggedInUser.role !== "ADMIN" && (
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px'
+              }}>
+                <IconButton
+                  style={{ color: 'white', paddingLeft: 15 }}
+                  onClick={() => openSearch()}
+                >
+                  <SearchIcon />
+                </IconButton>
+                {searchOpen && (
+                  <SearchRecords
+                    setSearchOpen={setSearchOpen}
+                    searchResults={searchResults}
+                    setSearchResults={setSearchResults}
+                    setIsOpen={setIsOpen}
+                  />
+                )}
+              </div>
+            )}
+          </div>
+        </div>
         <Routes>
           <Route path="/" element={<FrontPage />} />
           <Route path="/records" element={<Records isLoggedIn={isLoggedIn} loggedInUser={loggedInUser} showShoppingcart={showShoppingcart} />} />

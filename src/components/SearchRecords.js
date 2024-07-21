@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import '../styling/Searchrecords.css';
 
-function SearchRecords({ setSearchOpen, searchResults, setSearchResults, setIsOpen }) {
+function SearchRecords({ setSearchOpen, searchResults, setSearchResults }) {
     const [searchTerm, setSearchTerm] = useState("");
     const navigate = useNavigate();
 
@@ -12,7 +12,6 @@ function SearchRecords({ setSearchOpen, searchResults, setSearchResults, setIsOp
         if (searchTerm.trim() === "") {
             return;
         }
-        setIsOpen((open) => !open);
 
         fetch(`${BASE_URL_CLOUD}/search/${encodeURIComponent(searchTerm)}`)
             .then(response => {
