@@ -26,7 +26,6 @@
 
 .homePageParagraph {
     line-height: 1.5;
-    text-align: justify;
 }
 
 b {
@@ -103,6 +102,7 @@ footer {
 
     .homePageParagraph {
         font-size: 0.9em;
+        line-height: 1.7;
     }
 }
 

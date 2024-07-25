@@ -178,10 +178,26 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
         setNewMessageState(false)
     }, [newMessageState])
 
+
     useEffect(() => {
         return () => {
             const currentTime = new Date().toISOString();
             localStorage.setItem("unmountTime", currentTime);
+
+            fetch(`${BASE_URL_CLOUD}/chat/chatmessagechecker/${conversationId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Something went wrong.");
+                }
+                return response.json();
+            })
+            .then(responseData => {
+                console.log(responseData);
+            })
+            .catch(error => {
+                console.error("There was a problem with the fetch operation:", error);
+            });
+
         };
     }, []);
 
@@ -262,7 +278,7 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
             </div>
         </>
     );
-    
+
 }
 
 export default ChatRoom;

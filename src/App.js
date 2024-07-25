@@ -86,77 +86,58 @@ function App() {
   }, []);
 
   //The fetching of conversation id and message logic is moved here from Chat component in order to track the websockets accordingly, wasn't possible before when websocket logic was inside Chat component.
-  const fetchConversationId = () => {
+  const fetchConversationId = async () => {
     if (!isLoggedIn || localStorage.getItem("loggedInUserRole") === "ADMIN") {
       return;
     }
-    console.log(localStorage.getItem("loggedInUserId"))
 
-    fetch(`${BASE_URL_CLOUD}/chat/getconversationid/${localStorage.getItem("loggedInUserId")}`)
-      .then(response => {
-        if (response.ok) {
-          return response.json()
-        } else {
-          throw new Error("Failed to fetch conversation ID");
-        }
-      })
-      .then(data => {
+    try {
+      const response = await fetch(`${BASE_URL_CLOUD}/chat/getconversationid/${localStorage.getItem("loggedInUserId")}`);
+      if (response.ok) {
+        const data = await response.json();
         if (data.length > 0) {
           setConversationId(data[0].id);
         } else {
           console.error("No conversation ID found");
         }
-      })
-      .catch(error => {
-        console.error("Error fetching conversation ID:", error);
-      });
+      } else {
+        throw new Error("Failed to fetch conversation ID");
+      }
+    } catch (error) {
+      console.error("Error fetching conversation ID:", error);
+    }
   }
 
-
-  const fetchConversationMessages = () => {
-    //This is added because for whatever reason in cloud implementation it fetches the conversation messages with id 0.
-    //This prevents it from happening, don't know why this happens, maybe explanation will be found out later.
+  const fetchConversationMessages = async () => {
+    // This is added because for whatever reason in cloud implementation it fetches the conversation messages with id 0.
+    // This prevents it from happening, don't know why this happens, maybe explanation will be found out later.
     if (conversationId === null) {
       return;
     }
 
-    fetch(`${BASE_URL_CLOUD}/chat/getconversationmessages/${conversationId}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`
+    try {
+      const response = await fetch(`${BASE_URL_CLOUD}/chat/getconversationmessages/${conversationId}`, {
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      });
+      if (response.ok) {
+        const responseData = await response.json();
+        setConversationMessages(responseData);
+        console.log(responseData)
+
+        // Check if there are any messages where isRead is 0 (unread)
+        const hasUnreadMessages = responseData.some(message => message.isread === 0);
+        if (hasUnreadMessages) {
+          setNewMessageState(true);
+        }
+      } else {
+        throw new Error("Something went wrong");
       }
-    })
-      .then(response => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error("Something went wrong");
-        }
-      })
-      .then(responseData => {
-        setConversationMessages(responseData)
-
-        //Fetch the latest message, which is NOT from the user - compared to the timestamp fetched from the chat, to find out if new messages have arrived or not.
-        const adminMessages = responseData.filter(message => message.sender_id !== loggedInUser.id);
-
-        if (adminMessages.length > 0) {
-          const latestMessage = adminMessages[adminMessages.length - 1].created_at;
-
-          const unmountTime = localStorage.getItem("unmountTime");
-
-          if (unmountTime) {
-            const latestMessageDate = new Date(latestMessage);
-            const unmountTimeDate = new Date(unmountTime);
-
-            //If latestmessage is newer than last been in chat  -> setNewMessage is true -> Chat bubble is shown.
-            if (latestMessageDate > unmountTimeDate) {
-              console.log("The latest message is newer than the unmount time.");
-              setNewMessageState(true);
-            }
-            //console.log("Unmount time is not available in localStorage.");
-          }
-        }
-      })
-  }
+    } catch (error) {
+      console.error("Error fetching conversation messages:", error);
+    }
+  };
 
   const fetchConversationMessagesAdmin = () => {
     if (localStorage.getItem("loggedInUserRole") !== "ADMIN") {
@@ -166,7 +147,7 @@ function App() {
     fetch(`${BASE_URL_CLOUD}/chat/getallconversationmessages`)
       .then(response => {
         if (response.ok) {
-          return response.json()
+          return response.json();
         } else {
           throw new Error("Something went wrong while fetching all conversation messages");
         }
@@ -174,32 +155,22 @@ function App() {
       .then(responseData => {
         setAdminAllConversationMessages(responseData);
 
-        //Same message filtering is done for the admin. Filter admin messges --> Check if new messages from other users have arrived according to the timestamp.
+        // Filter out messages sent by other users
         const userMessages = responseData.filter(message => message.sender_id !== loggedInUser.id);
 
         if (userMessages.length > 0) {
-          const latestMessage = userMessages[userMessages.length - 1].created_at;
+          // Filter messages that have isread_admin = 0
+          const unreadMessages = userMessages.filter(message => message.isread_admin === 0);
 
-          const unmountTime = localStorage.getItem("unmountTime");
-
-          if (unmountTime) {
-            const latestMessageDate = new Date(latestMessage);
-            const unmountTimeDate = new Date(unmountTime);
-
-            // Filter messages that arrived after the unmount time
-            const newMessagesArr = userMessages.filter(message => new Date(message.created_at) > unmountTimeDate);
-            setAdminNewMessagesSinceLogin(newMessagesArr);
-
-            // Extract unique sender IDs
-            const uniqueSenderIds = [...new Set(newMessagesArr.map(message => message.sender_id))];
-            setAdminNewMessageIds(uniqueSenderIds);
-
-            if (latestMessageDate > unmountTimeDate) {
-              setNewMessageState(true);
-            }
-          }
+          // Extract unique sender IDs from unread messages
+          const uniqueSenderIds = [...new Set(unreadMessages.map(message => message.sender_id))];
+          setAdminNewMessageIds(uniqueSenderIds);
+          setNewMessageState(true);
         }
       })
+      .catch(error => {
+        console.error("Error fetching conversation messages:", error);
+      });
   }
 
   const fetchConversationIdsAdmin = () => {
@@ -221,12 +192,23 @@ function App() {
   }
 
   //This useEffect is ran if normal user logs in.
+  // This useEffect will fetch conversation ID and then fetch messages once the conversation ID is set.
   useEffect(() => {
     if (localStorage.getItem("isLoggedIn") !== null && localStorage.getItem("loggedInUserRole") !== "ADMIN") {
-      fetchConversationId();
+      const fetchData = async () => {
+        await fetchConversationId();
+      };
+
+      fetchData();
+    }
+  }, [isLoggedIn]);
+
+  // This useEffect will fetch messages whenever the conversationId changes
+  useEffect(() => {
+    if (conversationId !== null) {
       fetchConversationMessages();
     }
-  }, [isLoggedIn])
+  }, [conversationId]);
 
   //This useEffect is ran if admin logs in.
   useEffect(() => {
@@ -478,7 +460,7 @@ function App() {
               </>
             )}
             {isLoggedIn && (
-              <Logout setIsLoggedIn={setIsLoggedIn} setLoggedInUser={setLoggedInUser} />
+              <Logout setIsLoggedIn={setIsLoggedIn} setLoggedInUser={setLoggedInUser} setNewMessageState={setNewMessageState} />
             )}
           </div>
         </nav>
