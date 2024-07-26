@@ -1,11 +1,11 @@
 import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
 import { useState } from 'react';
-import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
 import { useNavigate } from 'react-router-dom';
 
-function DeleteUser() {
+import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
 
+function DeleteUser() {
     const [user, setUser] = useState({
         email: "",
         password: ""

@@ -4,11 +4,12 @@ import { AgGridReact } from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
 import 'ag-grid-community/styles/ag-theme-material.css';
 import { Button } from '@mui/material';
-import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
 import Sizefilter from './Sizefilter';
 import '../styling/Records.css'
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import CircularProgress from '@mui/material/CircularProgress';
+
+import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
 
 function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) {
     const [columnDefinitions, setColumnDefinitions] = useState([]);
@@ -196,7 +197,7 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
                 {
                     cellRenderer: params => <Button size="small" variant="contained" color="error" onClick={() => deleteRecord(params.data)}>Poista</Button>,
                     width: isMobile ? 170 : undefined,
-                    flex: isMobile ? undefined : 1,
+                    flex: isMobile ? undefined : 1.2,
                     suppressMovable: true,
                     hide: localStorage.getItem("loggedInUserRole") !== "ADMIN"
                 },
@@ -210,7 +211,7 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
                 {
                     cellRenderer: params => <Button size="small" variant="contained" color="success" onClick={() => changeStatus(params.data)}>Status</Button>,
                     width: isMobile ? 150 : undefined,
-                    flex: isMobile ? undefined : 1,
+                    flex: isMobile ? undefined : 1.2,
                     suppressMovable: true,
                     hide: localStorage.getItem("loggedInUserRole") !== "ADMIN"
                 },

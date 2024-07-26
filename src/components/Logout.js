@@ -4,7 +4,6 @@ import IconButton from '@mui/material/IconButton';
 import LogoutIcon from '@mui/icons-material/Logout';
 import '../styling/Logout.css';
 
-
 function Logout({ setIsLoggedIn, setLoggedInUser, setNewMessageState }) {
     const navigate = useNavigate();
 

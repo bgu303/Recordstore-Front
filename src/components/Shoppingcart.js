@@ -10,8 +10,9 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
 import { useNavigate } from "react-router-dom";
-import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
 import '../styling/Shoppingcart.css'
+
+import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
 
 function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, setCartTotal, shoppingcart, setShoppingcart, setShoppingcartSize }) {
     const [columnDefinitions, setColumnDefinitions] = useState([]);

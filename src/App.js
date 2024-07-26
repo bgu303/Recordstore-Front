@@ -16,6 +16,7 @@ import SearchRecords from './components/SearchRecords';
 import SearchedRecords from './components/SearchedRecords';
 import TermsOfUse from './components/Termsofuse';
 import PrivacyStatement from './components/Privacystatement';
+import FrontPageTool from './components/Frontpagetool';
 import "./App.css";
 import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
@@ -24,9 +25,10 @@ import "./styling/Navbar.css";
 import SearchIcon from '@mui/icons-material/Search';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import { BASE_URL, BASE_URL_CLOUD } from './components/Apiconstants';
 import socket from './components/socket';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+
+import { BASE_URL, BASE_URL_CLOUD } from './components/Apiconstants';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -311,7 +313,7 @@ function App() {
       })
       .catch(error => console.error('Error:', error));
   };
-
+  
   // useEffect to trigger showShoppingcart
   useEffect(() => {
     if (loggedInUser.id) {
@@ -403,6 +405,13 @@ function App() {
                   onClick={() => clickedLink("/orders", setActivePath)}
                 >
                   Tilaukset
+                </Link>
+                <Link
+                  to="/frontpagetool"
+                  className={`nav-link ${activePath === "/orders" ? "active" : ""}`}
+                  onClick={() => clickedLink("/frontpagetool", setActivePath)}
+                >
+                  Etusivutyökalu
                 </Link>
               </>
             )}
@@ -522,6 +531,7 @@ function App() {
           <Route path='/search' element={<SearchedRecords searchResults={searchResults} loggedInUser={loggedInUser} showShoppingcart={showShoppingcart} />} />
           <Route path="/termsofuse" element={<TermsOfUse />} />
           <Route path="/privacystatement" element={<PrivacyStatement />} />
+          <Route path="/frontpagetool" element={<FrontPageTool />} />
         </Routes>
       </div>
     </Router>

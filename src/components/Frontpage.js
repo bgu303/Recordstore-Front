@@ -5,14 +5,16 @@ import { AgGridReact } from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
 import 'ag-grid-community/styles/ag-theme-material.css';
 import { useNavigate } from "react-router-dom";
-import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
 import Footer from './Footer';
 import ImageBanner from './Imagebanner';
+
+import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
 
 function FrontPage() {
     const navigate = useNavigate();
     const [records, setRecords] = useState([]);
     const [randomRecords, setRandomRecords] = useState([]);
+    const [notifications, setNotifications] = useState([]);
     const columnDefs = [
         { headerName: "Artisti", field: "artist", width: 240, filter: false, suppressMovable: true, sortable: false },
         { headerName: "Levyn nimi", field: "title", width: 240, filter: false, suppressMovable: true, sortable: false },
@@ -37,6 +39,24 @@ function FrontPage() {
                 setRecords([]);
             });
     }
+
+    const showNotifications = () => {
+        fetch(`${BASE_URL_CLOUD}/notifications/`)
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    console.log("Failed to fetch notifications.")
+                }
+            })
+            .then(responseData => {
+                setNotifications(responseData)
+            })
+    }
+
+    useEffect(() => {
+        showNotifications();
+    }, [])
 
     useEffect(() => {
         getRecords();
@@ -96,7 +116,9 @@ function FrontPage() {
                                 Tässä osiossa on PoppiMikon uusimmat ilmoitukset. Pysy ajan tasalla uusimmista uutisista ja päivityksistä!
                             </p>
                             <ul className="ulFrontPage">
-                                <li>PoppiMikko on kesälomalla 30.8 asti. Palataan Asiaan syksymmällä!</li>
+                                {notifications.map((notif, index) => (
+                                    <li key={index}>{notif.notification_text}</li>
+                                ))}
                             </ul>
                         </div>
                     </div>
