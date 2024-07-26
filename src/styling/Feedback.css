@@ -1,0 +1,28 @@
+.feedbackContainer {
+    text-align: center;
+}
+
+.feedbackHeader {
+    margin-bottom: 1rem;
+}
+
+.feedbackSubheader {
+    margin-bottom: 2rem;
+}
+
+.feedbackForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.feedbackTextfield {
+    width: 500px;
+}
+
+@media (max-width: 768px) {
+    .feedbackTextfield {
+        width: 90%;
+    }
+}

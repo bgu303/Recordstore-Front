@@ -29,7 +29,15 @@
     .ag-theme-material {
         width: 100% !important;
     }
+
     .ag-header-cell, .ag-cell {
         font-size: 0.7rem;
+    }
+    
+    .discogsPicture {
+        padding: 5px;
+        width: 80%;
+        height: auto;
+        font-size: 0.9rem;
     }
 }

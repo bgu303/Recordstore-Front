@@ -10,8 +10,8 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
 import { useNavigate } from "react-router-dom";
-import '../styling/Createuser.css';
 import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
+import '../styling/Shoppingcart.css'
 
 function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, setCartTotal, shoppingcart, setShoppingcart, setShoppingcartSize }) {
     const [columnDefinitions, setColumnDefinitions] = useState([]);
@@ -241,7 +241,7 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                         />
                     </div>
                     <h3 style={{ marginLeft: "20px" }}>Yhteensä: {cartTotal} euroa.</h3>
-                    <div className="mainDiv">
+                    <div className="orderInfoDiv">
                         <h3>Tilaajan Tiedot</h3>
                         <TextField label="Koko nimi"
                             onChange={e => setCustomerInfo({ ...customerInfo, name: e.target.value })}

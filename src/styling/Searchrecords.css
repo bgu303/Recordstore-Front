@@ -24,13 +24,24 @@
     }
   
     .search-textfield {
-      width: auto; 
+      width: 180px;
       font-size: 0.8rem;
-      padding: 6px;
+      padding: 2px;
+      box-sizing: border-box;
     }
   
     .search-span {
       font-size: 0.8rem;
     }
+    
   }
+
+  @media (max-width: 330px) {
+    .search-textfield {
+      width: 120px;
+      font-size: 0.8rem;
+      padding: 2px;
+      box-sizing: border-box;
+    }
+}
   

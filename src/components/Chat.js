@@ -181,8 +181,9 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
 
     useEffect(() => {
         return () => {
-            const currentTime = new Date().toISOString();
-            localStorage.setItem("unmountTime", currentTime);
+            if (localStorage.getItem("loggedInUserRole") === "ADMIN") {
+                return;
+            }
 
             fetch(`${BASE_URL_CLOUD}/chat/chatmessagechecker/${conversationId}`)
             .then(response => {

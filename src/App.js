@@ -51,7 +51,7 @@ function App() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
-
+  const [newMessageCount, setNewMessageCount] = useState(null);
 
   //Idk if this will be used anymore, if anything I should make all of the things that use token use the token state as above ^ CURRENTLY USED ONLY IN LOGIN. Fix maybe?
   const token1 = localStorage.getItem("jwtToken")
@@ -124,12 +124,14 @@ function App() {
       if (response.ok) {
         const responseData = await response.json();
         setConversationMessages(responseData);
-        console.log(responseData)
 
         // Check if there are any messages where isRead is 0 (unread)
-        const hasUnreadMessages = responseData.some(message => message.isread === 0);
-        if (hasUnreadMessages) {
+        const unreadMessages = responseData.filter(message => message.isread === 0);
+        const unreadMessagesCount = unreadMessages.length;
+
+        if (unreadMessagesCount > 0) {
           setNewMessageState(true);
+          setNewMessageCount(unreadMessagesCount);
         }
       } else {
         throw new Error("Something went wrong");
@@ -160,12 +162,18 @@ function App() {
 
         if (userMessages.length > 0) {
           // Filter messages that have isread_admin = 0
-          const unreadMessages = userMessages.filter(message => message.isread_admin === 0);
+          const unreadMessages = responseData.filter(message => message.isread_admin === 0);
+          const unreadMessagesCount = unreadMessages.length;
+
+          if (unreadMessagesCount.length === 0) {
+            return;
+          }
 
           // Extract unique sender IDs from unread messages
           const uniqueSenderIds = [...new Set(unreadMessages.map(message => message.sender_id))];
           setAdminNewMessageIds(uniqueSenderIds);
           setNewMessageState(true);
+          setNewMessageCount(unreadMessagesCount);
         }
       })
       .catch(error => {
@@ -290,7 +298,7 @@ function App() {
     if (localStorage.getItem("loggedInUserRole") === "ADMIN") {
       return;
     }
-    fetch(`${BASE_URL_CLOUD}/shoppingcart/shoppingcartitems/${loggedInUser.id}`)
+    fetch(`${BASE_URL_CLOUD}/shoppingcart/shoppingcartitems/${localStorage.getItem("loggedInUserId")}`)
       .then(response => {
         if (response.ok) {
           return response.json();
@@ -368,7 +376,7 @@ function App() {
                 onClick={() => clickedLink("/chat", setActivePath)}
               >
                 Chatti
-                {newMessageState && <span className="notification-badge"></span>}
+                {newMessageState && newMessageCount > 0 && <span className="notification-badge-shoppingcart notification-badge">{newMessageCount}</span>}
               </Link>
             )}
             {isLoggedIn && loggedInUser.role !== "ADMIN" && (
