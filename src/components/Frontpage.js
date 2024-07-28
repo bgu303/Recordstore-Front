@@ -15,6 +15,7 @@ function FrontPage() {
     const [records, setRecords] = useState([]);
     const [randomRecords, setRandomRecords] = useState([]);
     const [notifications, setNotifications] = useState([]);
+    const [playlists, setPlaylists] = useState([])
     const columnDefs = [
         { headerName: "Artisti", field: "artist", width: 240, filter: false, suppressMovable: true, sortable: false },
         { headerName: "Levyn nimi", field: "title", width: 240, filter: false, suppressMovable: true, sortable: false },
@@ -22,7 +23,7 @@ function FrontPage() {
     ];
 
     const getRecords = () => {
-        fetch(`${BASE_URL_CLOUD}/records`)
+        fetch(`${BASE_URL}/records`)
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -41,7 +42,7 @@ function FrontPage() {
     }
 
     const showNotifications = () => {
-        fetch(`${BASE_URL_CLOUD}/notifications/`)
+        fetch(`${BASE_URL}/notifications/`)
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -54,8 +55,23 @@ function FrontPage() {
             })
     }
 
+    const showPlaylists = () => {
+        fetch(`${BASE_URL}/playlists/`)
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    console.log("Failed to fetch playlists.")
+                }
+            })
+            .then(responseData => {
+                setPlaylists(responseData)
+            })
+    }
+
     useEffect(() => {
         showNotifications();
+        showPlaylists();
     }, [])
 
     useEffect(() => {
@@ -76,6 +92,20 @@ function FrontPage() {
         const selectedRecords = shuffled.slice(0, 10);
         setRandomRecords(selectedRecords)
     }
+
+    // Function to render playlists by source
+    const renderPlaylists = (source) => {
+        return playlists
+            .filter(playlist => playlist.playlist_source === source)
+            .map((playlist, index) => (
+                <div key={index}>
+                    <a className="homePageAnchorTag" href={playlist.playlist_url} target="_blank" rel="noopener noreferrer">
+                        {playlist.playlist_name}
+                    </a>
+                    <br />
+                </div>
+            ));
+    };
 
     return (
         <>
@@ -126,17 +156,11 @@ function FrontPage() {
                         <h2 className="homePageTitles">PoppiMikon soittolistoja</h2>
                         <div>
                             <h4>Spotify</h4>
-                            <p className="homePageParagraph">
-                                <a className="homePageAnchorTag" href="https://open.spotify.com/playlist/37i9dQZF1DXb57FjYWz00c" target="_blank">PoppiMikon Spotify Jams 80s</a><br />
-                                <a className="homePageAnchorTag" href="https://open.spotify.com/playlist/37i9dQZF1DXbTxeAdrVG2l" target="_blank">PoppiMikon Spotify Jams 90s</a>
-                            </p>
+                            {renderPlaylists('Spotify')}
                         </div>
                         <div>
                             <h4>Youtube</h4>
-                            <p className="homePageParagraph">
-                                <a className="homePageAnchorTag" href="https://www.youtube.com/watch?v=cOni7oqw2y4&list=PLAZ44MfkpzxBpy5lfbjhipUOcDB7QqItT" target="_blank">PoppiMikon Bängerit 2024</a><br />
-                                <a className="homePageAnchorTag" href="https://www.youtube.com/playlist?list=PLetgZKHHaF-bTruP0M6ZgXY9_S4maKoX9" target="_blank">PoppiMikon Youtube Greatest Hits Collection</a>
-                            </p>
+                            {renderPlaylists('Youtube')}
                         </div>
                     </div>
                 </div>

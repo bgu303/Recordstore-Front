@@ -21,7 +21,7 @@ function SendFeedback({ loggedInUser }) {
             return alert("Ei tyhjiä palautteita.");
         }
         try {
-            const response = await fetch(`${BASE_URL_CLOUD}/feedback/sendfeedback`, {
+            const response = await fetch(`${BASE_URL}/feedback/sendfeedback`, {
                 method: "POST",
                 headers: {
                     'Authorization': `Bearer ${token}`,

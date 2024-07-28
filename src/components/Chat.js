@@ -30,7 +30,7 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
             return;
         }
 
-        fetch(`${BASE_URL_CLOUD}/chat/getconversationid/${selectedUser}`)
+        fetch(`${BASE_URL}/chat/getconversationid/${selectedUser}`)
             .then(response => {
                 if (response.ok) {
                     return response.json()
@@ -42,7 +42,7 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
     }
 
     const getAllUsers = () => {
-        fetch(`${BASE_URL_CLOUD}/user/getallusers`)
+        fetch(`${BASE_URL}/user/getallusers`)
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -66,7 +66,7 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
             return alert("Ei tyhjiä viestejä.");
         }
 
-        fetch(`${BASE_URL_CLOUD}/chat/sendmessage`, {
+        fetch(`${BASE_URL}/chat/sendmessage`, {
             method: "POST",
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -87,7 +87,7 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
             return alert("Ei tyhjiä viestejä.");
         }
 
-        fetch(`${BASE_URL_CLOUD}/chat/adminsendmessage`, {
+        fetch(`${BASE_URL}/chat/adminsendmessage`, {
             method: "POST",
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -104,7 +104,7 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
     }
 
     const adminOpenConversation = () => {
-        fetch(`${BASE_URL_CLOUD}/chat/admingetconversationmessages/${selectedUser}`, {
+        fetch(`${BASE_URL}/chat/admingetconversationmessages/${selectedUser}`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
@@ -186,7 +186,7 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
                 return;
             }
 
-            fetch(`${BASE_URL_CLOUD}/chat/chatmessagechecker/${conversationId}`)
+            fetch(`${BASE_URL}/chat/chatmessagechecker/${conversationId}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error("Something went wrong.");
@@ -218,7 +218,7 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
                                         <strong style={{ fontSize: "14px", color: "#333" }}>
                                             {message.sender_id === loggedInUser.id ? "Sinä" : message.sender_id === 14 ? "PoppiMikko" : ""}
                                         </strong>
-                                        <span style={{ fontSize: "14px", color: "#666", marginTop: "5px", display: "block" }}>
+                                        <span style={{ fontSize: "14px", color: "black", marginTop: "5px", display: "block" }}>
                                             {message.message}
                                         </span>
                                     </div>

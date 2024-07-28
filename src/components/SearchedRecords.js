@@ -27,7 +27,7 @@ function SearchedRecords({ searchResults, loggedInUser, showShoppingcart }) {
     const addToCart = async (data) => {
         console.log(`UserId: ${loggedInUser.id} itemId: ${data.id}`);
         try {
-            const response = await fetch(`${BASE_URL_CLOUD}/shoppingcart/addtocart`, {
+            const response = await fetch(`${BASE_URL}/shoppingcart/addtocart`, {
                 method: "POST",
                 headers: { "Content-type": "application/json" },
                 body: JSON.stringify({
@@ -158,7 +158,7 @@ function SearchedRecords({ searchResults, loggedInUser, showShoppingcart }) {
             <h1 style={{ textAlign: "center" }}>Haun tulokset</h1>
             <div style={{ width: "95%", margin: "auto" }}>
                 {searchResults && searchResults.length > 0 ? (
-                    <div className="ag-theme-material trainings" style={{ height: "750px", fontSize: 11 }}>
+                    <div className="ag-theme-material trainings" style={{ height: "750px", fontSize: 11, fontWeight: "bold" }}>
                         <AgGridReact
                             reactiveCustomComponents
                             rowData={searchResults}

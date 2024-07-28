@@ -54,6 +54,7 @@ function App() {
   const [searchResults, setSearchResults] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [newMessageCount, setNewMessageCount] = useState(null);
+  const [newOrderCount, setNewOrderCount] = useState(0);
 
   //Idk if this will be used anymore, if anything I should make all of the things that use token use the token state as above ^ CURRENTLY USED ONLY IN LOGIN. Fix maybe?
   const token1 = localStorage.getItem("jwtToken")
@@ -94,7 +95,7 @@ function App() {
     }
 
     try {
-      const response = await fetch(`${BASE_URL_CLOUD}/chat/getconversationid/${localStorage.getItem("loggedInUserId")}`);
+      const response = await fetch(`${BASE_URL}/chat/getconversationid/${localStorage.getItem("loggedInUserId")}`);
       if (response.ok) {
         const data = await response.json();
         if (data.length > 0) {
@@ -118,7 +119,7 @@ function App() {
     }
 
     try {
-      const response = await fetch(`${BASE_URL_CLOUD}/chat/getconversationmessages/${conversationId}`, {
+      const response = await fetch(`${BASE_URL}/chat/getconversationmessages/${conversationId}`, {
         headers: {
           "Authorization": `Bearer ${token}`
         }
@@ -148,7 +149,7 @@ function App() {
       return;
     }
 
-    fetch(`${BASE_URL_CLOUD}/chat/getallconversationmessages`)
+    fetch(`${BASE_URL}/chat/getallconversationmessages`)
       .then(response => {
         if (response.ok) {
           return response.json();
@@ -188,7 +189,7 @@ function App() {
       return;
     }
 
-    fetch(`${BASE_URL_CLOUD}/chat/getallconversationids`)
+    fetch(`${BASE_URL}/chat/getallconversationids`)
       .then(response => {
         if (response.ok) {
           return response.json()
@@ -300,7 +301,7 @@ function App() {
     if (localStorage.getItem("loggedInUserRole") === "ADMIN") {
       return;
     }
-    fetch(`${BASE_URL_CLOUD}/shoppingcart/shoppingcartitems/${localStorage.getItem("loggedInUserId")}`)
+    fetch(`${BASE_URL}/shoppingcart/shoppingcartitems/${localStorage.getItem("loggedInUserId")}`)
       .then(response => {
         if (response.ok) {
           return response.json();
@@ -311,9 +312,41 @@ function App() {
       .then(responseData => {
         setShoppingcartSize(responseData.length)
       })
-      .catch(error => console.error('Error:', error));
+      .catch(error => console.error("Error:", error));
   };
-  
+
+  // Function to get all the orders. This is used for admin so it can fetch all the orders and indicate if new ones have arrived.
+  const getAllOrders = () => {
+    if (localStorage.getItem("loggedInUserRole") !== "ADMIN") {
+      return;
+    }
+
+    fetch(`${BASE_URL}/orders/getallorders/`, {
+      headers: {
+        "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+      }
+    })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          console.log("Failed to fetch orders.");
+          return [];
+        }
+      })
+      .then(responseData => {
+        const newOrderCounter = responseData.filter(order => order.order_status === "Vastaanotettu").length;
+        setNewOrderCount(newOrderCounter);
+      })
+      .catch(error => console.error("Error:", error));
+  }
+
+  useEffect(() => {
+    if (localStorage.getItem("loggedInUserRole") === "ADMIN") {
+      getAllOrders();
+    }
+  }, [loggedInUser]);
+
   // useEffect to trigger showShoppingcart
   useEffect(() => {
     if (loggedInUser.id) {
@@ -405,6 +438,7 @@ function App() {
                   onClick={() => clickedLink("/orders", setActivePath)}
                 >
                   Tilaukset
+                  {newOrderCount > 0 && <span className="notification-badge-shoppingcart notification-badge">{newOrderCount}</span>}
                 </Link>
                 <Link
                   to="/frontpagetool"
