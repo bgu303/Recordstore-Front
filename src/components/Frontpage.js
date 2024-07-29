@@ -96,7 +96,7 @@ function FrontPage() {
     // Function to render playlists by source
     const renderPlaylists = (source) => {
         return playlists
-            .filter(playlist => playlist.playlist_source === source)
+            .filter(playlist => playlist.playlist_source === source).reverse()
             .map((playlist, index) => (
                 <div key={index}>
                     <a className="homePageAnchorTag" href={playlist.playlist_url} target="_blank" rel="noopener noreferrer">

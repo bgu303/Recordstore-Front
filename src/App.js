@@ -314,7 +314,7 @@ function App() {
       })
       .catch(error => console.error("Error:", error));
   };
-
+  
   // Function to get all the orders. This is used for admin so it can fetch all the orders and indicate if new ones have arrived.
   const getAllOrders = () => {
     if (localStorage.getItem("loggedInUserRole") !== "ADMIN") {
@@ -442,7 +442,7 @@ function App() {
                 </Link>
                 <Link
                   to="/frontpagetool"
-                  className={`nav-link ${activePath === "/orders" ? "active" : ""}`}
+                  className={`nav-link ${activePath === "/frontpagetool" ? "active" : ""}`}
                   onClick={() => clickedLink("/frontpagetool", setActivePath)}
                 >
                   Etusivutyökalu
@@ -557,7 +557,7 @@ function App() {
           <Route path="/shoppingcart" element={<Shoppingcart loggedInUser={loggedInUser} customerInfo={customerInfo} setCustomerInfo={setCustomerInfo} cartTotal={cartTotal} setCartTotal={setCartTotal} shoppingcart={shoppingcart} setShoppingcart={setShoppingcart} setShoppingcartSize={setShoppingcartSize} />} />
           <Route path="/chat" element={<ChatRoom loggedInUser={loggedInUser} conversationId={conversationId} setConversationId={setConversationId} conversationMessages={conversationMessages} setConversationMessages={setConversationMessages} fetchConversationId={fetchConversationId} fetchConversationMessages={fetchConversationMessages} newMessageState={newMessageState} setNewMessageState={setNewMessageState} adminNewMessageIds={adminNewMessageIds} setAdminNewMessageIds={setAdminNewMessageIds} />} />
           <Route path="/addrecord" element={<AddRecord loggedInUser={loggedInUser} />} />
-          <Route path="/orders" element={<Orders />} />
+          <Route path="/orders" element={<Orders getAllOrders={getAllOrders} />} />
           <Route path="/ordersummary" element={<Ordersummary customerInfo={customerInfo} cartTotal={cartTotal} loggedInUser={loggedInUser} />} />
           <Route path='/deleteuser' element={<DeleteUser loggedInUser={loggedInUser} />} />
           <Route path='/ownorders' element={<OwnOrders loggedInUser={loggedInUser} />} />

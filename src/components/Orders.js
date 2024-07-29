@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
 
-function Orders() {
+function Orders({ getAllOrders }) {
     const [orderData, setOrderData] = useState([]);
     const token = localStorage.getItem('jwtToken');
     const navigate = useNavigate();
@@ -99,6 +99,7 @@ function Orders() {
                     console.log("Failed to update Status.");
                 } else {
                     getOrders();
+                    getAllOrders();
                 }
             })
             .catch(error => {

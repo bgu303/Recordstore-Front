@@ -107,6 +107,9 @@ function FrontPageTool() {
     }
 
     const addPlaylist = async () => {
+        if (playlist.url.trim() === "" || playlist.playlistName.trim() === "" || playlist.playlistSource.trim() === "") {
+            return alert("Täytä kaikki soittolistaa koskettavat kentät.")
+        }
         try {
             const response = await fetch(`${BASE_URL}/playlists/addplaylist`, {
                 method: "POST",
@@ -170,9 +173,9 @@ function FrontPageTool() {
     ];
 
     const columnDefinitionsPlaylists = [
-        { headerName: "Soittolistan nimi", field: "playlist_name", width: 300 },
-        { headerName: "Soittolistan URL", field: "playlist_url", width: 300 },
-        { headerName: "Soittolistan lähde", field: "playlist_source", width: 300 },
+        { headerName: "Soittolistan nimi", field: "playlist_name", width: 250 },
+        { headerName: "Soittolistan URL", field: "playlist_url", width: 500 },
+        { headerName: "Soittolistan lähde", field: "playlist_source", width: 150 },
         {
             cellRenderer: params => <Button size="small" variant="contained" color="error" onClick={() => deletePlaylist(params.data)}>Poista</Button>,
             suppressMovable: true,
@@ -187,8 +190,8 @@ function FrontPageTool() {
     return (
         <>
             <div className="container">
-                <h2 className="title">Etusivutyökalu</h2>
-                <h4 className="title">Lisää uusi ilmoitus</h4>
+                <h1 className="title">Etusivutyökalu</h1>
+                <h3 className="title">Lisää uusi ilmoitus</h3>
                 <TextField
                     onChange={e => setNotification(e.target.value)}
                     value={notification}
@@ -208,22 +211,22 @@ function FrontPageTool() {
                 </div>
                 <h3>Tämänhetkiset ilmoitukset:</h3>
             </div>
-            <div className="ag-theme-material trainings" style={{ height: 400, width: 900, margin: "auto" }}>
+            <div className="ag-theme-material trainings" style={{ height: 260, width: 700, margin: "auto", fontWeight: "bold" }}>
                 <AgGridReact
                     rowData={notifications}
                     columnDefs={columnDefinitions}
                 />
             </div>
-            <div style={{ height: 3, backgroundColor: "black" }}></div>
+            <div style={{ height: 2, backgroundColor: "#2e2e30", margin: "auto", width: "90%", marginBottom: 40 }}></div>
             <div className="container">
-                <h4 className="title">Lisää uusi soittolista</h4>
+                <h3 className="title">Lisää uusi soittolista</h3>
                 <TextField
                     onChange={e => setPlaylist({ ...playlist, playlistName: e.target.value })}
                     value={playlist.playlistName}
                     placeholder="Soittolistan nimi"
                     className="textField"
                 />
-                <div>
+                <div style={{ marginTop: 10, marginBottom: 15 }}>
                     <TextField
                         onChange={e => setPlaylist({ ...playlist, url: e.target.value })}
                         value={playlist.url}
@@ -262,7 +265,7 @@ function FrontPageTool() {
                 </div>
                 <h3>Tämänhetkiset soittolistat:</h3>
             </div>
-            <div className="ag-theme-material trainings" style={{ height: 400, width: 1200, margin: "auto" }}>
+            <div className="ag-theme-material trainings" style={{ height: 400, width: 1100, margin: "auto", fontWeight: "bold" }}>
                 <AgGridReact
                     rowData={playlists}
                     columnDefs={columnDefinitionsPlaylists}

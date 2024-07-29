@@ -159,7 +159,6 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
     };
 
     const sendOrder = async () => {
-
         if (customerInfo.name.trim() === "" || customerInfo.phoneNumber.trim() === "" || customerInfo.email.trim() === "") {
             return alert("Täytä kaikki tilaukseen liittyvät kentät.");
         }
@@ -201,17 +200,14 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
         }
     }
 
-
-    
-
     useEffect(() => {
         const updateColumnDefinitions = () => {
             const isMobile = window.innerWidth <= 768;
             setColumnDefinitions([
-                { field: "artist", headerName: "Artisti", filter: true, suppressMovable: true, width: isMobile ? 190 : undefined, flex: isMobile ? undefined : 2 },
-                { field: "title", headerName: "Levyn nimi", filter: true, suppressMovable: true, width: isMobile ? 190 : undefined, flex: isMobile ? undefined : 2 },
-                { field: "size", headerName: "Koko", filter: true, suppressMovable: true, width: isMobile ? 120 : undefined, flex: isMobile ? undefined : 2 },
-                { field: "price", headerName: "Hinta", filter: true, suppressMovable: true, cellStyle: { textAlign: "right" }, width: isMobile ? 100 : undefined, flex: isMobile ? undefined : 1 },
+                { field: "artist", headerName: "Artisti", filter: false, suppressMovable: true, width: isMobile ? 190 : undefined, flex: isMobile ? undefined : 2 },
+                { field: "title", headerName: "Levyn nimi", filter: false, suppressMovable: true, width: isMobile ? 190 : undefined, flex: isMobile ? undefined : 2 },
+                { field: "size", headerName: "Koko", filter: false, suppressMovable: true, width: isMobile ? 120 : undefined, flex: isMobile ? undefined : 2 },
+                { field: "price", headerName: "Hinta", filter: false, suppressMovable: true, cellStyle: { textAlign: "right" }, width: isMobile ? 100 : undefined, flex: isMobile ? undefined : 1 },
                 {
                     cellRenderer: params => <Button size="small" color="error" variant="contained" onClick={() => deleteFromShoppingcart(params.data)}>Poista</Button>,
                     width: isMobile ? 170 : undefined,
@@ -224,7 +220,6 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
         window.addEventListener("resize", updateColumnDefinitions);
 
         return () => window.removeEventListener("resize", updateColumnDefinitions);
-        
     }, [])
 
     return (

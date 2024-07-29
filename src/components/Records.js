@@ -276,17 +276,31 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
             });
     }
 
+    // Define filter parameters to simplify the search box
+    const simpleFilterParams = {
+        filterOptions: ["contains"],
+        defaultOption: "contains",
+        suppressAndOrCondition: true,
+    };
+
+    // Apply filter parameters to column definitions
+    const simplifiedColumnDefinitions = columnDefinitions.map(colDef => ({
+        ...colDef,
+        filter: 'agTextColumnFilter', // Use text column filter
+        filterParams: simpleFilterParams, // Apply custom filter parameters
+    }));
+
     return (
         <>
-            <h1 style={{ textAlign: "center" }}>Levykaupan levylista</h1>
+            <h1 style={{ textAlign: "center" }}>PoppiMikon levylista</h1>
             <div className="ag-theme-material trainings" style={{ height: "80vh", width: "95%", margin: "auto", fontSize: 11, fontWeight: "bold" }}>
                 <AgGridReact
                     reactiveCustomComponents
                     rowData={records}
-                    columnDefs={columnDefinitions}
+                    columnDefs={simplifiedColumnDefinitions}
                     localeText={finnishTranslations}
                     domLayout="auto"
-                    getRowHeight={() => 35}
+                    getRowHeight={() => 40}
                     gridOptions={gridOptions}
                 />
             </div>

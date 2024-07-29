@@ -25,6 +25,19 @@
     font-size: 0.8rem;
 }
 
+.ag-theme-material .ag-row {
+    border-bottom: 1px solid #b6b6b6;
+}
+
+.ag-theme-material .ag-cell {
+    border-right: 1px solid #ddd;
+}
+
+/* Hide the filter dropdown */
+.ag-theme-material .ag-filter-select {
+    display: none !important;
+}
+
 @media (max-width: 768px) {
     .ag-theme-material {
         width: 100% !important;

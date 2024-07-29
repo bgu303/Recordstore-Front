@@ -152,6 +152,23 @@ function SearchedRecords({ searchResults, loggedInUser, showShoppingcart }) {
         return () => window.removeEventListener("resize", updateColumnDefinitions);
     }, [])
 
+        // Define filter parameters to simplify the search box
+    const simpleFilterParams = {
+        filterOptions: ["contains"],
+        defaultOption: "contains",
+        suppressAndOrCondition: true,
+    };
+
+    // Apply filter parameters to column definitions
+    const simplifiedColumnDefinitions = columnDefinitions.map(colDef => ({
+        ...colDef,
+        filter: 'agTextColumnFilter', // Use text column filter
+        filterParams: simpleFilterParams, // Apply custom filter parameters
+    }));
+
+    const finnishTranslations = {
+        filterOoo: "Hae...",
+    };
 
     return (
         <>
@@ -162,9 +179,10 @@ function SearchedRecords({ searchResults, loggedInUser, showShoppingcart }) {
                         <AgGridReact
                             reactiveCustomComponents
                             rowData={searchResults}
-                            columnDefs={columnDefinitions}
+                            columnDefs={simplifiedColumnDefinitions}
                             domLayout="autoHeight"
                             getRowHeight={() => 35}
+                            localeText={finnishTranslations}
                         />
                     </div>
                 ) : (
