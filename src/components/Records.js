@@ -46,9 +46,18 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
     const handleDiscogsLink = (data) => {
         const discogsSubStr = data.substring(1);
         fetch(`https://api.discogs.com/releases/${discogsSubStr}`)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    return alert("Valitettavasti levyn discogs linkki ei toimi.")
+                } else {
+                    return response.json();
+                }
+            })
             .then(responseData => {
                 window.open(responseData.uri)
+            })
+            .catch(error => {
+                return alert("Discogs linkki ei toiminnassa.");
             })
     }
 
@@ -149,22 +158,23 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
     useEffect(() => {
         const updateColumnDefinitions = () => {
             const isMobile = window.innerWidth <= 768;
-            
+
             setColumnDefinitions([
                 { field: "artist", headerName: "Artisti", filter: true, suppressMovable: true, width: isMobile ? 190 : undefined, flex: isMobile ? undefined : 2 },
                 { field: "title", headerName: "Levyn nimi", filter: true, suppressMovable: true, width: isMobile ? 190 : undefined, flex: isMobile ? undefined : 2 },
                 { field: "label", headerName: "Levy-yhtiö", filter: true, suppressMovable: true, width: isMobile ? 190 : undefined, flex: isMobile ? undefined : 2 },
-                { field: "size", headerName: "Koko", filter: true, suppressMovable: true, width: isMobile ? 120 : undefined, flex: isMobile ? undefined : 1 },
-                { field: "lev", headerName: "Rec", filter: true, suppressMovable: true, width: isMobile ? 120 : undefined, flex: isMobile ? undefined : 1 },
-                { field: "kan", headerName: "PS", filter: true, suppressMovable: true, width: isMobile ? 120 : undefined, flex: isMobile ? undefined : 1 },
+                { field: "size", headerName: "Koko", filter: true, suppressMovable: true, width: isMobile ? 120 : undefined, flex: isMobile ? undefined : 1, cellStyle: { textAlign: "center" } },
+                { field: "lev", headerName: "Rec", filter: true, suppressMovable: true, width: isMobile ? 120 : undefined, flex: isMobile ? undefined : 1, cellStyle: { textAlign: "center" } },
+                { field: "kan", headerName: "PS", filter: true, suppressMovable: true, width: isMobile ? 120 : undefined, flex: isMobile ? undefined : 1, cellStyle: { textAlign: "center" } },
                 { field: "price", headerName: "Hinta", filter: true, suppressMovable: true, cellStyle: { textAlign: "right" }, width: isMobile ? 100 : undefined, flex: isMobile ? undefined : 1 },
-                { field: "genre", headerName: "Genre", filter: true, suppressMovable: true, width: isMobile ? 120 : undefined, flex: isMobile ? undefined : 1 },
+                { field: "genre", headerName: "Genre", filter: true, suppressMovable: true, width: isMobile ? 120 : undefined, flex: isMobile ? undefined : 1, cellStyle: { textAlign: "center" } },
                 {
                     field: "discogs",
                     headerName: "Discogs",
                     filter: true,
                     suppressMovable: true,
                     width: isMobile ? 120 : undefined,
+                    cellStyle: { textAlign: "right" },
                     cellRenderer: params => (
                         <div
                             className="discogsLink"
@@ -192,6 +202,7 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
                     width: isMobile ? 170 : undefined,
                     flex: isMobile ? undefined : 1.5,
                     suppressMovable: true,
+                    cellStyle: { textAlign: "center" },
                     hide: !localStorage.getItem("isLoggedIn") || localStorage.getItem("loggedInUserRole") === "ADMIN"
                 },
                 {
@@ -199,6 +210,7 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
                     width: isMobile ? 170 : undefined,
                     flex: isMobile ? undefined : 1.2,
                     suppressMovable: true,
+                    cellStyle: { textAlign: "center" },
                     hide: localStorage.getItem("loggedInUserRole") !== "ADMIN"
                 },
                 {
@@ -213,6 +225,7 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
                     width: isMobile ? 150 : undefined,
                     flex: isMobile ? undefined : 1.2,
                     suppressMovable: true,
+                    cellStyle: { textAlign: "center" },
                     hide: localStorage.getItem("loggedInUserRole") !== "ADMIN"
                 },
             ]);
@@ -231,8 +244,8 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
     //This needs to be added in order to use custom filtering tools.
     const gridOptions = {
         reactiveCustomComponents: true,
+        suppressMenuHide: true,
     };
-
 
     const closePicture = () => {
         setShowPicture(false);
@@ -286,7 +299,6 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
     // Apply filter parameters to column definitions
     const simplifiedColumnDefinitions = columnDefinitions.map(colDef => ({
         ...colDef,
-        filter: 'agTextColumnFilter', // Use text column filter
         filterParams: simpleFilterParams, // Apply custom filter parameters
     }));
 

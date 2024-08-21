@@ -80,7 +80,7 @@ function OwnOrders({ loggedInUser }) {
                                 <>
                                     <p><b>Tilaajan Nimi:</b> {order[0].customer_name}</p>
                                     <p><b>Sähköposti:</b> {order[0].customer_email}</p>
-                                    <p><b>Puhelinnumero:</b> {order[0].customer_email}</p>
+                                    <p><b>Puhelinnumero:</b> {order[0].customer_phone}</p>
                                     <p><b>Maksutapa:</b> {order[0].customer_paymentoption}</p>
                                     <p><b>Toimitustapa:</b> {order[0].customer_shippingoption}</p>
                                     <p><b>Osoite:</b> {order[0].customer_address}</p>

@@ -120,6 +120,42 @@ function Orders({ getAllOrders }) {
         }
     }
 
+    const saveToFile = (content, filename) => {
+        const blob = new Blob([content], { type: 'text/plain' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
+    const print = (orderItem) => {
+        let textContent = "";
+
+        textContent += "Tilaajan tiedot\n\n";
+        textContent += `Tilaajan Nimi: ${orderItem[0].customer_name}\n`;
+        textContent += `Sähköposti: ${orderItem[0].customer_email}\n`;
+        textContent += `Puhelinnumero: ${orderItem[0].customer_phone}\n`;
+        textContent += `Maksutapa: ${orderItem[0].customer_paymentoption}\n`;
+        textContent += `Toimitustapa: ${orderItem[0].customer_shippingoption}\n`;
+        textContent += `Osoite: ${orderItem[0].customer_address}\n`;
+        textContent += "\n";
+        textContent += "LEVYT:\n\n";
+
+        orderItem.forEach(item => {
+            textContent += `${item.artist}, `;
+            textContent += `${item.title}, `;
+            textContent += `${item.label}, `;
+            textContent += `${item.size}, `;
+            textContent += `${item.price}€`;
+            textContent += `\n\n`;
+        });
+
+        const filename = `order_${orderItem[0].id}.txt`;
+        saveToFile(textContent, filename);
+    };
+
     return (
         <>
             <div className="mainDivAllOrders">
@@ -132,7 +168,7 @@ function Orders({ getAllOrders }) {
                             <>
                                 <p><b>Tilaajan Nimi:</b> {order[0].customer_name}</p>
                                 <p><b>Sähköposti:</b> {order[0].customer_email}</p>
-                                <p><b>Puhelinnumero:</b> {order[0].customer_email}</p>
+                                <p><b>Puhelinnumero:</b> {order[0].customer_phone}</p>
                                 <p><b>Maksutapa:</b> {order[0].customer_paymentoption}</p>
                                 <p><b>Toimitustapa:</b> {order[0].customer_shippingoption}</p>
                                 <p><b>Osoite:</b> {order[0].customer_address}</p>
@@ -146,6 +182,7 @@ function Orders({ getAllOrders }) {
                                     <li style={{ marginBottom: "10px", lineHeight: "1.5rem" }} key={item.record_id}>
                                         <b>Artisti/Bändi:</b> {item.artist}<br />
                                         <b>Levyn nimi:</b> {item.title}<br />
+                                        <b>Levy-yhtiö:</b> {item.label}<br />
                                         <b>Koko:</b> {item.size}<br />
                                         <b>Hinta:</b> {item.price}€<br />
                                     </li>
@@ -179,6 +216,9 @@ function Orders({ getAllOrders }) {
                         <h4>Status: <span style={{ color: getStatusColor(order[0].order_status) }}>{order[0].order_status}</span></h4>
                         <div style={{ textAlign: "center" }}>
                             <Button color="error" variant="contained" onClick={() => deleteOrder(orderId)}>Poista</Button>
+                        </div>
+                        <div style={{ textAlign: "center", marginTop: "10px" }}>
+                            <Button color="success" variant="contained" onClick={() => print(order)}>Tulosta</Button>
                         </div>
                     </div>
                 ))}

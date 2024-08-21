@@ -159,8 +159,8 @@ function AddRecord({ loggedInUser }) {
         { headerName: "Koko", field: "size" },
         { headerName: "Rec", field: "lev", width: 110 },
         { headerName: "PS", field: "kan", width: 110 },
-        { headerName: "Hinta", field: "price" },
-        { headerName: "Discogs", field: "discogs" },
+        { headerName: "Hinta", field: "price", cellStyle: { textAlign: "right" } },
+        { headerName: "Discogs", field: "discogs", cellStyle: { textAlign: "right" } },
         { headerName: "Genre", field: "genre" }
     ];
 
@@ -173,7 +173,7 @@ function AddRecord({ loggedInUser }) {
                     <Button color="success" variant="contained" onClick={() => handleFileUpload()}>Esikatsele</Button>
                     <Button color="success" variant="contained" onClick={() => sendDataToServer()}>Lataa Levyt</Button>
                 </div>
-                <div className="ag-theme-material" style={{ height: "750px", width: "95%", margin: "auto", fontSize: 11 }}>
+                <div className="ag-theme-material" style={{ height: "750px", width: "95%", margin: "auto", fontSize: 11, fontWeight: "bold" }}>
                     <AgGridReact
                         rowData={newRecords}
                         columnDefs={columns}

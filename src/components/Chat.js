@@ -124,7 +124,6 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
     }
 
     //Used to get all users to the drop down menu that admin uses to choose which conversation to open.
-    //FIX LATER MAYBE!! Should be called only when admin is logged in.
     useEffect(() => {
         if (localStorage.getItem("loggedInUserRole") === "ADMIN") {
             getAllUsers();
@@ -179,7 +178,6 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
         setNewMessageState(false)
     }, [newMessageState])
 
-
     useEffect(() => {
         return () => {
             if (localStorage.getItem("loggedInUserRole") === "ADMIN") {
@@ -187,19 +185,18 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
             }
 
             fetch(`${BASE_URL}/chat/chatmessagechecker/${conversationId}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error("Something went wrong.");
-                }
-                return response.json();
-            })
-            .then(responseData => {
-                console.log(responseData);
-            })
-            .catch(error => {
-                console.error("There was a problem with the fetch operation:", error);
-            });
-
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Something went wrong.");
+                    }
+                    return response.json();
+                })
+                .then(responseData => {
+                    console.log(responseData);
+                })
+                .catch(error => {
+                    console.error("There was a problem with the fetch operation:", error);
+                });
         };
     }, []);
 
@@ -207,7 +204,7 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
         <>
             <div className="chat-container">
                 <h1 className="chatTitle">Chatti</h1>
-                <p className="chatParagraph">Alla olevasta chatistä voit jutella PoppiMikon kanssa</p>
+                <p className="chatParagraph">Alla olevasta chatistä voit jutella PoppiMikon kanssa.</p>
                 <p className="chatParagraph">Viesteihisi vastataan mahdollisimman pian.</p>
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                     <div className="chat-box">

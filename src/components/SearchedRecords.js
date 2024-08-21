@@ -20,8 +20,19 @@ function SearchedRecords({ searchResults, loggedInUser, showShoppingcart }) {
     const handleDiscogsLink = (data) => {
         const discogsSubStr = data.substring(1);
         fetch(`https://api.discogs.com/releases/${discogsSubStr}`)
-            .then(response => response.json())
-            .then(responseData => window.open(responseData.uri))
+            .then(response => {
+                if (!response.ok) {
+                    return alert("Valitettavasti levyn discogs linkki ei toimi.")
+                } else {
+                    return response.json();
+                }
+            })
+            .then(responseData => {
+                window.open(responseData.uri)
+            })
+            .catch(error => {
+                return alert("Discogs linkki ei toiminnassa.");
+            })
     }
 
     const addToCart = async (data) => {
@@ -102,17 +113,18 @@ function SearchedRecords({ searchResults, loggedInUser, showShoppingcart }) {
                 { field: "artist", headerName: "Artisti", filter: true, suppressMovable: true, width: isMobile ? 190 : undefined, flex: isMobile ? undefined : 2 },
                 { field: "title", headerName: "Levyn nimi", filter: true, suppressMovable: true, width: isMobile ? 190 : undefined, flex: isMobile ? undefined : 2 },
                 { field: "label", headerName: "Levy-yhtiö", filter: true, suppressMovable: true, width: isMobile ? 190 : undefined, flex: isMobile ? undefined : 2 },
-                { field: "size", headerName: "Koko", filter: true, suppressMovable: true, width: isMobile ? 120 : undefined, flex: isMobile ? undefined : 1 },
-                { field: "lev", headerName: "Rec", filter: true, suppressMovable: true, width: isMobile ? 120 : undefined, flex: isMobile ? undefined : 1 },
-                { field: "kan", headerName: "PS", filter: true, suppressMovable: true, width: isMobile ? 120 : undefined, flex: isMobile ? undefined : 1 },
+                { field: "size", headerName: "Koko", filter: true, suppressMovable: true, width: isMobile ? 120 : undefined, flex: isMobile ? undefined : 1, cellStyle: { textAlign: "center" } },
+                { field: "lev", headerName: "Rec", filter: true, suppressMovable: true, width: isMobile ? 120 : undefined, flex: isMobile ? undefined : 1, cellStyle: { textAlign: "center" } },
+                { field: "kan", headerName: "PS", filter: true, suppressMovable: true, width: isMobile ? 120 : undefined, flex: isMobile ? undefined : 1, cellStyle: { textAlign: "center" } },
                 { field: "price", headerName: "Hinta", filter: true, suppressMovable: true, cellStyle: { textAlign: "right" }, width: isMobile ? 100 : undefined, flex: isMobile ? undefined : 1 },
-                { field: "genre", headerName: "Genre", filter: true, suppressMovable: true, width: isMobile ? 120 : undefined, flex: isMobile ? undefined : 1 },
+                { field: "genre", headerName: "Genre", filter: true, suppressMovable: true, width: isMobile ? 120 : undefined, flex: isMobile ? undefined : 1, cellStyle: { textAlign: "center" }},
                 {
                     field: "discogs",
                     headerName: "Discogs",
                     filter: true,
                     suppressMovable: true,
                     width: isMobile ? 120 : undefined,
+                    cellStyle: { textAlign: "right" },
                     cellRenderer: params => (
                         <div
                             className="discogsLink"
@@ -152,7 +164,7 @@ function SearchedRecords({ searchResults, loggedInUser, showShoppingcart }) {
         return () => window.removeEventListener("resize", updateColumnDefinitions);
     }, [])
 
-        // Define filter parameters to simplify the search box
+    // Define filter parameters to simplify the search box
     const simpleFilterParams = {
         filterOptions: ["contains"],
         defaultOption: "contains",
@@ -162,12 +174,16 @@ function SearchedRecords({ searchResults, loggedInUser, showShoppingcart }) {
     // Apply filter parameters to column definitions
     const simplifiedColumnDefinitions = columnDefinitions.map(colDef => ({
         ...colDef,
-        filter: 'agTextColumnFilter', // Use text column filter
         filterParams: simpleFilterParams, // Apply custom filter parameters
     }));
 
     const finnishTranslations = {
         filterOoo: "Hae...",
+    };
+
+    const gridOptions = {
+        reactiveCustomComponents: true,
+        suppressMenuHide: true
     };
 
     return (
@@ -183,6 +199,7 @@ function SearchedRecords({ searchResults, loggedInUser, showShoppingcart }) {
                             domLayout="autoHeight"
                             getRowHeight={() => 35}
                             localeText={finnishTranslations}
+                            gridOptions={gridOptions}
                         />
                     </div>
                 ) : (

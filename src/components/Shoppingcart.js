@@ -212,6 +212,7 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                     cellRenderer: params => <Button size="small" color="error" variant="contained" onClick={() => deleteFromShoppingcart(params.data)}>Poista</Button>,
                     width: isMobile ? 170 : undefined,
                     flex: isMobile ? undefined : 1,
+                    cellStyle: { textAlign: "center" }
                 },
             ]);
         }

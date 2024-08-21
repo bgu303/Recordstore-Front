@@ -140,7 +140,7 @@ function FrontPage() {
                 <div className="vertical-line"></div>
                 <div className="section">
                     <div className="section">
-                        <h2 className="homePageTitles">PoppiMikon ilmoitukset</h2>
+                        <h2 className="homePageTitles">Ilmoitustaulu</h2>
                         <div>
                             <p className="homePageParagraph">
                                 Tässä osiossa on PoppiMikon uusimmat ilmoitukset. Pysy ajan tasalla uusimmista uutisista ja päivityksistä!
