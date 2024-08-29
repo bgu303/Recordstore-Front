@@ -117,7 +117,7 @@ function FrontPage() {
                 <div className="section">
                     <h2 className="homePageTitles" style={{ color: "white" }}>&#8203;</h2>
                     <p className="homePageParagraph">
-                        <b>PoppiMikko</b> nimimerkin otin ensimmäistä kertaa käyttöön reilut 10 vuotta sitten, kun aloin latamaan videoita YouTubeen (osa saattaa muistaakin). Kolmen vuoden aikana latasin videoita (lähinnä suomalaisia biisejä) sinne noin 1700, katselukertoja oli yli 20 miljoonaa. Kunnes kanava suljettiin ja kaikki katosivat sieltä. PoppiMikon rinnalla laitoin sinne myös videoita nimimerkillä PunkMikko, tuo kanava siellä on säilynyt. Tosin aktiivinen en sen kanssa ole ollut vuosikausiin. Sittemmin olen tätä PoppiMikko nimeä siellä täällä käyttänyt, nyt siis myös tällä nettisivulla.
+                        <b>PoppiMikko</b> nimimerkin otin ensimmäistä kertaa käyttöön reilut 10 vuotta sitten, kun aloin latamaan videoita YouTubeen (osa saattaa muistaakin). Kolmen vuoden aikana latasin videoita (lähinnä suomalaisia biisejä) sinne noin 1700, katselukertoja oli yli 20 miljoonaa. Kunnes kanava suljettiin ja kaikki lisäämäni lataukset katosivat sieltä. PoppiMikon rinnalla laitoin sinne myös videoita nimimerkillä PunkMikko, tuo kanava siellä on säilynyt. Tosin aktiivinen en sen kanssa ole ollut vuosikausiin. Sittemmin olen tätä PoppiMikko nimeä siellä täällä käyttänyt, nyt siis myös tällä nettisivulla.
                         <br /><br />
                         <b>Myytävät</b> levyt täällä ovat kaksoiskappaleita tai itselleni turhia, laidasta laitaan kaikenlaista sälää. Yhdelle turha voi olla toisen aarre. Aussi /Alternative -sinkut ovat hyvin edustettuina, kuten myös CD-singlet. LP-osastoa on tässä vaiheessa hieman niukasti, mutta katsotaan, lisäyksiä saattaa olla tulossa myöhemmin. Suurinta osaa on vain yksi kappale, joitain aussi/alternative -sinkkuja voi olla useampikin. Kaikki nämä pitäisi löytyä varastosta, mutta on tänne saattanut jäädä roikkumaan jo aiemmin myyty kohdekin. Hinnoittelussa olen pyrkinyt kohtuullisuuteen ja varmaan suurelta osin siinä onnistunutkin. Lähtökohtana olen käyttänyt Discogsin mediaanihintaa, koska se on varmaan monelle ostajalle sellainen johon voi hieman verrata. Tietenkään se ei ole mikään ehdottomasti "oikea hinta", koska eihän sellaista ole olemassakaan. On vain hinta, jolla levy joko menee kaupaksi tai sitten ei. <b>Minimitilaus on 20 euroa ja vaatii rekisteröitymisen.</b>
                     </p>
@@ -154,9 +154,9 @@ function FrontPage() {
                         - <b>PO</b> = No, tämä nyt on sitten se huonoin luokitus ja tarkoittaa sitä, että naarmuja on jo huomattavasti tai kansi huonossa kunnossa. Levy on ehjä, ei puutu palasia tms, mutta jäljet varmastikin kuuluvat. Kannessa taasen voi olla pieniä repeämiä tai muuten huonossa hapessa. Mutta näissäkin voi olla positiivisia yllätyksiä (??).
                         <br /><br />
                         - <b>WOC / WOL</b> = writing on cover / label
-                        <br /><br />
+                        <br />
                         - <b>SOC / SOL</b> = sticker (tarra/hintalappu) on cover / label
-                        <br /><br />
+                        <br />
                         - <b>TOC / TOL</b> = tear (pieni repeämä) on cover / label
                         <br /><br />
                         joskus olen unohtanut näitä merkitä, mutta aina olen sen huomioinut kuntoarviossa ja hinnassa.
@@ -164,40 +164,40 @@ function FrontPage() {
                     <h2 className="homePageTitles">Genret</h2>
                     <p className="homePageParagraph">
                         - <b>Australia</b> – tämä on tietystä syystä laitettu erikseen
-                        <br /><br />
-                        - <b>Alter (=Alternative)</b> – Punk/Indie/Grunge/Noise (enimmäkseen 1982 eteenpäin)
-                        <br /><br />
-                        - <b>Punk/New Wave</b> – Punk/Indie/osin Pop (enimmäkseen 1977-1982)
-                        <br /><br />
+                        <br />
+                        - <b>Alter (=Alternative)</b> – Punk/Indie/Grunge (1982 - )
+                        <br />
+                        - <b>Punk/New Wave</b> – Punk/Indie/osin Pop (1977-1984)
+                        <br />
                         - <b>Roots</b> – Blues/Country/Jazz jne.
-                        <br /><br />
+                        <br />
                         - <b>Rock/Pop</b> – kaikki ulkomainen, jota ei noissa ylemmissä
-                        <br /><br />
-                        - <b>Suomi</b> – kaikki suomalaiset. Rock/Pop/Punk/Iskelmä/Viihde jne.
-                        <br /><br />
+                        <br />
+                        - <b>Suomi</b> – kaikki suomalaiset. Rock/Pop/Punk/Iskelmä jne.
+                        <br />
                         - <b>Magazine</b> – lehdet
-                        <br /><br />
+                        <br />
                         - <b>Books</b> – kirjat
-                        <br /><br />
+                        <br />
                         - <b>DVD</b>
-                        <br /><br />
+                        <br />
                         - <b>Sekalaiset</b> – ihan mitä tahansa muuta, mitä ei mainittu yllä.
                     </p>
                     <h2 className="homePageTitles">Koko eli Size</h2>
                     <p className="homePageParagraph">
                         - <b>7"</b> – ne perinteiset singlet ja EP:t
-                        <br /><br />
+                        <br />
                         - <b>LP</b> – ne perinteiset albumit (12")
-                        <br /><br />
-                        - <b>MLP</b> – mini-LP, albumin kokoinen (12") mutta vähemmän biisejä
-                        <br /><br />
+                        <br />
+                        - <b>MLP</b> – mini-LP, kuin albumi (12") mutta vähemmän biisejä
+                        <br />
                         - <b>12"</b> – maxisinglet (yleensä 1-3 biisiä / puoli)
-                        <br /><br />
+                        <br />
                         - <b>10"</b> – maxisingle tai mini-LP
-                        <br /><br />
+                        <br />
                         - <b>CD</b> – täyspitkä levy
-                        <br /><br />
-                        - <b>Cds</b> – CD-single
+                        <br />
+                        - <b>CDs</b> – CD-single
                     </p>
 
                 </div>
