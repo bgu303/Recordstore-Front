@@ -21,7 +21,7 @@ const ImageBanner = () => {
     let scrollAmount = 0;
 
     const scrollImages = () => {
-      scrollAmount -= 0.4;
+      scrollAmount -= 0.8;
       if (scrollAmount <= -totalWidth) {
         scrollAmount = 0;
       }

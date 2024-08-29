@@ -168,6 +168,9 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
         if (shoppingcart.length === 0) {
             return alert("Ostoskori on tyhjä. Lisää tuotteita ennen tilauksen lähettämistä.");
         }
+        if (cartTotal < 20) {
+            return alert("Ei alle 20 euron tilauksia.");
+        }
 
         if (window.confirm("Lähetetäänkö ostoskori?")) {
             try {
@@ -230,6 +233,7 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                 <h3 style={{ textAlign: "center" }}>Ostoskori on tyhjä. Lisää tuotteita levylistasta ostoskoriin.</h3>
             ) : (
                 <>
+                    <h3 style={{ textAlign: "center" }}>HUOM! Alle 20 euron tilaukset eivät ole mahdollisia.</h3>
                     <div className="ag-theme-material trainings" style={{ height: "500px", width: "95%", margin: "auto", fontWeight: "bold" }}>
                         <AgGridReact
                             rowData={shoppingcart}
