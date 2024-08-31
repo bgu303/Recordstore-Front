@@ -9,7 +9,7 @@ const getRandomImages = (arr, num) => {
 
 const ImageBanner = () => {
   const scrollContainerRef = useRef(null);
-  const randomImagesRef = useRef(getRandomImages(images, 10));
+  const randomImagesRef = useRef(getRandomImages(images, 25));
   const animationRef = useRef(null);
 
   const [showPreview, setShowPreview] = useState(false);
