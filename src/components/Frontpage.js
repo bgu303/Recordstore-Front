@@ -112,33 +112,34 @@ function FrontPage() {
             <div className="frontPageMainDiv">
                 <h1 className="frontPageTitle">Tervetuloa PoppiMikon levykauppaan</h1>
                 <ImageBanner />
+                <p style={{ fontSize: 10 }}>HUOM! Bannerin levyt eivät myytävänä.</p>
             </div>
             <div className="contentSection">
                 <div className="section">
-                    <h2 className="homePageTitles" style={{ color: "white" }}>&#8203;</h2>
+                    <h2 className="homePageTitles">PoppiMikko</h2>
                     <p className="homePageParagraph">
-                        <b>PoppiMikko</b> nimimerkin otin ensimmäistä kertaa käyttöön reilut 10 vuotta sitten, kun aloin latamaan videoita YouTubeen (osa saattaa muistaakin). Kolmen vuoden aikana latasin videoita (lähinnä suomalaisia biisejä) sinne noin 1700, katselukertoja oli yli 20 miljoonaa. Kunnes kanava suljettiin ja kaikki lisäämäni lataukset katosivat sieltä. PoppiMikon rinnalla laitoin sinne myös videoita nimimerkillä PunkMikko, tuo kanava siellä on säilynyt. Tosin aktiivinen en sen kanssa ole ollut vuosikausiin. Sittemmin olen tätä PoppiMikko nimeä siellä täällä käyttänyt, nyt siis myös tällä nettisivulla.
+                        nimimerkin otin ensimmäistä kertaa käyttöön reilut 10 vuotta sitten, kun aloin latamaan videoita YouTubeen (osa saattaa muistaakin). Kolmen vuoden aikana latasin videoita (lähinnä suomalaisia biisejä) sinne noin 1700, katselukertoja oli yli 20 miljoonaa. Kunnes kanava suljettiin ja kaikki lisäämäni lataukset katosivat sieltä. PoppiMikon rinnalla laitoin sinne myös videoita nimimerkillä PunkMikko, tuo kanava siellä on säilynyt. Tosin aktiivinen en sen kanssa ole ollut vuosikausiin. Sittemmin olen tätä PoppiMikko nimeä siellä täällä käyttänyt, nyt siis myös tällä nettisivulla.
                         <br /><br />
-                        <b>Myytävät</b> levyt täällä ovat kaksoiskappaleita tai itselleni turhia, laidasta laitaan kaikenlaista sälää. Yhdelle turha voi olla toisen aarre. Aussi /Alternative -sinkut ovat hyvin edustettuina, kuten myös CD-singlet. LP-osastoa on tässä vaiheessa hieman niukasti, mutta katsotaan, lisäyksiä saattaa olla tulossa myöhemmin. Suurinta osaa on vain yksi kappale, joitain aussi/alternative -sinkkuja voi olla useampikin. Kaikki nämä pitäisi löytyä varastosta, mutta on tänne saattanut jäädä roikkumaan jo aiemmin myyty kohdekin. Hinnoittelussa olen pyrkinyt kohtuullisuuteen ja varmaan suurelta osin siinä onnistunutkin. Lähtökohtana olen käyttänyt Discogsin mediaanihintaa, koska se on varmaan monelle ostajalle sellainen johon voi hieman verrata. Tietenkään se ei ole mikään ehdottomasti "oikea hinta", koska eihän sellaista ole olemassakaan. On vain hinta, jolla levy joko menee kaupaksi tai sitten ei. <b>Minimitilaus on 20 euroa ja vaatii rekisteröitymisen.</b>
+                        <b>Myytävät</b><br />Levyt täällä ovat kaksoiskappaleita tai itselleni turhia, laidasta laitaan kaikenlaista sälää. Yhdelle turha voi olla toisen aarre. Aussi /Alternative -sinkut ovat hyvin edustettuina, kuten myös CD-singlet. LP-osastoa on tässä vaiheessa hieman niukasti, mutta katsotaan, lisäyksiä saattaa olla tulossa myöhemmin. Suurinta osaa on vain yksi kappale, joitain aussi/alternative -sinkkuja voi olla useampikin. Kaikki nämä pitäisi löytyä varastosta, mutta on tänne saattanut jäädä roikkumaan jo aiemmin myyty kohdekin. Hinnoittelussa olen pyrkinyt kohtuullisuuteen ja varmaan suurelta osin siinä onnistunutkin. Lähtökohtana olen käyttänyt Discogsin mediaanihintaa, koska se on varmaan monelle ostajalle sellainen johon voi hieman verrata. Tietenkään se ei ole mikään ehdottomasti "oikea hinta", koska eihän sellaista ole olemassakaan. On vain hinta, jolla levy joko menee kaupaksi tai sitten ei. <b>Minimitilaus on 20 euroa ja vaatii rekisteröitymisen.</b>
                     </p>
                 </div>
                 <div className="vertical-line"></div>
                 <div className="section">
-                    <h2 className="homePageTitles" style={{ color: "white" }}>&#8203;</h2>
+                    <h2 className="homePageTitles">Nettisivuista</h2>
                     <p className="homePageParagraph">
-                        <b>Discogs.</b> Jokaisella levyllä on Discogsissa oma tunnusnumeronsa. Olen sitä apua käyttäen laittanut lähes kaikkiin kohteisiin suoran linkin kyseiseen levyyn. Voit sitä klikkaamalla levylistassa etsiä levystä lisätietoa ja tarkastaa, mikä painos on kyseessä, minkä värinen vinyyli jne...
+                        <b>Discogs</b><br/>Jokaisella levyllä on Discogsissa oma tunnusnumeronsa. Olen sitä apua käyttäen laittanut lähes kaikkiin kohteisiin suoran linkin kyseiseen levyyn. Voit sitä klikkaamalla levylistassa etsiä levystä lisätietoa ja tarkastaa, mikä painos on kyseessä, minkä värinen vinyyli jne...
                         <br /><br />
-                        <b>Bannerin</b> levyt, joiden kansia etusivun yläosassa vilistää, <b>eivät ole myynnissä.</b> Ne ovat siellä, koska ne ovat muistoja PoppiMikko ja PunkMikko -postauksista YouTubeen. Ja ovathan ne visuaalisesti hyvän näköisiä, eikö vain. Klikkaamalla kuvaa saat sen isoksi.
+                        <b>Banneri</b><br/>Levyt, joiden kansia etusivun yläosassa vilistää, <b>eivät ole myynnissä.</b> Ne ovat siellä, koska ne ovat muistoja PoppiMikko ja PunkMikko -postauksista YouTubeen. Ja ovathan ne visuaalisesti hyvän näköisiä, eikö vain. Klikkaamalla kuvaa saat sen isoksi.
                         <br /><br />
-                        <b>Postikulut</b> siis lisätään, jos ei ole nouto Vuosaaresta. Jos tilauksessa on yksikin LP, MLP tai 12" niin silloin kyseessä on paketti ja postikulut ovat <b>9 euroa.</b> Muissa tapauksissa postikulut ovat <b>5 euroa.</b> Huomioithan hinnanlisäyksen tilausta tehdessäsi.
+                        <b>Postikulut</b><br/>Lisätään, jos ei ole nouto Vuosaaresta. Jos tilauksessa on yksikin LP, MLP tai 12" niin silloin kyseessä on paketti ja postikulut ovat <b>9 euroa.</b> Muissa tapauksissa postikulut ovat <b>5 euroa.</b> Huomioithan hinnanlisäyksen tilausta tehdessäsi.
                         <br /><br />
-                        <b>Chatti</b> on tarkoitettu tilausten jälkeen asioiden sopimiseen. Sivut eivät tällä hetkellä tue suoraa maksujärjestelmää, joten mahdolliset postikulut ja noudoista sopiminen tehdään Chatin kautta. Chatti on tarkoitettu vain tilausten hoitoon, joten jätetään muut keskustelut toiselle somealustalle.
+                        <b>Chatti</b><br/>Tarkoitettu tilauksen tekemisen jälkeen asioiden sopimiseen. Sivut eivät tällä hetkellä tue suoraa maksujärjestelmää, joten mahdolliset postikulut ja noudoista sopiminen tehdään Chatin kautta. Chatti on tarkoitettu vain tilausten hoitoon, joten jätetään muut keskustelut toiselle somealustalle.
                         <br /><br />
-                        <b>Ilmoitustaulu</b> etusivun oikeassa reunassa on mitä nimi sanookin. Laitan sinne tietoa, jos olen lisännyt levyjä tai milloin olen "lomalla" eli kauppa on kiinni. Tai ihan mitä tahansa mitä mieleen tulee.
+                        <b>Ilmoitustaulu</b><br/>Sijaitsee etusivun oikeassa reunassa on, mitä nimi sanookin. Laitan sinne tietoa, jos olen lisännyt levyjä tai milloin olen "lomalla" eli kauppa on kiinni. Tai ihan mitä tahansa, mitä mieleen tulee.
                         <br /><br />
-                        <b>Soittolistoille</b> on koottu valikoidusti biisejä, joita täällä on myynnissä. Sivun oikeasta reunasta löytyy suorat linkit niihin. Voit käydä sieltä hakemassa vinkkejä tai muuten vaan kuuntelemassa hyvää (?) musaa.
+                        <b>Soittolistat</b><br/>Koottu valikoidusti biisejä, joita täällä on myynnissä. Sivun oikeasta reunasta löytyy suorat linkit niihin. Voit käydä sieltä hakemassa vinkkejä tai muuten vaan kuuntelemassa hyvää (?) musaa.
                         <br /><br />
-                        <b>Virheitä</b> täällä varmasti on. Kirjoitus- ja asiavirheitä ja ennen kaikkea noiden Discogs numeroiden kanssa. Olen pyrkinyt kaikessa mahdollisimman suureen tarkkuuteen, mutta silti. Jos tuo Discogs-linkki menee johonkin ihan väärään levyyn, niin ilmoita siitä. Sivustolla voi ilmetä bugeja ja toiminnallisia virheitä. Niistä voi rekisteröityneenä käyttäjänä ilmoittaa "Lähetä palautetta" -osiosta.
+                        <b>Virheitä</b><br/>Niitä sivustolta mahdollisesti voi löytyä. Kirjoitus- ja asiavirheitä ja ennen kaikkea noiden Discogs numeroiden kanssa. Olen pyrkinyt kaikessa mahdollisimman suureen tarkkuuteen, mutta silti. Jos tuo Discogs-linkki menee johonkin ihan väärään levyyn, niin ilmoita siitä. Sivustolla voi ilmetä bugeja ja toiminnallisia virheitä. Niistä voi rekisteröityneenä käyttäjänä ilmoittaa "Lähetä palautetta" -osiosta.
                     </p>
                 </div>
                 <div className="vertical-line"></div>
