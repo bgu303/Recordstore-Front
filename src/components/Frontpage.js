@@ -130,7 +130,7 @@ function FrontPage() {
                         <br /><br />
                         <b>Bannerin</b> levyt, joiden kansia etusivun yläosassa vilistää, <b>eivät ole myynnissä.</b> Ne ovat siellä, koska ne ovat muistoja PoppiMikko ja PunkMikko -postauksista YouTubeen. Ja ovathan ne visuaalisesti hyvän näköisiä, eikö vain. Klikkaamalla kuvaa saat sen isoksi.
                         <br /><br />
-                        <b>Postikulut</b> siis lisätään, jos ei ole nouto. En laittanut hintaa tuonne ostoskoriin, sillä se vaihtelee. Jos tilauksessa on yksikin LP, niin silloin kyseessä on paketti ja hinta on 8,90 (tämän hetken hinnastossa). Mutta sinkku tai pari, CD tai pari … ne saa tulemaan kirjeenä, jolloin hinta on halvempi. Eli tapauskohtainen.
+                        <b>Postikulut</b> siis lisätään, jos ei ole nouto Vuosaaresta. Jos tilauksessa on yksikin LP, MLP tai 12" niin silloin kyseessä on paketti ja postikulut ovat <b>9 euroa.</b> Muissa tapauksissa postikulut ovat <b>5 euroa.</b> Huomioithan hinnanlisäyksen tilausta tehdessäsi.
                         <br /><br />
                         <b>Chatti</b> on tarkoitettu tilausten jälkeen asioiden sopimiseen. Sivut eivät tällä hetkellä tue suoraa maksujärjestelmää, joten mahdolliset postikulut ja noudoista sopiminen tehdään Chatin kautta. Chatti on tarkoitettu vain tilausten hoitoon, joten jätetään muut keskustelut toiselle somealustalle.
                         <br /><br />
@@ -145,7 +145,7 @@ function FrontPage() {
                 <div className="section">
                     <h2 className="homePageTitles">Levyjen kunto</h2>
                     <p className="homePageParagraph">
-                        Kunnot on arvioitu pääosin vain visuaalisesti. Ensimmäinen sarake on levy <b>(Rec),</b> toinen kansi <b>(PS).</b> Jos se on tyhjä, niin ei kantta <b>(NOPS).</b>
+                        Kunnot on arvioitu pääosin vain visuaalisesti. Ensimmäinen sarake on levy <b>(Rec),</b> toinen kansi <b>(PS).</b> Jos se on tyhjä, niin ei kantta <b>(NOPS).</b> CD ja CDs kannen kuntoluokituksessa olen katsonut paperisen sisäosan kuntoa, enkä muovikannen kuntoa, kun se on vaihdettavissa.
                         <br /><br />
                         - <b>EX</b> = Levy/kansi on hyvässä kunnossa. Vähäisiä käytön jälkiä voi olla levyssä tai kannessa kulumaa. Osa näistä on lähempänä Mint, varsinkin suurin osa noista aussi/alternative -sinkuista, mutta varmuuden vuoksi itselläni tämä EX on se paras luokitus jota käytän.
                         <br /><br />

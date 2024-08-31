@@ -118,8 +118,8 @@ function AddRecord({ loggedInUser }) {
                     kan: columns[4],
                     lev: columns[5],
                     price: parseFloat(columns[6]),
-                    discogs: columns[7],
                     genre: columns[8],
+                    discogs: columns[7],
                 };
             })
             //Filters rows that dont have artist, so empty row at the end of the file.

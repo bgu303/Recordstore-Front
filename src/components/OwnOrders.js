@@ -100,7 +100,12 @@ function OwnOrders({ loggedInUser }) {
                                     );
                                 })}
                             </ul>
-                            <p>Hinta yhteensä: {getTotalPrice(order)}€</p>
+                            <p>
+                                Hinta yhteensä: {getTotalPrice(order)}€
+                                {order[0].customer_shippingoption === "Posti" && (
+                                    <b> + {order.some(item => ["LP", '12"', "MLP"].includes(item.size)) ? "9€" : "5€"} postitusmaksu</b>
+                                )}
+                            </p>
                             <hr className="separator" />
                             <h4>
                                 Tilauksen seuranta: {steps.map((step, index) => (

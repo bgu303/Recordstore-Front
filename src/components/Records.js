@@ -48,7 +48,7 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
         fetch(`https://api.discogs.com/releases/${discogsSubStr}`)
             .then(response => {
                 if (!response.ok) {
-                    return alert("Valitettavasti levyn discogs linkki ei toimi.")
+                    return alert("Tätä levyä ei tällä hetkellä löydy Discogsista.")
                 } else {
                     return response.json();
                 }
@@ -57,7 +57,7 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
                 window.open(responseData.uri)
             })
             .catch(error => {
-                return alert("Discogs linkki ei toiminnassa.");
+                return alert("Tätä levyä ei tällä hetkellä löydy Discogsista.");
             })
     }
 

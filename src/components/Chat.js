@@ -204,7 +204,6 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
         <>
             <div className="chat-container">
                 <h1 className="chatTitle">Chatti</h1>
-                <p className="chatParagraph">Alla olevasta chatistä voit jutella PoppiMikon kanssa.</p>
                 <p className="chatParagraph">Viesteihisi vastataan mahdollisimman pian.</p>
                 <p className="chatParagraph"><b>Tämä Chat on tarkoitettu vain levykauppojen hoitoon. Jos haluat jutella muista asioista, ota PoppiMikkoon yhteyttä toisen sosiaalimedian kautta.</b></p>
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>

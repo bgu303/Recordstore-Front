@@ -241,7 +241,15 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                             domLayout="auto"
                         />
                     </div>
-                    <h3 style={{ marginLeft: "20px" }}>Yhteensä: {cartTotal} euroa.</h3>
+                    <h3 style={{ marginLeft: "20px" }}>
+                        Yhteensä: {cartTotal} €
+                        {shoppingcart.some(item => ["LP", '12"', "MLP"].includes(item.size)) ? (
+                            <span> + 9€ postitusmaksu (Jos ei nouto Vuosaaresta).</span>
+                        ) : (
+                            <span> + 5€ postitusmaksu (Jos ei nouto Vuosaaresta).</span>
+                        )}
+                    </h3>
+
                     <div className="orderInfoDiv">
                         <h3>Tilaajan Tiedot</h3>
                         <TextField label="Koko nimi"

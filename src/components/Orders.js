@@ -189,7 +189,12 @@ function Orders({ getAllOrders }) {
                                 );
                             })}
                         </ul>
-                        <p>Hinta yhteensä: {getTotalPrice(order)}€</p>
+                        <p>
+                            Hinta yhteensä: {getTotalPrice(order)}€
+                            {order[0].customer_shippingoption === "Posti" && (
+                                <b> + postimaksu {order.some(item => ["LP", '12"', "MLP"].includes(item.size)) ? "9€" : "5€"}</b>
+                            )}
+                        </p>
                         <hr className="separator" />
                         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '15px' }}>
                             <label style={{ marginRight: '10px' }}>Muuta Status</label>
