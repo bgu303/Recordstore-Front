@@ -120,7 +120,7 @@ function FrontPage() {
                     <p className="homePageParagraph">
                         nimimerkin otin ensimmäistä kertaa käyttöön reilut 10 vuotta sitten, kun aloin latamaan videoita YouTubeen (osa saattaa muistaakin). Kolmen vuoden aikana latasin videoita (lähinnä suomalaisia biisejä) sinne noin 1700, katselukertoja oli yli 20 miljoonaa. Kunnes kanava suljettiin ja kaikki lisäämäni lataukset katosivat sieltä. PoppiMikon rinnalla laitoin sinne myös videoita nimimerkillä PunkMikko, tuo kanava siellä on säilynyt. Tosin aktiivinen en sen kanssa ole ollut vuosikausiin. Sittemmin olen tätä PoppiMikko nimeä siellä täällä käyttänyt, nyt siis myös tällä nettisivulla.
                         <br /><br />
-                        <b>Myytävät</b><br />Levyt täällä ovat kaksoiskappaleita tai itselleni turhia, laidasta laitaan kaikenlaista sälää. Yhdelle turha voi olla toisen aarre. Aussi /Alternative -sinkut ovat hyvin edustettuina, kuten myös CD-singlet. LP-osastoa on tässä vaiheessa hieman niukasti, mutta katsotaan, lisäyksiä saattaa olla tulossa myöhemmin. Suurinta osaa on vain yksi kappale, joitain aussi/alternative -sinkkuja voi olla useampikin. Kaikki nämä pitäisi löytyä varastosta, mutta on tänne saattanut jäädä roikkumaan jo aiemmin myyty kohdekin. Hinnoittelussa olen pyrkinyt kohtuullisuuteen ja varmaan suurelta osin siinä onnistunutkin. Lähtökohtana olen käyttänyt Discogsin mediaanihintaa, koska se on varmaan monelle ostajalle sellainen johon voi hieman verrata. Tietenkään se ei ole mikään ehdottomasti "oikea hinta", koska eihän sellaista ole olemassakaan. On vain hinta, jolla levy joko menee kaupaksi tai sitten ei. <b>Minimitilaus on 20 euroa ja vaatii rekisteröitymisen.</b>
+                        <b>Myytävät</b><br />Levyt täällä ovat kaksoiskappaleita tai itselleni turhia, laidasta laitaan kaikenlaista sälää. Yhdelle turha voi olla toisen aarre. Aussi /Alternative -sinkut ovat hyvin edustettuina, kuten myös CD-singlet. LP-osastoa on tässä vaiheessa hieman niukasti, mutta katsotaan, lisäyksiä saattaa olla tulossa myöhemmin. Suurinta osaa on vain yksi kappale, joitain aussi/alternative -sinkkuja voi olla useampikin. Kaikki nämä pitäisi löytyä varastosta, mutta on tänne saattanut jäädä roikkumaan jo aiemmin myyty kohdekin. Hinnoittelussa olen pyrkinyt kohtuullisuuteen ja varmaan suurelta osin siinä onnistunutkin. Lähtökohtana olen käyttänyt Discogsin mediaanihintaa, koska se on varmaan monelle ostajalle sellainen johon voi hieman verrata. Tietenkään se ei ole mikään ehdottomasti "oikea hinta", koska eihän sellaista ole olemassakaan. On vain hinta, jolla levy joko menee kaupaksi tai sitten ei. <b>Minimitilaus on 20 euroa ja vaatii rekisteröitymisen.</b> Levyjä myyn harrastemielessä vapaa-ajalla, joten toimitusaika vaihtelee.
                     </p>
                 </div>
                 <div className="vertical-line"></div>
@@ -131,7 +131,11 @@ function FrontPage() {
                         <br /><br />
                         <b>Banneri</b><br/>Levyt, joiden kansia etusivun yläosassa vilistää, <b>eivät ole myynnissä.</b> Ne ovat siellä, koska ne ovat muistoja PoppiMikko ja PunkMikko -postauksista YouTubeen. Ja ovathan ne visuaalisesti hyvän näköisiä, eikö vain. Klikkaamalla kuvaa saat sen isoksi.
                         <br /><br />
+                        <b>Mobiililaitteella käyttö</b><br/>Sivustoa on parhaan mukaan koitettu optimoida myös mobiililaitteilla toimivaksi, mutta parannettavaa varmasti on, vähintään levylistan selaaminen on vaikeampaa mobiililaitteella.
+                        <br /><br />
                         <b>Postikulut</b><br/>Lisätään, jos ei ole nouto Vuosaaresta. Jos tilauksessa on yksikin LP, MLP tai 12" niin silloin kyseessä on paketti ja postikulut ovat <b>9 euroa.</b> Muissa tapauksissa postikulut ovat <b>5 euroa.</b> Huomioithan hinnanlisäyksen tilausta tehdessäsi.
+                        <br /><br />
+                        <b>Ostoskori</b><br/>Tavarat poistuvat ostoskorista automaattisesti tunnin jälkeen, kun sen on sinne lisännyt. Tämä mahdollistaa reilun kaupan käynnin, otathan tämän huomioon ostoksillasi!
                         <br /><br />
                         <b>Chatti</b><br/>Tarkoitettu tilauksen tekemisen jälkeen asioiden sopimiseen. Sivut eivät tällä hetkellä tue suoraa maksujärjestelmää, joten mahdolliset postikulut ja noudoista sopiminen tehdään Chatin kautta. Chatti on tarkoitettu vain tilausten hoitoon, joten jätetään muut keskustelut toiselle somealustalle.
                         <br /><br />
@@ -168,7 +172,7 @@ function FrontPage() {
                         <br />
                         - <b>Alter (=Alternative)</b> – Punk/Indie/Grunge (1982 - )
                         <br />
-                        - <b>Punk/New Wave</b> – Punk/Indie/osin Pop (1977-1984)
+                        - <b>Punk/New W (New Wave)</b> - pääosin (1977-1984)
                         <br />
                         - <b>Roots</b> – Blues/Country/Jazz jne.
                         <br />
@@ -178,7 +182,7 @@ function FrontPage() {
                         <br />
                         - <b>Magazine</b> – lehdet
                         <br />
-                        - <b>Books</b> – kirjat
+                        - <b>Book</b> – kirjat
                         <br />
                         - <b>DVD</b>
                         <br />

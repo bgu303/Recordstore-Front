@@ -113,17 +113,18 @@ function SearchedRecords({ searchResults, loggedInUser, showShoppingcart }) {
                 { field: "artist", headerName: "Artisti", filter: true, suppressMovable: true, width: isMobile ? 190 : undefined, flex: isMobile ? undefined : 2 },
                 { field: "title", headerName: "Levyn nimi", filter: true, suppressMovable: true, width: isMobile ? 190 : undefined, flex: isMobile ? undefined : 2 },
                 { field: "label", headerName: "Levy-yhtiö", filter: true, suppressMovable: true, width: isMobile ? 190 : undefined, flex: isMobile ? undefined : 2 },
-                { field: "size", headerName: "Koko", filter: true, suppressMovable: true, width: isMobile ? 120 : undefined, flex: isMobile ? undefined : 1, cellStyle: { textAlign: "center" } },
-                { field: "lev", headerName: "Rec", filter: true, suppressMovable: true, width: isMobile ? 120 : undefined, flex: isMobile ? undefined : 1, cellStyle: { textAlign: "center" } },
-                { field: "kan", headerName: "PS", filter: true, suppressMovable: true, width: isMobile ? 120 : undefined, flex: isMobile ? undefined : 1, cellStyle: { textAlign: "center" } },
+                { field: "year", headerName: "Vuosi", filter: true, suppressMovable: true, width: isMobile ? 120 : undefined, flex: isMobile ? undefined : 1, cellStyle: { textAlign: "center" } },
+                { field: "size", headerName: "Koko", filter: true, suppressMovable: true, width: isMobile ? 120 : undefined, flex: isMobile ? undefined : 0.8, cellStyle: { textAlign: "center" } },
+                { field: "lev", headerName: "Rec", filter: true, suppressMovable: true, width: isMobile ? 120 : undefined, flex: isMobile ? undefined : 0.8, cellStyle: { textAlign: "center" } },
+                { field: "kan", headerName: "PS", filter: true, suppressMovable: true, width: isMobile ? 120 : undefined, flex: isMobile ? undefined : 0.8, cellStyle: { textAlign: "center" } },
+                { field: "genre", headerName: "Genre", filter: true, suppressMovable: true, width: isMobile ? 120 : undefined, flex: isMobile ? undefined : 1.2, cellStyle: { textAlign: "center" }},
                 { field: "price", headerName: "Hinta", filter: true, suppressMovable: true, cellStyle: { textAlign: "right" }, width: isMobile ? 100 : undefined, flex: isMobile ? undefined : 1 },
-                { field: "genre", headerName: "Genre", filter: true, suppressMovable: true, width: isMobile ? 120 : undefined, flex: isMobile ? undefined : 1, cellStyle: { textAlign: "center" }},
                 {
                     field: "discogs",
                     headerName: "Discogs",
                     filter: true,
                     suppressMovable: true,
-                    width: isMobile ? 120 : undefined,
+                    width: isMobile ? 120 : undefined, flex: isMobile ? undefined : 1.3,
                     cellStyle: { textAlign: "right" },
                     cellRenderer: params => (
                         <div

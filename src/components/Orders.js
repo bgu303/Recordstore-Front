@@ -134,12 +134,14 @@ function Orders({ getAllOrders }) {
         let textContent = "";
 
         textContent += "Tilaajan tiedot\n\n";
-        textContent += `Tilaajan Nimi: ${orderItem[0].customer_name}\n`;
+        textContent += `Nimi: ${orderItem[0].customer_name}\n`;
         textContent += `Sähköposti: ${orderItem[0].customer_email}\n`;
         textContent += `Puhelinnumero: ${orderItem[0].customer_phone}\n`;
         textContent += `Maksutapa: ${orderItem[0].customer_paymentoption}\n`;
         textContent += `Toimitustapa: ${orderItem[0].customer_shippingoption}\n`;
-        textContent += `Osoite: ${orderItem[0].customer_address}\n`;
+        if (orderItem[0].customer_address) {
+            textContent += `Osoite: ${orderItem[0].customer_address}\n`;
+        }
         textContent += "\n";
         textContent += "LEVYT:\n\n";
 
@@ -148,11 +150,23 @@ function Orders({ getAllOrders }) {
             textContent += `${item.title}, `;
             textContent += `${item.label}, `;
             textContent += `${item.size}, `;
-            textContent += `${item.price}€`;
-            textContent += `\n\n`;
+            textContent += `${item.price}€\n\n`;
         });
 
-        const filename = `order_${orderItem[0].id}.txt`;
+        const totalPrice = orderItem.reduce((total, item) => total + item.price, 0);
+
+        let postageFee = 0;
+        if (orderItem[0].customer_shippingoption === "Posti") {
+            postageFee = orderItem.some(item => ["LP", '12"', "MLP"].includes(item.size)) ? 9 : 5;
+            textContent += `Hinta yhteensä: ${totalPrice}€ + ${postageFee}€ postitusmaksu\n`;
+        } else {
+            textContent += `Hinta yhteensä: ${totalPrice}€\n`;
+        }
+
+        const finalPrice = totalPrice + postageFee;
+        textContent += `Kokonaishinta: ${finalPrice}€\n`;
+
+        const filename = `tilausId_${orderItem[0].id}.txt`;
         saveToFile(textContent, filename);
     };
 
@@ -163,6 +177,7 @@ function Orders({ getAllOrders }) {
                 {Object.entries(orderData).reverse().map(([orderId, order]) => (
                     <div key={orderId} className="orderContainer">
                         <h2>Tilauksen ID: {orderId}</h2>
+                        <h2>Tilauksen Maksu-ID: {order[0].order_code}</h2>
                         <h3>Tilaus saapunut: {formattedDate(order[0].order_date)}</h3>
                         {order.length > 0 && (
                             <>
@@ -171,7 +186,9 @@ function Orders({ getAllOrders }) {
                                 <p><b>Puhelinnumero:</b> {order[0].customer_phone}</p>
                                 <p><b>Maksutapa:</b> {order[0].customer_paymentoption}</p>
                                 <p><b>Toimitustapa:</b> {order[0].customer_shippingoption}</p>
-                                <p><b>Osoite:</b> {order[0].customer_address}</p>
+                                {order[0].customer_address && (
+                                    <p><b>Osoite:</b> {order[0].customer_address}</p>
+                                )}
                             </>
                         )}
                         <hr className="separator" />
@@ -192,7 +209,13 @@ function Orders({ getAllOrders }) {
                         <p>
                             Hinta yhteensä: {getTotalPrice(order)}€
                             {order[0].customer_shippingoption === "Posti" && (
-                                <b> + postimaksu {order.some(item => ["LP", '12"', "MLP"].includes(item.size)) ? "9€" : "5€"}</b>
+                                <>
+                                    <b> + {order.some(item => ["LP", '12"', "MLP"].includes(item.size)) ? "9€" : "5€"} postitusmaksu</b>
+                                    <br />
+                                    <p>Kokonaishinta:
+                                        <b> {getTotalPrice(order) + (order.some(item => ["LP", '12"', "MLP"].includes(item.size)) ? 9 : 5)}€</b>
+                                    </p>
+                                </>
                             )}
                         </p>
                         <hr className="separator" />

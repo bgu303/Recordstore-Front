@@ -17,6 +17,7 @@ function AddRecord({ loggedInUser }) {
         artist: "",
         title: "",
         label: "",
+        year: null,
         size: "",
         lev: "",
         kan: "",
@@ -46,6 +47,7 @@ function AddRecord({ loggedInUser }) {
                     artist: newRecord.artist,
                     title: newRecord.title,
                     label: newRecord.label,
+                    year: newRecord.year,
                     size: newRecord.size,
                     lev: newRecord.lev,
                     kan: newRecord.kan,
@@ -62,12 +64,14 @@ function AddRecord({ loggedInUser }) {
                     artist: "",
                     title: "",
                     label: "",
+                    year: null,
                     size: "",
                     lev: "",
                     kan: "",
-                    price: "",
+                    price: null,
                     genre: "",
                     discogs: "",
+                    sold: false
                 });
                 return alert("Levy lisätty onnistuneesti.");
             }
@@ -112,14 +116,15 @@ function AddRecord({ loggedInUser }) {
                 const columns = row.split(";");
                 return {
                     artist: columns[0],
-                    size: columns[1],
-                    label: trimQuotes(columns[2]),
-                    title: trimQuotes(columns[3]),
-                    kan: columns[4],
-                    lev: columns[5],
-                    price: parseFloat(columns[6]),
-                    genre: columns[8],
-                    discogs: columns[7],
+                    label: trimQuotes(columns[1]),
+                    title: trimQuotes(columns[2]),
+                    year: parseInt(columns[3]),
+                    size: columns[4],
+                    kan: columns[5],
+                    lev: columns[6],
+                    genre: columns[7],
+                    price: parseFloat(columns[8]),
+                    discogs: columns[9],
                 };
             })
             //Filters rows that dont have artist, so empty row at the end of the file.
@@ -156,12 +161,13 @@ function AddRecord({ loggedInUser }) {
         { headerName: "Artisti", field: "artist", width: 240 },
         { headerName: "Levyn nimi", field: "title" },
         { headerName: "Levy-yhtiö", field: "label" },
+        { headerName: "Vuosi", field: "year" },
         { headerName: "Koko", field: "size" },
         { headerName: "Rec", field: "lev", width: 110 },
         { headerName: "PS", field: "kan", width: 110 },
+        { headerName: "Genre", field: "genre" },
         { headerName: "Hinta", field: "price", cellStyle: { textAlign: "right" } },
-        { headerName: "Discogs", field: "discogs", cellStyle: { textAlign: "right" } },
-        { headerName: "Genre", field: "genre" }
+        { headerName: "Discogs", field: "discogs", cellStyle: { textAlign: "right" } }
     ];
 
     return (

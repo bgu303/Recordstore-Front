@@ -83,7 +83,9 @@ function OwnOrders({ loggedInUser }) {
                                     <p><b>Puhelinnumero:</b> {order[0].customer_phone}</p>
                                     <p><b>Maksutapa:</b> {order[0].customer_paymentoption}</p>
                                     <p><b>Toimitustapa:</b> {order[0].customer_shippingoption}</p>
-                                    <p><b>Osoite:</b> {order[0].customer_address}</p>
+                                    {order[0].customer_address && (
+                                        <p><b>Osoite:</b> {order[0].customer_address}</p>
+                                    )}
                                 </>
                             )}
                             <hr className="separator" />
@@ -103,7 +105,19 @@ function OwnOrders({ loggedInUser }) {
                             <p>
                                 Hinta yhteensä: {getTotalPrice(order)}€
                                 {order[0].customer_shippingoption === "Posti" && (
-                                    <b> + {order.some(item => ["LP", '12"', "MLP"].includes(item.size)) ? "9€" : "5€"} postitusmaksu</b>
+                                    <>
+                                        <b> + {order.some(item => ["LP", '12"', "MLP"].includes(item.size)) ? "9€" : "5€"} postitusmaksu</b>
+                                        <br />
+                                        <p>Kokonaishinta:
+                                            <b> {getTotalPrice(order) + (order.some(item => ["LP", '12"', "MLP"].includes(item.size)) ? 9 : 5)}€</b>
+                                        </p>
+                                    </>
+                                )}
+                                {order[0].customer_paymentoption === "Tilisiirto" && (
+                                    <p>Maksa tilisiirto tilisoitteeseen FI12 244 000 9000. Lisää maksun yhteydessä kommenttikenttään tilauksen koodi: <b>{order[0].order_code}</b></p>
+                                )}
+                                {order[0].customer_paymentoption === "MobilePay" && (
+                                    <p>Maksa MobilePay puhelinnumeroon 050 432 5432. Lisää maksun yhteydessä kommenttikenttään koodi: <b>{order[0].order_code}</b></p>
                                 )}
                             </p>
                             <hr className="separator" />

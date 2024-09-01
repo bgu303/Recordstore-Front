@@ -282,9 +282,9 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                                         label="Käteinen"
                                     />
                                     <FormControlLabel
-                                        value="Mobilepay"
+                                        value="MobilePay"
                                         control={<Radio />}
-                                        label="Mobilepay"
+                                        label="MobilePay"
                                     />
                                     <FormControlLabel
                                         value="Tilisiirto"
