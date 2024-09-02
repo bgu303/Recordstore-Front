@@ -1,3 +1,4 @@
+/* Existing styles */
 .chat-container {
     text-align: center;
     padding: 10px;
@@ -69,6 +70,20 @@
     background-color: #fff;
 }
 
+.message-system {
+    text-align: center;
+}
+
+.message-system-content {
+    background-color: #F0F8FF;
+    color: #333;
+    border: 1px solid #B0C4DE;
+}
+
+.message-time-system {
+    color: #888;
+}
+
 @media (max-width: 768px) {
     .chat-box {
         height: 350px;
@@ -98,3 +113,4 @@
         max-width: none; /* Remove max-width on smaller screens */
     }
 }
+

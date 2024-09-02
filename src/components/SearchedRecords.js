@@ -158,7 +158,6 @@ function SearchedRecords({ searchResults, loggedInUser, showShoppingcart }) {
             ])
         }
 
-
         updateColumnDefinitions();
         window.addEventListener("resize", updateColumnDefinitions);
 

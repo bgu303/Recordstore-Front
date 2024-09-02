@@ -200,6 +200,10 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
         };
     }, []);
 
+    const convertNewlinesToBr = (text) => {
+        return text.replace(/\n/g, '<br>');
+    };
+
     return (
         <>
             <div className="chat-container">
@@ -209,17 +213,63 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                     <div className="chat-box">
                         {conversationMessages.map((message, index) => (
-                            <div key={index} className={`message ${message.sender_id === loggedInUser.id ? 'message-right' : ''}`}>
-                                <div style={{ display: "flex", flexDirection: "column", alignItems: message.sender_id === loggedInUser.id ? "flex-end" : "flex-start" }}>
-                                    <div className={`message-content ${message.sender_id === loggedInUser.id ? 'message-sent' : 'message-received'}`}>
-                                        <strong style={{ fontSize: "14px", color: "#333" }}>
-                                            {message.sender_id === loggedInUser.id ? "Sinä" : message.sender_id === 14 ? "PoppiMikko" : ""}
+                            <div
+                                key={index}
+                                className={`message ${message.sender_id === loggedInUser.id
+                                    ? 'message-right'
+                                    : message.sender_id === 58
+                                        ? 'message-system'
+                                        : ''
+                                    }`}
+                            >
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        alignItems:
+                                            message.sender_id === loggedInUser.id
+                                                ? "flex-end"
+                                                : message.sender_id === 58
+                                                    ? "center"
+                                                    : "flex-start",
+                                    }}
+                                >
+                                    <div
+                                        className={`message-content ${message.sender_id === loggedInUser.id
+                                            ? 'message-sent'
+                                            : message.sender_id === 58
+                                                ? 'message-system-content'
+                                                : 'message-received'
+                                            }`}
+                                    >
+                                        <strong
+                                            style={{
+                                                fontSize: "14px",
+                                                color: message.sender_id === 58 ? "#FF5733" : "#333", // Different color for system messages
+                                            }}
+                                        >
+                                            {message.sender_id === loggedInUser.id
+                                                ? "Sinä"
+                                                : message.sender_id === 58
+                                                    ? "Järjestelmä"
+                                                    : message.sender_id === 14
+                                                        ? "PoppiMikko"
+                                                        : ""}
                                         </strong>
-                                        <span style={{ fontSize: "14px", color: "black", marginTop: "5px", display: "block" }}>
-                                            {message.message}
-                                        </span>
+                                        <span
+                                            style={{
+                                                fontSize: "14px",
+                                                color: message.sender_id === 58 ? "#444" : "black",
+                                                marginTop: "5px",
+                                                display: "block",
+                                            }}
+                                            // Use dangerouslySetInnerHTML to render the message content with line breaks
+                                            dangerouslySetInnerHTML={{ __html: convertNewlinesToBr(message.message) }}
+                                        />
                                     </div>
-                                    <div className="message-time">
+                                    <div
+                                        className={`message-time ${message.sender_id === 58 ? 'message-time-system' : ''}`}
+                                    >
                                         {format(new Date(message.created_at), 'dd.MM.yyyy HH:mm')}
                                     </div>
                                 </div>

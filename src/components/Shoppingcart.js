@@ -10,15 +10,18 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
 import { useNavigate } from "react-router-dom";
+import socket from './socket';
 import '../styling/Shoppingcart.css'
 
 import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
 
-function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, setCartTotal, shoppingcart, setShoppingcart, setShoppingcartSize }) {
+function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, setCartTotal, shoppingcart, setShoppingcart, setShoppingcartSize, conversationId }) {
     const [columnDefinitions, setColumnDefinitions] = useState([]);
     const [shippingOptionChecker, setShippingOptionChecker] = useState(false);
     const navigate = useNavigate();
     const token = localStorage.getItem('jwtToken');
+    const currentTime = new Date().toISOString();
+    const [message, setMessage] = useState("");
 
     useEffect(() => {
         if (!localStorage.getItem("isLoggedIn")) {
@@ -158,12 +161,36 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
         }
     };
 
+    const sendMessageOrderNotificationMessage = (orderId) => {
+        const message = `Uusi tilaus vastaanotettu!\n\nTilauksen ID: ${orderId}\n\nNimi: ${customerInfo.name}\n\nSähköposti: ${customerInfo.email}\n\nPuhelinnumero: ${customerInfo.phoneNumber}\n\nMaksutapa: ${customerInfo.paymentOption}\n\nToimitustapa: ${customerInfo.shippingOption}`;
+
+        fetch(`${BASE_URL}/chat/sendautomatedmessage`, {
+            method: "POST",
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                conversationId: conversationId,
+                message: message
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Message sent successfully:', data);
+            })
+            .catch(error => {
+                console.error('Error sending message:', error);
+            });
+        setMessage("");
+    }
+
     const sendOrder = async () => {
         if (customerInfo.name.trim() === "" || customerInfo.phoneNumber.trim() === "" || customerInfo.email.trim() === "") {
             return alert("Täytä kaikki tilaukseen liittyvät kentät.");
         }
         if (customerInfo.address.trim() === "" && customerInfo.shippingOption === "Posti") {
-            return alert("Täytä kaikki tilaukseen liittyvät kentät.")
+            return alert("Täytä kaikki tilaukseen liittyvät kentät.");
         }
         if (shoppingcart.length === 0) {
             return alert("Ostoskori on tyhjä. Lisää tuotteita ennen tilauksen lähettämistä.");
@@ -185,14 +212,23 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                 });
 
                 if (response.ok) {
-                    const deleteResponse = await fetch(`${BASE_URL}/shoppingcart/shoppingcartdeleteall/${loggedInUser.id}`, { method: "DELETE" });
+                    const data = await response.json();
 
-                    if (deleteResponse.ok) {
-                        showShoppingcart();
-                        navigate("/ordersummary");
+                    if (data.success) {
+                        const deleteResponse = await fetch(`${BASE_URL}/shoppingcart/shoppingcartdeleteall/${loggedInUser.id}`, { method: "DELETE" });
+
+                        if (deleteResponse.ok) {
+                            showShoppingcart();
+
+                            // Use the orderId returned from the server
+                            sendMessageOrderNotificationMessage(data.orderId);
+                            navigate("/ordersummary");
+                        } else {
+                            alert("Jotain meni vikaan.");
+                            console.log(deleteResponse);
+                        }
                     } else {
                         alert("Jotain meni vikaan.");
-                        console.log(deleteResponse);
                     }
                 }
             } catch (error) {

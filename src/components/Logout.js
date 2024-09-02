@@ -8,10 +8,6 @@ function Logout({ setIsLoggedIn, setLoggedInUser, setNewMessageState }) {
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        // This is to help clear everything but the unmountTime that comes when last visited chat, to keep track of new messages.
-        const timeStampKeeperKey = "unmountTime";
-        const timeStampKeeper = localStorage.getItem("unmountTime")
-
         setIsLoggedIn(false);
         setLoggedInUser({
             email: "",
@@ -20,10 +16,6 @@ function Logout({ setIsLoggedIn, setLoggedInUser, setNewMessageState }) {
             token: null
         });
         localStorage.clear();
-
-        if (timeStampKeeper !== null) {
-            localStorage.setItem(timeStampKeeperKey, timeStampKeeper);
-        }
         navigate("/");
     }
 

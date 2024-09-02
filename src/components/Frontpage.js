@@ -137,7 +137,7 @@ function FrontPage() {
                         <br /><br />
                         <b>Ostoskori</b><br/>Tavarat poistuvat ostoskorista automaattisesti tunnin jälkeen, kun sen on sinne lisännyt. Tämä mahdollistaa reilun kaupan käynnin, otathan tämän huomioon ostoksillasi!
                         <br /><br />
-                        <b>Chatti</b><br/>Tarkoitettu tilauksen tekemisen jälkeen asioiden sopimiseen. Sivut eivät tällä hetkellä tue suoraa maksujärjestelmää, joten mahdolliset postikulut ja noudoista sopiminen tehdään Chatin kautta. Chatti on tarkoitettu vain tilausten hoitoon, joten jätetään muut keskustelut toiselle somealustalle.
+                        <b>Chatti</b><br/>Tarkoitettu tilauksen tekemisen jälkeen asioiden sopimiseen. Sivut eivät tällä hetkellä tue suoraa maksujärjestelmää, joten mahdolliset postikulut ja noudoista sopiminen tehdään Chatin kautta. Chatti on tarkoitettu vain tilausten hoitoon, joten jätetään muut keskustelut toiselle somealustalle. Jos chat viestit eivät näytä lähtevän, koita <b>päivittää sivu.</b>
                         <br /><br />
                         <b>Ilmoitustaulu</b><br/>Sijaitsee etusivun oikeassa reunassa on, mitä nimi sanookin. Laitan sinne tietoa, jos olen lisännyt levyjä tai milloin olen "lomalla" eli kauppa on kiinni. Tai ihan mitä tahansa, mitä mieleen tulee.
                         <br /><br />
@@ -211,9 +211,6 @@ function FrontPage() {
                     <div className="section">
                         <h2 className="homePageTitles">Ilmoitustaulu</h2>
                         <div>
-                            <p className="homePageParagraph">
-                                Tässä osiossa on PoppiMikon uusimmat ilmoitukset. Pysy ajan tasalla uusimmista uutisista ja päivityksistä!
-                            </p>
                             <ul className="ulFrontPage">
                                 {notifications.map((notif, index) => (
                                     <li key={index}>{notif.notification_text}</li>

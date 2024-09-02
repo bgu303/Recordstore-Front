@@ -17,6 +17,10 @@ function Ordersummary({ loggedInUser, customerInfo, cartTotal }) {
         navigate("/ownorders")
     }
 
+    const returnToChat = () => {
+        navigate("/chat")
+    }
+
     return (
         <>
             <div className="orderSummaryMainDiv">
@@ -24,11 +28,12 @@ function Ordersummary({ loggedInUser, customerInfo, cartTotal }) {
                 <p>Tilaajan nimi: <b>{customerInfo.name}</b></p>
                 <p>Tilaajan puhelinnumero: <b>{customerInfo.phoneNumber}</b></p>
                 <p>Tilaajan sähköposti: <b>{customerInfo.email}</b></p>
-                <p>Tilaajan osoite: <b>{customerInfo.address}</b></p>
+                {customerInfo.address && <p>Tilaajan osoite: <b>{customerInfo.address}</b></p>}
                 <p>Tilauksen maksutapa: <b>{customerInfo.paymentOption}</b></p>
                 <p>Tilauksen hinta yhteensä: <b>{cartTotal} euroa.</b></p>
                 <p>Kiitos tilauksestasi. Sinuun ollaan henkilökohtaisesti yhteydessä.</p>
                 <p>Pääset näkemään omat tilauksesi <span style={{ color: "green", cursor: "pointer", fontWeight: "bold" }} onClick={() => returnFrontpage()}>TÄSTÄ</span></p>
+                <p>Tilauksestasi lähtee myös tieto Chattiin kaupankäynnin helpottamiseksi. Chattiin pääset <span style={{ color: "green", cursor: "pointer", fontWeight: "bold" }} onClick={() => returnToChat()}>TÄSTÄ</span></p>
             </div>
         </>
     )

@@ -75,6 +75,7 @@ function OwnOrders({ loggedInUser }) {
                 ) : (
                     Object.entries(orderData).reverse().map(([orderId, order]) => (
                         <div key={orderId} className="orderContainer">
+                            <h2>Tilauksen ID: {orderId}</h2>
                             <h3>Tilaus lähetetty: {formattedDate(order[0].order_date)}</h3>
                             {order.length > 0 && (
                                 <>
