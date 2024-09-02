@@ -31,8 +31,18 @@ function CreateUser() {
         }
 
         //Take into use when testing phase is over.
-        /*if (user.password.length < 9) {
-            return alert("Salasanan tulee olla vähintään 9 merkkiä pitkä.");
+        /* if (user.password.length < 9) {
+            return alert("Turvallisuussyistä salasanan tulee olla vähintään 9 merkkiä pitkä.");
+
+        }
+
+        if (!/[A-Z]/.test(user.password)) {
+            return alert("Turvallisuussyistä salasanassa tulee olla vähintään yksi iso kirjain.");
+
+        }
+
+        if (!/[0-9]/.test(user.password)) {
+            return alert("Turvallisuussyistä salasanassa tulee olla vähintään yksi numero.");
         } */
 
         try {
@@ -94,7 +104,7 @@ function CreateUser() {
                     />
                 </div>
                 <div>
-                <label style={{ fontWeight: "bold", display: "block", marginBottom: 10 }}>Salasana*</label>
+                    <label style={{ fontWeight: "bold", display: "block", marginBottom: 10 }}>Salasana*</label>
                     <TextField
                         label="Salasana"
                         size="small"
@@ -106,7 +116,7 @@ function CreateUser() {
                     />
                 </div>
                 <div>
-                <label style={{ fontWeight: "bold", display: "block", marginBottom: 10 }}>Salasana uudelleen*</label>
+                    <label style={{ fontWeight: "bold", display: "block", marginBottom: 10 }}>Salasana uudelleen*</label>
                     <TextField
                         label="Salasana uudelleen"
                         size="small"

@@ -133,7 +133,7 @@ function FrontPage() {
                         <br /><br />
                         <b>Mobiililaitteella käyttö</b><br />Sivustoa on parhaan mukaan koitettu optimoida myös mobiililaitteilla toimivaksi, mutta parannettavaa varmasti on, vähintään levylistan selaaminen on vaikeampaa mobiililaitteella.
                         <br /><br />
-                        <b>Maksutavat</b><br />Sivusto ei tällä hetkellä tue suoraa maksujärjestelmää, joten maksamiseen on kolme vaihtoehtoa: MobilePay, tilisiirto tai käteinen noudon yhteydessä. Tilausta tehdessäsi maksutapaa kysytään.
+                        <b>Maksutavat</b><br />Sivusto ei tällä hetkellä tue suoraa maksujärjestelmää, joten maksamiseen on kolme vaihtoehtoa: MobilePay, tilisiirto tai käteinen noudon yhteydessä. Tilausta tehdessäsi pääset valitsemaan maksutavan.
                         <br /><br />
                         <b>Postikulut</b><br />Lisätään, jos ei ole nouto Vuosaaresta. Jos tilauksessa on yksikin LP, MLP tai 12" niin silloin kyseessä on paketti ja postikulut ovat <b>9 euroa.</b> Muissa tapauksissa postikulut ovat <b>5 euroa.</b> Huomioithan hinnanlisäyksen tilausta tehdessäsi.
                         <br /><br />
@@ -152,59 +152,78 @@ function FrontPage() {
                     <p className="homePageParagraph">
                         Kunnot on arvioitu pääosin vain visuaalisesti. Ensimmäinen sarake on levy <b>(Rec),</b> toinen kansi <b>(PS).</b> Jos se on tyhjä, niin ei kantta <b>(NOPS).</b> CD ja CDs kannen kuntoluokituksessa olen katsonut paperisen sisäosan kuntoa, enkä muovikannen kuntoa, kun se on vaihdettavissa.
                         <br /><br />
-                        - <b>EX</b> = Levy/kansi on hyvässä kunnossa. Vähäisiä käytön jälkiä voi olla levyssä tai kannessa kulumaa. Osa näistä on lähempänä Mint, varsinkin suurin osa noista aussi/alternative -sinkuista, mutta varmuuden vuoksi itselläni tämä EX on se paras luokitus jota käytän.
+                        <b>EX</b> = Levy/kansi on hyvässä kunnossa. Vähäisiä käytön jälkiä voi olla levyssä tai kannessa kulumaa. Osa näistä on lähempänä Mint, varsinkin suurin osa noista aussi/alternative -sinkuista, mutta varmuuden vuoksi itselläni tämä EX on se paras luokitus jota käytän.
                         <br /><br />
-                        - <b>VG</b> = Kannessa enemmän kulumaa tai jälkiä. Levyssä pieniä naarmuja, jotka varmastikin kuuluvat enemmän tai vähemmän. Levy kuitenkin ehjä, eikä pitäisi hyppiä tai jäädä paikalleen.
+                        <b>VG</b> = Kannessa enemmän kulumaa tai jälkiä. Levyssä pieniä naarmuja, jotka varmastikin kuuluvat enemmän tai vähemmän. Levy kuitenkin ehjä, eikä pitäisi hyppiä tai jäädä paikalleen.
                         <br /><br />
-                        - <b>PO</b> = No, tämä nyt on sitten se huonoin luokitus ja tarkoittaa sitä, että naarmuja on jo huomattavasti tai kansi huonossa kunnossa. Levy on ehjä, ei puutu palasia tms, mutta jäljet varmastikin kuuluvat. Kannessa taasen voi olla pieniä repeämiä tai muuten huonossa hapessa. Mutta näissäkin voi olla positiivisia yllätyksiä (??).
+                        <b>PO</b> = No, tämä nyt on sitten se huonoin luokitus ja tarkoittaa sitä, että naarmuja on jo huomattavasti tai kansi huonossa kunnossa. Levy on ehjä, ei puutu palasia tms, mutta jäljet varmastikin kuuluvat. Kannessa taasen voi olla pieniä repeämiä tai muuten huonossa hapessa. Mutta näissäkin voi olla positiivisia yllätyksiä (??).
                         <br /><br />
-                        - <b>WOC / WOL</b> = writing on cover / label
+                        <b>WOC / WOL</b> = writing on cover / label
                         <br />
-                        - <b>SOC / SOL</b> = sticker (tarra/hintalappu) on cover / label
+                        <b>SOC / SOL</b> = sticker (tarra/hintalappu) on cover / label
                         <br />
-                        - <b>TOC / TOL</b> = tear (pieni repeämä) on cover / label
+                        <b>TOC / TOL</b> = tear (pieni repeämä) on cover / label
                         <br /><br />
-                        joskus olen unohtanut näitä merkitä, mutta aina olen sen huomioinut kuntoarviossa ja hinnassa.
+                        Joskus olen unohtanut näitä merkitä, mutta aina olen sen huomioinut kuntoarviossa ja hinnassa.
                     </p>
                     <h2 className="homePageTitles">Genret</h2>
-                    <p className="homePageParagraph">
-                        - <b>Australia</b> – tämä on tietystä syystä laitettu erikseen
-                        <br />
-                        - <b>Alter (=Alternative)</b> – Punk/Indie/Grunge (1982 - )
-                        <br />
-                        - <b>Punk/New W (=New Wave)</b> - pääosin (1977-1984)
-                        <br />
-                        - <b>Roots</b> – Blues/Country/Jazz jne.
-                        <br />
-                        - <b>Rock/Pop</b> – kaikki ulkomainen, jota ei noissa ylemmissä
-                        <br />
-                        - <b>Suomi</b> – kaikki suomalaiset. Rock/Pop/Punk/Iskelmä jne.
-                        <br />
-                        - <b>Magazine</b> – lehdet
-                        <br />
-                        - <b>Book</b> – kirjat
-                        <br />
-                        - <b>DVD</b>
-                        <br />
-                        - <b>Sekalaiset</b> – ihan mitä tahansa muuta, mitä ei mainittu yllä.
-                    </p>
-                    <h2 className="homePageTitles">Koko eli Size</h2>
-                    <p className="homePageParagraph">
-                        - <b>7"</b> – ne perinteiset singlet ja EP:t
-                        <br />
-                        - <b>LP</b> – ne perinteiset albumit (12")
-                        <br />
-                        - <b>MLP</b> – mini-LP, kuin albumi (12") mutta vähemmän biisejä
-                        <br />
-                        - <b>12"</b> – maxisinglet (yleensä 1-3 biisiä / puoli)
-                        <br />
-                        - <b>10"</b> – maxisingle tai mini-LP
-                        <br />
-                        - <b>CD</b> – täyspitkä levy
-                        <br />
-                        - <b>CDs</b> – CD-single
+                    <p className="genreNSizeFormatter">
+                        <span className="formatItem">
+                            <b className="formatLabel">Australia</b> – tämä on tietystä syystä laitettu erikseen
+                        </span>
+                        <span className="formatItem">
+                            <b className="formatLabel">Alter (=Alternative)</b> – Punk/Indie/Grunge (1982 - )
+                        </span>
+                        <span className="formatItem">
+                            <b className="formatLabel">Punk/New W (=New Wave)</b> pääosin (1977-1984)
+                        </span>
+                        <span className="formatItem">
+                            <b className="formatLabel">Roots</b> – Blues/Country/Jazz jne.
+                        </span>
+                        <span className="formatItem">
+                            <b className="formatLabel">Rock/Pop</b> – kaikki ulkomainen, jota ei noissa ylemmissä
+                        </span>
+                        <span className="formatItem">
+                            <b className="formatLabel">Suomi</b> – kaikki suomalaiset. Rock/Pop/Punk/Iskelmä jne.
+                        </span>
+                        <span className="formatItem">
+                            <b className="formatLabel">Magazine</b> – lehdet
+                        </span>
+                        <span className="formatItem">
+                            <b className="formatLabel">Book</b> – kirjat
+                        </span>
+                        <span className="formatItem">
+                            <b className="formatLabel">DVD</b>
+                        </span>
+                        <span className="formatItem">
+                            <b className="formatLabel">Sekalaiset</b> – mitä tahansa muuta, mitä ei mainittu yllä.
+                        </span>
                     </p>
 
+                    <h2 className="homePageTitles">Koko eli Size</h2>
+                    <p className="genreNSizeFormatter">
+                        <span className="formatItem">
+                            <b className="formatLabel">7"</b> – ne perinteiset singlet ja EP:t
+                        </span>
+                        <span className="formatItem">
+                            <b className="formatLabel">LP</b> – ne perinteiset albumit (12")
+                        </span>
+                        <span className="formatItem">
+                            <b className="formatLabel">MLP</b> – mini-LP, kuin albumi (12") mutta vähemmän biisejä
+                        </span>
+                        <span className="formatItem">
+                            <b className="formatLabel">12"</b> – maxisinglet (yleensä 1-3 biisiä / puoli)
+                        </span>
+                        <span className="formatItem">
+                            <b className="formatLabel">10"</b> – maxisingle tai mini-LP
+                        </span>
+                        <span className="formatItem">
+                            <b className="formatLabel">CD</b> – täyspitkä levy
+                        </span>
+                        <span className="formatItem">
+                            <b className="formatLabel">CDs</b> – CD-single
+                        </span>
+                    </p>
                 </div>
                 <div className="vertical-line"></div>
                 <div className="section">

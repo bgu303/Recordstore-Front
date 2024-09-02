@@ -47,7 +47,7 @@ function SendFeedback({ loggedInUser }) {
     return (
         <div className="feedbackContainer">
             <h1 className="feedbackHeader">Lähetä palautetta</h1>
-            <h3 className="feedbackSubheader">Tällä sivulla voit lähettää kehitysehdotuksia, ilmoittaa bugeista tai muuten vaan lähettää palautetta.</h3>
+            <h3 className="feedbackSubheader">Alla olevasta tekstikentästä voit lähettää kehitysehdotuksia, ilmoittaa bugeista tai muuten vaan lähettää palautetta.</h3>
             <div className="feedbackForm">
                 <TextField
                     onChange={e => setFeedbackMessage(e.target.value)}

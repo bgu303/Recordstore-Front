@@ -124,7 +124,7 @@ function SearchedRecords({ searchResults, loggedInUser, showShoppingcart }) {
                     headerName: "Discogs",
                     filter: true,
                     suppressMovable: true,
-                    width: isMobile ? 120 : undefined, flex: isMobile ? undefined : 1.3,
+                    width: isMobile ? 120 : undefined, flex: isMobile ? undefined : 1.2,
                     cellStyle: { textAlign: "right" },
                     cellRenderer: params => (
                         <div

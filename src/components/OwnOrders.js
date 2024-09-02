@@ -34,7 +34,6 @@ function OwnOrders({ loggedInUser }) {
                 // Group orders by their IDs
                 const groupedOrders = groupBy(responseData, 'id');
                 setOrderData(groupedOrders);
-                console.log(orderData)
             })
             .catch(error => {
                 console.log(error.message);
@@ -75,7 +74,7 @@ function OwnOrders({ loggedInUser }) {
                 ) : (
                     Object.entries(orderData).reverse().map(([orderId, order]) => (
                         <div key={orderId} className="orderContainer">
-                            <h2>Tilauksen ID: {orderId}</h2>
+                            <h2>Tilauksen ID: <span style={{ color: "#2155ff" }}>{orderId}</span></h2>
                             <h3>Tilaus lähetetty: {formattedDate(order[0].order_date)}</h3>
                             {order.length > 0 && (
                                 <>
@@ -92,16 +91,15 @@ function OwnOrders({ loggedInUser }) {
                             <hr className="separator" />
                             <ul>
                                 <h3 style={{ textAlign: "center" }}>Tuotteet</h3>
-                                {order.map(item => {
-                                    return (
-                                        <li style={{ marginBottom: "10px", lineHeight: "1.5rem" }} key={item.record_id}>
-                                            <b>Artisti/Bändi:</b> {item.artist}<br />
-                                            <b>Levyn nimi:</b> {item.title}<br />
-                                            <b>Koko:</b> {item.size}<br />
-                                            <b>Hinta:</b> {item.price}€<br />
-                                        </li>
-                                    );
-                                })}
+                                {order.map(item => (
+                                    <li style={{ marginBottom: "10px", lineHeight: "1.5rem" }} key={item.record_id}>
+                                        <b>Artisti/Bändi:</b> {item.artist}<br />
+                                        <b>Levyn nimi:</b> {item.title}<br />
+                                        <b>Levy-yhtiö:</b> {item.label}<br />
+                                        <b>Koko:</b> {item.size}<br />
+                                        <b>Hinta:</b> {item.price}€<br />
+                                    </li>
+                                ))}
                             </ul>
                             <p>
                                 Hinta yhteensä: {getTotalPrice(order)}€
@@ -109,18 +107,16 @@ function OwnOrders({ loggedInUser }) {
                                     <>
                                         <b> + {order.some(item => ["LP", '12"', "MLP"].includes(item.size)) ? "9€" : "5€"} postitusmaksu</b>
                                         <br />
-                                        <p>Kokonaishinta:
-                                            <b> {getTotalPrice(order) + (order.some(item => ["LP", '12"', "MLP"].includes(item.size)) ? 9 : 5)}€</b>
-                                        </p>
+                                        Kokonaishinta: <b>{getTotalPrice(order) + (order.some(item => ["LP", '12"', "MLP"].includes(item.size)) ? 9 : 5)}€</b>
                                     </>
                                 )}
-                                {order[0].customer_paymentoption === "Tilisiirto" && (
-                                    <p>Maksa tilisiirto tilisoitteeseen FI12 244 000 9000. Lisää maksun yhteydessä kommenttikenttään tilauksen koodi: <b>{order[0].order_code}</b></p>
-                                )}
-                                {order[0].customer_paymentoption === "MobilePay" && (
-                                    <p>Maksa MobilePay puhelinnumeroon 050 432 5432. Lisää maksun yhteydessä kommenttikenttään koodi: <b>{order[0].order_code}</b></p>
-                                )}
                             </p>
+                            {order[0].customer_paymentoption === "Tilisiirto" && (
+                                <p>Maksa tilisiirto tilisoitteeseen FI12 244 000 9000. Lisää maksun yhteydessä kommenttikenttään tilauksen koodi: <b>{order[0].order_code}</b></p>
+                            )}
+                            {order[0].customer_paymentoption === "MobilePay" && (
+                                <p>Maksa MobilePay puhelinnumeroon 050 432 5432. Lisää maksun yhteydessä kommenttikenttään koodi: <b style={{ color: "#2155ff" }}>{order[0].order_code}</b></p>
+                            )}
                             <hr className="separator" />
                             <h4>
                                 Tilauksen seuranta: {steps.map((step, index) => (
@@ -148,6 +144,7 @@ function OwnOrders({ loggedInUser }) {
             </div>
         </>
     );
+
 }
 
 export default OwnOrders;

@@ -58,7 +58,6 @@ function Login({ isLoggedIn, setIsLoggedIn, loggedInUser, setLoggedInUser, conve
             })
             .then(data => {
                 const { token } = data;
-                console.log(token)
                 setToken(token);
                 const decodedToken = jwtDecode(token);
 

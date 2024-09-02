@@ -158,17 +158,18 @@ function AddRecord({ loggedInUser }) {
     }
 
     const columns = [
-        { headerName: "Artisti", field: "artist", width: 240 },
-        { headerName: "Levyn nimi", field: "title" },
-        { headerName: "Levy-yhtiö", field: "label" },
-        { headerName: "Vuosi", field: "year" },
-        { headerName: "Koko", field: "size" },
-        { headerName: "Rec", field: "lev", width: 110 },
-        { headerName: "PS", field: "kan", width: 110 },
-        { headerName: "Genre", field: "genre" },
-        { headerName: "Hinta", field: "price", cellStyle: { textAlign: "right" } },
-        { headerName: "Discogs", field: "discogs", cellStyle: { textAlign: "right" } }
+        { headerName: "Artisti", field: "artist", flex: 3 },
+        { headerName: "Levyn nimi", field: "title", flex: 3 },
+        { headerName: "Levy-yhtiö", field: "label", flex: 2 },
+        { headerName: "Vuosi", field: "year", flex: 1 },
+        { headerName: "Koko", field: "size", flex: 1 },
+        { headerName: "Rec", field: "lev", flex: 1 },
+        { headerName: "PS", field: "kan", flex: 1 },
+        { headerName: "Genre", field: "genre", flex: 1 },
+        { headerName: "Hinta", field: "price", flex: 1, cellStyle: { textAlign: "right" } },
+        { headerName: "Discogs", field: "discogs", flex: 1, cellStyle: { textAlign: "right" } }
     ];
+
 
     return (
         <>

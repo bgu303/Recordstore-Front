@@ -174,7 +174,7 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
                     headerName: "Discogs",
                     filter: true,
                     suppressMovable: true,
-                    width: isMobile ? 120 : undefined, flex: isMobile ? undefined : 1.3,
+                    width: isMobile ? 120 : undefined, flex: isMobile ? undefined : 1.2,
                     cellStyle: { textAlign: "right" },
                     cellRenderer: params => (
                         <div
@@ -312,7 +312,6 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
                     rowData={records}
                     columnDefs={simplifiedColumnDefinitions}
                     localeText={finnishTranslations}
-                    domLayout="auto"
                     getRowHeight={() => 40}
                     gridOptions={gridOptions}
                 />
