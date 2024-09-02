@@ -72,16 +72,31 @@
 
 .message-system {
     text-align: center;
+    margin: 20px 0;
+}
+
+.message-system-header {
+    font-size: 16px;
+    font-weight: bold;
+    color: #1976D2;
+    text-transform: uppercase;
+    margin-bottom: 5px;
 }
 
 .message-system-content {
-    background-color: #F0F8FF;
-    color: #333;
-    border: 1px solid #B0C4DE;
+    background-color: #E3F2FD;
+    border: 2px solid #90CAF9;
+    color: #000000;
+    font-weight: 500;
+    padding: 10px 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .message-time-system {
-    color: #888;
+    color: #555;
+    font-style: italic;
+    margin-top: 5px;
 }
 
 @media (max-width: 768px) {

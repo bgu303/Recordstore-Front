@@ -4,23 +4,17 @@ import IconButton from '@mui/material/IconButton';
 import LogoutIcon from '@mui/icons-material/Logout';
 import '../styling/Logout.css';
 
-function Logout({ setIsLoggedIn, setLoggedInUser, setNewMessageState }) {
+function Logout({ setIsLoggedIn, setLoggedInUser, setNewMessageState, handleLogout }) {
     const navigate = useNavigate();
 
-    const handleLogout = () => {
-        setIsLoggedIn(false);
-        setLoggedInUser({
-            email: "",
-            role: "",
-            id: null,
-            token: null
+    const handleLogoutAndNavigate = () => {
+        handleLogout(() => {
+            navigate("/");
         });
-        localStorage.clear();
-        navigate("/");
-    }
+    };
 
     return (
-        <div className="logoutDiv" onClick={() => handleLogout()}>
+        <div className="logoutDiv" onClick={() => handleLogoutAndNavigate()}>
             <span style={{ color: "white" }}>Kirjaudu ulos</span><IconButton
                 style={{ marginLeft: 10, color: "white" }}  
             >

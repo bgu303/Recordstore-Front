@@ -245,7 +245,8 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
                                         <strong
                                             style={{
                                                 fontSize: "14px",
-                                                color: message.sender_id === 58 ? "#FF5733" : "#333", // Different color for system messages
+                                                color: message.sender_id === 58 ? "#FF5733" : "#333",
+                                                
                                             }}
                                         >
                                             {message.sender_id === loggedInUser.id
@@ -259,9 +260,10 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
                                         <span
                                             style={{
                                                 fontSize: "14px",
-                                                color: message.sender_id === 58 ? "#444" : "black",
+                                                color: message.sender_id === 58 ? "black" : "black",
                                                 marginTop: "5px",
                                                 display: "block",
+                                                textAlign: "left"
                                             }}
                                             // Use dangerouslySetInnerHTML to render the message content with line breaks
                                             dangerouslySetInnerHTML={{ __html: convertNewlinesToBr(message.message) }}

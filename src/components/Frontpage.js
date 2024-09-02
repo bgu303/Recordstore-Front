@@ -127,23 +127,23 @@ function FrontPage() {
                 <div className="section">
                     <h2 className="homePageTitles">Nettisivuista</h2>
                     <p className="homePageParagraph">
-                        <b>Discogs</b><br/>Jokaisella levyllä on Discogsissa oma tunnusnumeronsa. Olen sitä apua käyttäen laittanut lähes kaikkiin kohteisiin suoran linkin kyseiseen levyyn. Voit sitä klikkaamalla levylistassa etsiä levystä lisätietoa ja tarkastaa, mikä painos on kyseessä, minkä värinen vinyyli jne...
+                        <b>Discogs</b><br />Jokaisella levyllä on Discogsissa oma tunnusnumeronsa. Olen sitä apua käyttäen laittanut lähes kaikkiin kohteisiin suoran linkin kyseiseen levyyn. Voit sitä klikkaamalla levylistassa etsiä levystä lisätietoa ja tarkastaa, mikä painos on kyseessä, minkä värinen vinyyli jne...
                         <br /><br />
-                        <b>Banneri</b><br/>Levyt, joiden kansia etusivun yläosassa vilistää, <b>eivät ole myynnissä.</b> Ne ovat siellä, koska ne ovat muistoja PoppiMikko ja PunkMikko -postauksista YouTubeen. Ja ovathan ne visuaalisesti hyvän näköisiä, eikö vain. Klikkaamalla kuvaa saat sen isoksi.
+                        <b>Banneri</b><br />Levyt, joiden kansia etusivun yläosassa vilistää, <b>eivät ole myynnissä.</b> Ne ovat siellä, koska ne ovat muistoja PoppiMikko ja PunkMikko -postauksista YouTubeen. Ja ovathan ne visuaalisesti hyvän näköisiä, eikö vain. Klikkaamalla kuvaa saat sen isoksi.
                         <br /><br />
-                        <b>Mobiililaitteella käyttö</b><br/>Sivustoa on parhaan mukaan koitettu optimoida myös mobiililaitteilla toimivaksi, mutta parannettavaa varmasti on, vähintään levylistan selaaminen on vaikeampaa mobiililaitteella.
+                        <b>Mobiililaitteella käyttö</b><br />Sivustoa on parhaan mukaan koitettu optimoida myös mobiililaitteilla toimivaksi, mutta parannettavaa varmasti on, vähintään levylistan selaaminen on vaikeampaa mobiililaitteella.
                         <br /><br />
-                        <b>Postikulut</b><br/>Lisätään, jos ei ole nouto Vuosaaresta. Jos tilauksessa on yksikin LP, MLP tai 12" niin silloin kyseessä on paketti ja postikulut ovat <b>9 euroa.</b> Muissa tapauksissa postikulut ovat <b>5 euroa.</b> Huomioithan hinnanlisäyksen tilausta tehdessäsi.
+                        <b>Maksutavat</b><br />Sivusto ei tällä hetkellä tue suoraa maksujärjestelmää, joten maksamiseen on kolme vaihtoehtoa: MobilePay, tilisiirto tai käteinen noudon yhteydessä. Tilausta tehdessäsi maksutapaa kysytään.
                         <br /><br />
-                        <b>Ostoskori</b><br/>Tavarat poistuvat ostoskorista automaattisesti tunnin jälkeen, kun sen on sinne lisännyt. Tämä mahdollistaa reilun kaupan käynnin, otathan tämän huomioon ostoksillasi!
+                        <b>Postikulut</b><br />Lisätään, jos ei ole nouto Vuosaaresta. Jos tilauksessa on yksikin LP, MLP tai 12" niin silloin kyseessä on paketti ja postikulut ovat <b>9 euroa.</b> Muissa tapauksissa postikulut ovat <b>5 euroa.</b> Huomioithan hinnanlisäyksen tilausta tehdessäsi.
                         <br /><br />
-                        <b>Chatti</b><br/>Tarkoitettu tilauksen tekemisen jälkeen asioiden sopimiseen. Sivut eivät tällä hetkellä tue suoraa maksujärjestelmää, joten mahdolliset postikulut ja noudoista sopiminen tehdään Chatin kautta. Chatti on tarkoitettu vain tilausten hoitoon, joten jätetään muut keskustelut toiselle somealustalle. Jos chat viestit eivät näytä lähtevän, koita <b>päivittää sivu.</b>
+                        <b>Chatti</b><br />Tarkoitettu tilauksen tekemisen jälkeen asioiden sopimiseen, esimerkiksi sopiminen noudosta. Chatti on tarkoitettu vain tilausten hoitoon, joten jätetään muut keskustelut toiselle somealustalle. Jos chat viestit eivät näytä lähtevän, koita <b>päivittää sivu.</b>
                         <br /><br />
-                        <b>Ilmoitustaulu</b><br/>Sijaitsee etusivun oikeassa reunassa on, mitä nimi sanookin. Laitan sinne tietoa, jos olen lisännyt levyjä tai milloin olen "lomalla" eli kauppa on kiinni. Tai ihan mitä tahansa, mitä mieleen tulee.
+                        <b>Ilmoitustaulu</b><br />Sijaitsee etusivun oikeassa reunassa on, mitä nimi sanookin. Laitan sinne tietoa, jos olen lisännyt levyjä tai milloin olen "lomalla" eli kauppa on kiinni. Tai ihan mitä tahansa, mitä mieleen tulee.
                         <br /><br />
-                        <b>Soittolistat</b><br/>Koottu valikoidusti biisejä, joita täällä on myynnissä. Sivun oikeasta reunasta löytyy suorat linkit niihin. Voit käydä sieltä hakemassa vinkkejä tai muuten vaan kuuntelemassa hyvää (?) musaa.
+                        <b>Soittolistat</b><br />Koottu valikoidusti biisejä, joita täällä on myynnissä. Sivun oikeasta reunasta löytyy suorat linkit niihin. Voit käydä sieltä hakemassa vinkkejä tai muuten vaan kuuntelemassa hyvää (?) musaa.
                         <br /><br />
-                        <b>Virheitä</b><br/>Niitä sivustolta mahdollisesti voi löytyä. Kirjoitus- ja asiavirheitä ja ennen kaikkea noiden Discogs numeroiden kanssa. Olen pyrkinyt kaikessa mahdollisimman suureen tarkkuuteen, mutta silti. Jos tuo Discogs-linkki menee johonkin ihan väärään levyyn, niin ilmoita siitä. Sivustolla voi ilmetä bugeja ja toiminnallisia virheitä. Niistä voi rekisteröityneenä käyttäjänä ilmoittaa "Lähetä palautetta" -osiosta.
+                        <b>Virheitä</b><br />Niitä sivustolta mahdollisesti voi löytyä. Kirjoitus- ja asiavirheitä ja ennen kaikkea noiden Discogs numeroiden kanssa. Olen pyrkinyt kaikessa mahdollisimman suureen tarkkuuteen, mutta silti. Jos tuo Discogs-linkki menee johonkin ihan väärään levyyn, niin ilmoita siitä. Sivustolla voi ilmetä bugeja ja toiminnallisia virheitä. Niistä voi rekisteröityneenä käyttäjänä ilmoittaa "Lähetä palautetta" -osiosta.
                     </p>
                 </div>
                 <div className="vertical-line"></div>
@@ -172,7 +172,7 @@ function FrontPage() {
                         <br />
                         - <b>Alter (=Alternative)</b> – Punk/Indie/Grunge (1982 - )
                         <br />
-                        - <b>Punk/New W (New Wave)</b> - pääosin (1977-1984)
+                        - <b>Punk/New W (=New Wave)</b> - pääosin (1977-1984)
                         <br />
                         - <b>Roots</b> – Blues/Country/Jazz jne.
                         <br />
@@ -212,20 +212,23 @@ function FrontPage() {
                         <h2 className="homePageTitles">Ilmoitustaulu</h2>
                         <div>
                             <ul className="ulFrontPage">
-                                {notifications.map((notif, index) => (
-                                    <li key={index}>{notif.notification_text}</li>
+                                {notifications.slice().reverse().map((notif, index) => (
+                                    <li key={index}>
+                                        <p>{notif.notification_text}</p>
+                                        <span className="notification-time">Julkaistu: {new Date(notif.created_at).toLocaleString()}</span>
+                                    </li>
                                 ))}
                             </ul>
                         </div>
                     </div>
                     <div className="section" style={{ height: "45vh" }}>
-                        <h2 className="homePageTitles">PoppiMikon soittolistoja</h2>
+                        <h2 className="homePageTitles">Soittolistoja</h2>
                         <div>
-                            <h4>Spotify</h4>
+                            <h2>Spotify</h2>
                             {renderPlaylists('Spotify')}
                         </div>
                         <div>
-                            <h4>Youtube</h4>
+                            <h2>Youtube</h2>
                             {renderPlaylists('Youtube')}
                         </div>
                     </div>

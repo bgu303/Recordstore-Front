@@ -21,6 +21,7 @@ import "./App.css";
 import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
 import { TextField } from '@mui/material';
+import { jwtDecode } from 'jwt-decode';
 import "./styling/Navbar.css";
 import SearchIcon from '@mui/icons-material/Search';
 import IconButton from '@mui/material/IconButton';
@@ -314,7 +315,7 @@ function App() {
       })
       .catch(error => console.error("Error:", error));
   };
-  
+
   // Function to get all the orders. This is used for admin so it can fetch all the orders and indicate if new ones have arrived.
   const getAllOrders = () => {
     if (localStorage.getItem("loggedInUserRole") !== "ADMIN") {
@@ -379,6 +380,38 @@ function App() {
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   }
+
+  const handleLogout = (callback) => {
+    setIsLoggedIn(false);
+    setLoggedInUser({
+        email: "",
+        role: "",
+        id: null,
+        token: null
+    });
+    localStorage.clear();
+
+    if (callback) callback();
+}
+
+  //This is used to "Logout" so to speak, to check if the token is expired ---> empties login details and localStorage.
+  useEffect(() => {
+    const token = localStorage.getItem("jwtToken");
+    if (token) {
+      try {
+        const decodedToken = jwtDecode(token);
+
+        const currentTime = Date.now() / 1000;
+        if (decodedToken.exp < currentTime) {
+          handleLogout();
+        }
+      } catch (error) {
+        handleLogout();
+      }
+    } else {
+      handleLogout();
+    }
+  }, []); 
 
   return (
     <Router>
@@ -511,7 +544,7 @@ function App() {
               </>
             )}
             {isLoggedIn && (
-              <Logout setIsLoggedIn={setIsLoggedIn} setLoggedInUser={setLoggedInUser} setNewMessageState={setNewMessageState} />
+              <Logout setIsLoggedIn={setIsLoggedIn} setLoggedInUser={setLoggedInUser} setNewMessageState={setNewMessageState} handleLogout={handleLogout} />
             )}
           </div>
         </nav>

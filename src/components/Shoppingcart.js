@@ -161,8 +161,8 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
         }
     };
 
-    const sendMessageOrderNotificationMessage = (orderId) => {
-        const message = `Uusi tilaus vastaanotettu!\n\nTilauksen ID: ${orderId}\n\nNimi: ${customerInfo.name}\n\nSähköposti: ${customerInfo.email}\n\nPuhelinnumero: ${customerInfo.phoneNumber}\n\nMaksutapa: ${customerInfo.paymentOption}\n\nToimitustapa: ${customerInfo.shippingOption}`;
+    const sendMessageOrderNotificationMessage = (orderId, orderCode) => {
+        const message = `Uusi tilaus vastaanotettu!\n\nTilauksen ID: ${orderId}\n\nNimi: ${customerInfo.name}\n\nSähköposti: ${customerInfo.email}\n\nPuhelinnumero: ${customerInfo.phoneNumber}\n\nMaksutapa: ${customerInfo.paymentOption}${(customerInfo.paymentOption === "MobilePay" || customerInfo.paymentOption === "Tilisiirto") ? `\n\nMaksukoodi: ${orderCode}` : ""}\n\nToimitustapa: ${customerInfo.shippingOption} ${customerInfo.address ? `\n\nOsoite:\n${customerInfo.address}` : ""}`;
 
         fetch(`${BASE_URL}/chat/sendautomatedmessage`, {
             method: "POST",
@@ -221,7 +221,7 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                             showShoppingcart();
 
                             // Use the orderId returned from the server
-                            sendMessageOrderNotificationMessage(data.orderId);
+                            sendMessageOrderNotificationMessage(data.orderId, data.orderCode);
                             navigate("/ordersummary");
                         } else {
                             alert("Jotain meni vikaan.");
@@ -270,6 +270,7 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
             ) : (
                 <>
                     <h3 style={{ textAlign: "center" }}>HUOM! Alle 20 euron tilaukset eivät ole mahdollisia.</h3>
+                    <h3 style={{ textAlign: "center" }}>Tuotteet säilyvät ostoskorissa tunnin.</h3>
                     <div className="ag-theme-material trainings" style={{ height: "500px", width: "95%", margin: "auto", fontWeight: "bold" }}>
                         <AgGridReact
                             rowData={shoppingcart}
