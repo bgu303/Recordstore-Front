@@ -23,28 +23,34 @@ function CreateUser() {
         if (user.email.trim() === "" || user.password.trim() === "" || user.confirmPassword === "") {
             return alert("Täytä kaikki kentät.");
         }
+        
         if (user.email.length >= 50) {
-            return alert("Käytä lyhyempää sähköpostiosoitetta");
+            return alert("Käytä lyhyempää sähköpostiosoitetta.");
         }
+        
         if (user.password !== user.confirmPassword) {
             return alert("Salasanat eivät ole samat");
         }
-
-        //Take into use when testing phase is over.
-        /* if (user.password.length < 9) {
+        
+        // Uncomment these checks when testing phase is over.
+        /* 
+        if (user.password.length < 9) {
             return alert("Salasanan tulee olla vähintään 9 merkkiä pitkä.");
-    
         }
-    
+        
         if (!/[A-Z]/.test(user.password)) {
             return alert("Salasanassa tulee olla vähintään yksi iso kirjain.");
-    
         }
-    
+        
         if (!/[0-9]/.test(user.password)) {
             return alert("Salasanassa tulee olla vähintään yksi numero.");
-        } */
-
+        }
+        
+        if (!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/.test(user.email)) {
+            return alert("Syötä kelvollinen sähköpostiosoite.");
+        }
+        */
+        
         try {
             const response = await fetch(`${BASE_URL_CLOUD}/user/createuser`, {
                 method: "POST",
@@ -57,7 +63,7 @@ function CreateUser() {
             });
 
             if (!response.ok) {
-                if (response.status === 409) { // Conflict, meaning email already in use
+                if (response.status === 409) {
                     return alert("Sähköposti on jo käytössä.");
                 }
                 alert("Jokin meni vikaan käyttäjää luodessa.");

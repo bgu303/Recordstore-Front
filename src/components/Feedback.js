@@ -20,6 +20,9 @@ function SendFeedback({ loggedInUser }) {
         if (feedbackMessage.trim().length <= 0) {
             return alert("Ei tyhjiä palautteita.");
         }
+        if (feedbackMessage.trim().length > 1000) {
+            return alert("Palautteen tulee olla alle 1000 merkkiä.")
+        }
         try {
             const response = await fetch(`${BASE_URL_CLOUD}/feedback/sendfeedback`, {
                 method: "POST",

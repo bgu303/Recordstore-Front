@@ -189,6 +189,21 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
         if (customerInfo.name.trim() === "" || customerInfo.phoneNumber.trim() === "" || customerInfo.email.trim() === "") {
             return alert("Täytä kaikki tilaukseen liittyvät kentät.");
         }
+        if (customerInfo.name.length > 40) {
+            return alert("Nimen tulee olla enintään 40 merkkiä pitkä.");
+        }
+        if (customerInfo.email.length > 50) {
+            return alert("Sähköpostiosoite ei voi olla yli 50 merkkiä pitkä.");
+        }
+        if (customerInfo.address.length > 100) {
+            return alert("Osoite ei voi olla yli 100 merkkiä pitkä.");
+        }
+        if (!/^\d+$/.test(customerInfo.phoneNumber)) {
+            return alert("Puhelinnumeron tulee sisältää vain numeroita.");
+        }
+        if (customerInfo.phoneNumber.length > 15) {
+            return alert("Puhelinnumero ei voi olla yli 15 merkkiä pitkä.");
+        }
         if (customerInfo.address.trim() === "" && customerInfo.shippingOption === "Posti") {
             return alert("Täytä kaikki tilaukseen liittyvät kentät.");
         }

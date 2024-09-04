@@ -67,6 +67,9 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
         if (message.trim() === "") {
             return alert("Ei tyhjiä viestejä.");
         }
+        if (message.trim().length > 600) {
+            return alert("Ei yli 600 merkin viestejä.");
+        }
 
         fetch(`${BASE_URL_CLOUD}/chat/sendmessage`, {
             method: "POST",
