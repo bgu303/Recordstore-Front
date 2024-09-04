@@ -198,6 +198,9 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
         if (cartTotal < 20) {
             return alert("Ei alle 20 euron tilauksia.");
         }
+        if (customerInfo.paymentOption === "Käteinen" && customerInfo.shippingOption === "Posti") {
+            return alert("Tilausta, joka lähetetään postitse ei voi maksaa käteisellä. Valitse toinen maksutapa.")
+        }
 
         if (window.confirm("Lähetetäänkö ostoskori?")) {
             try {
