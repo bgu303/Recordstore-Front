@@ -138,6 +138,9 @@ function Orders({ getAllOrders }) {
         textContent += `Sähköposti: ${orderItem[0].customer_email}\n`;
         textContent += `Puhelinnumero: ${orderItem[0].customer_phone}\n`;
         textContent += `Maksutapa: ${orderItem[0].customer_paymentoption}\n`;
+        if (orderItem[0].customer_paymentoption === "MobilePay" || orderItem[0].customer_paymentoption === "Tilisiirto") {
+            textContent += `Maksukoodi: ${orderItem[0].order_code}\n`;
+        }
         textContent += `Toimitustapa: ${orderItem[0].customer_shippingoption}\n`;
         if (orderItem[0].customer_address) {
             textContent += `Osoite: ${orderItem[0].customer_address}\n`;
