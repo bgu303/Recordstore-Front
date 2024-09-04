@@ -229,16 +229,18 @@ function FrontPage() {
                 <div className="section">
                     <div className="section">
                         <h2 className="homePageTitles">Ilmoitustaulu</h2>
-                        <div>
-                            <ul className="ulFrontPage">
-                                {notifications.slice().reverse().map((notif, index) => (
+                        <ul className="ulFrontPage">
+                            {notifications && notifications.length > 0 ? (
+                                notifications.slice().reverse().map((notif, index) => (
                                     <li key={index}>
                                         <p>{notif.notification_text}</p>
                                         <span className="notification-time">Julkaistu: {new Date(notif.created_at).toLocaleString()}</span>
                                     </li>
-                                ))}
-                            </ul>
-                        </div>
+                                ))
+                            ) : (
+                                <li>No notifications available</li>
+                            )}
+                        </ul>
                     </div>
                     <div className="section" style={{ height: "45vh" }}>
                         <h2 className="homePageTitles">Soittolistoja</h2>
