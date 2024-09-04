@@ -249,6 +249,8 @@ function App() {
       if (message.conversationId === conversationId) {
         setConversationMessages(prevMessages => [...prevMessages, message]);
         setNewMessageState(true);
+        setNewMessageCount(prevCount => prevCount + 1);
+        return;
       }
     });
 
@@ -267,6 +269,7 @@ function App() {
       if (message.conversationId === conversationId) {
         setConversationMessages(prevMessages => [...prevMessages, message]);
         setNewMessageState(true);
+        setNewMessageCount(prevCount => prevCount + 1);
         return;
       }
 
