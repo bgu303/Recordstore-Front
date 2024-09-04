@@ -22,7 +22,7 @@ function OwnOrders({ loggedInUser }) {
     }, [loggedInUser]);
 
     const getOrders = () => {
-        fetch(`${BASE_URL}/orders/getorderdatabyid/${loggedInUser.id}`)
+        fetch(`${BASE_URL_CLOUD}/orders/getorderdatabyid/${loggedInUser.id}`)
             .then(response => {
                 if (response.ok) {
                     return response.json();

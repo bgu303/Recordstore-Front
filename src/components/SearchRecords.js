@@ -14,7 +14,7 @@ function SearchRecords({ setSearchOpen, searchResults, setSearchResults }) {
             return;
         }
 
-        fetch(`${BASE_URL}/search/${encodeURIComponent(searchTerm)}`)
+        fetch(`${BASE_URL_CLOUD}/search/${encodeURIComponent(searchTerm)}`)
             .then(response => {
                 if (response.ok) {
                     return response.json();

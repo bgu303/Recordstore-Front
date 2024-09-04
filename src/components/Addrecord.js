@@ -37,7 +37,7 @@ function AddRecord({ loggedInUser }) {
 
     const addNewRecord = async () => {
         try {
-            const response = await fetch(`${BASE_URL}/records/addnewrecord`, {
+            const response = await fetch(`${BASE_URL_CLOUD}/records/addnewrecord`, {
                 method: "POST",
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -137,7 +137,7 @@ function AddRecord({ loggedInUser }) {
             return alert("Lisää tiedosto ja paina Esikatsele ennen levyjen lataamista serverille.");
         }
         try {
-            const response = await fetch(`${BASE_URL}/records/addrecords`, {
+            const response = await fetch(`${BASE_URL_CLOUD}/records/addrecords`, {
                 method: "POST",
                 headers: {
                     'Authorization': `Bearer ${token}`,

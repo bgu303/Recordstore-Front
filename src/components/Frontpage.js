@@ -23,7 +23,7 @@ function FrontPage() {
     ];
 
     const getRecords = () => {
-        fetch(`${BASE_URL}/records`)
+        fetch(`${BASE_URL_CLOUD}/records`)
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -42,7 +42,7 @@ function FrontPage() {
     }
 
     const showNotifications = () => {
-        fetch(`${BASE_URL}/notifications/`)
+        fetch(`${BASE_URL_CLOUD}/notifications/`)
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -56,7 +56,7 @@ function FrontPage() {
     }
 
     const showPlaylists = () => {
-        fetch(`${BASE_URL}/playlists/`)
+        fetch(`${BASE_URL_CLOUD}/playlists/`)
             .then(response => {
                 if (response.ok) {
                     return response.json();

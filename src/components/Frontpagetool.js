@@ -33,7 +33,7 @@ function FrontPageTool() {
     }, [])
 
     const getNotifications = () => {
-        fetch(`${BASE_URL}/notifications/`)
+        fetch(`${BASE_URL_CLOUD}/notifications/`)
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -52,7 +52,7 @@ function FrontPageTool() {
         }
 
         try {
-            const response = await fetch(`${BASE_URL}/notifications/addnotification`, {
+            const response = await fetch(`${BASE_URL_CLOUD}/notifications/addnotification`, {
                 method: "POST",
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -76,7 +76,7 @@ function FrontPageTool() {
     const deleteNotification = (data) => {
         const notificationId = data.id;
 
-        fetch(`${BASE_URL}/notifications/notificationdelete/${notificationId}`, {
+        fetch(`${BASE_URL_CLOUD}/notifications/notificationdelete/${notificationId}`, {
             method: "DELETE",
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -93,7 +93,7 @@ function FrontPageTool() {
     }
 
     const getPlaylists = () => {
-        fetch(`${BASE_URL}/playlists/`)
+        fetch(`${BASE_URL_CLOUD}/playlists/`)
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -111,7 +111,7 @@ function FrontPageTool() {
             return alert("Täytä kaikki soittolistaa koskettavat kentät.")
         }
         try {
-            const response = await fetch(`${BASE_URL}/playlists/addplaylist`, {
+            const response = await fetch(`${BASE_URL_CLOUD}/playlists/addplaylist`, {
                 method: "POST",
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -141,7 +141,7 @@ function FrontPageTool() {
     const deletePlaylist = (data) => {
         const playlistId = data.id;
 
-        fetch(`${BASE_URL}/playlists/playlistdelete/${playlistId}`, {
+        fetch(`${BASE_URL_CLOUD}/playlists/playlistdelete/${playlistId}`, {
             method: "DELETE",
             headers: {
                 'Authorization': `Bearer ${token}`,

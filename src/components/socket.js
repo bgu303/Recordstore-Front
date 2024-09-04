@@ -1,6 +1,6 @@
 import io from 'socket.io-client';
 import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
 
-const socket = io(BASE_URL);
+const socket = io(BASE_URL_CLOUD);
 
 export default socket;
