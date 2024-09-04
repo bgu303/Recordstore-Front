@@ -139,7 +139,7 @@ function FrontPage() {
                         <br /><br />
                         <b>Chatti</b><br />Tarkoitettu tilauksen tekemisen jälkeen asioiden sopimiseen, esimerkiksi sopiminen noudosta. Chatti on tarkoitettu vain tilausten hoitoon, joten jätetään muut keskustelut toiselle somealustalle. Jos chat viestit eivät näytä lähtevän, koita <b>päivittää sivu.</b>
                         <br /><br />
-                        <b>Ilmoitustaulu</b><br />Sijaitsee etusivun oikeassa reunassa on, mitä nimi sanookin. Laitan sinne tietoa, jos olen lisännyt levyjä tai milloin olen "lomalla" eli kauppa on kiinni. Tai ihan mitä tahansa, mitä mieleen tulee.
+                        <b>Ilmoitustaulu</b><br />Ilmoitustaulu sijaitsee oikeassa reunassa ja sinne tulee tietoa, jos olen lisännyt levyjä tai milloin olen "lomalla" eli kauppa on kiinni. Tai ihan mitä tahansa, mitä mieleen tulee.
                         <br /><br />
                         <b>Soittolistat</b><br />Koottu valikoidusti biisejä, joita täällä on myynnissä. Sivun oikeasta reunasta löytyy suorat linkit niihin. Voit käydä sieltä hakemassa vinkkejä tai muuten vaan kuuntelemassa hyvää (?) musaa.
                         <br /><br />
@@ -175,7 +175,7 @@ function FrontPage() {
                             <b className="formatLabel">Alter (=Alternative)</b> – Punk/Indie/Grunge (1982 - )
                         </span>
                         <span className="formatItem">
-                            <b className="formatLabel">Punk/New W (=New Wave)</b> pääosin (1977-1984)
+                            <b className="formatLabel">Punk/New W (=New Wave)</b> - pääosin (1977-1984)
                         </span>
                         <span className="formatItem">
                             <b className="formatLabel">Roots</b> – Blues/Country/Jazz jne.

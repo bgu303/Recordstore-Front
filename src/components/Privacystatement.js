@@ -11,7 +11,7 @@ function PrivacyStatement() {
         <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
             <div style={{ flex: "1", padding: "20px", maxWidth: "800px", margin: "auto" }}>
                 <h3 style={{ borderBottom: "2px solid #333", paddingBottom: "10px" }}>Tietosuojaseloste</h3>
-                <p style={{ fontSize: "14px", color: "#666" }}>Viimeksi päivitetty: 12. heinäkuuta 2024</p>
+                <p style={{ fontSize: "14px", color: "#666" }}>Viimeksi päivitetty: 4. syyskuuta 2024</p>
 
                 <div style={{ marginBottom: "20px" }}>
                     <h4 style={{ marginTop: "20px", marginBottom: "10px", borderBottom: "1px solid #ccc", paddingBottom: "5px" }}>Rekisterinpitäjä</h4>
@@ -21,7 +21,7 @@ function PrivacyStatement() {
                     <h4 style={{ marginTop: "20px", marginBottom: "10px", borderBottom: "1px solid #ccc", paddingBottom: "5px" }}>Henkilötietojen käsittelyn tarkoitus</h4>
                     <p>Käsittelemme henkilötietoja seuraaviin tarkoituksiin:<br />
                         - Asiakassuhteen hoitaminen<br />
-                        - Tilauksen toimitus ja laskutus<br />
+                        - Tilauksen toimitus<br />
                         - Markkinointi ja asiakasviestintä<br />
                         - Verkkopalvelun kehittäminen ja turvallisuus</p>
                 </div>
@@ -29,7 +29,7 @@ function PrivacyStatement() {
                     <h4 style={{ marginTop: "20px", marginBottom: "10px", borderBottom: "1px solid #ccc", paddingBottom: "5px" }}>Rekisteröidyt ja kerättävät henkilötiedot</h4>
                     <p>Keräämme ja käsittelemme seuraavia henkilötietoja:<br />
                         - Nimi, osoite ja yhteystiedot<br />
-                        - Tilaukseen liittyvät tiedot (tuotteet, maksutiedot)<br />
+                        - Tilaukseen liittyvät tiedot<br />
                         - Asiakasviestinnän ja markkinoinnin suostumukset</p>
                 </div>
                 <div style={{ marginBottom: "20px" }}>

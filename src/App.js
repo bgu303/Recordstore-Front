@@ -416,7 +416,7 @@ function App() {
   return (
     <Router>
       <div>
-        <div className="hamburgerMenuButton" >
+        <div className="hamburgerMenuButton">
           <IconButton onClick={() => toggleMenu()} style={{ color: "white" }}>
             <MenuIcon />
           </IconButton>
@@ -603,7 +603,6 @@ function App() {
       </div>
     </Router>
   );
-
 }
 
 export default App;

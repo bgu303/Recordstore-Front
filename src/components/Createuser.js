@@ -32,17 +32,17 @@ function CreateUser() {
 
         //Take into use when testing phase is over.
         /* if (user.password.length < 9) {
-            return alert("Turvallisuussyistä salasanan tulee olla vähintään 9 merkkiä pitkä.");
+            return alert("Salasanan tulee olla vähintään 9 merkkiä pitkä.");
 
         }
 
         if (!/[A-Z]/.test(user.password)) {
-            return alert("Turvallisuussyistä salasanassa tulee olla vähintään yksi iso kirjain.");
+            return alert("Salasanassa tulee olla vähintään yksi iso kirjain.");
 
         }
 
         if (!/[0-9]/.test(user.password)) {
-            return alert("Turvallisuussyistä salasanassa tulee olla vähintään yksi numero.");
+            return alert("Salasanassa tulee olla vähintään yksi numero.");
         } */
 
         try {
@@ -126,6 +126,9 @@ function CreateUser() {
                         onKeyDown={handleKeyPress}
                         style={{ backgroundColor: "white", borderRadius: 10 }}
                     />
+                </div>
+                <div style={{ marginTop: 10, textAlign: "center" }}>
+                    <p style={{ margin: 0 }}>Salasanassa tulee olla vähintään 9 merkkiä, iso kirjain ja numero.</p>
                 </div>
                 <Button color="success" variant="contained" style={{ borderRadius: "15px", marginTop: "10px" }} onClick={() => createUser()}>Luo käyttäjä</Button>
                 <p style={{ textAlign: "center" }}>Luomalla käyttäjän hyväksyt <span style={{ cursor: "pointer", color: "purple", fontWeight: "bold" }} onClick={goToTermsAndServices}>Käyttöehdot.</span></p>
