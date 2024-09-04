@@ -24,7 +24,9 @@ function SearchRecords({ setSearchOpen, searchResults, setSearchResults }) {
             })
             .then(responseData => {
                 console.log("Search results:", responseData);
-                setSearchResults(responseData);
+                
+                responseData = responseData.filter(record => record.sold === 0);
+                setRecords(responseData);
                 navigate("/search")
             })
             .catch(error => {
@@ -41,17 +43,17 @@ function SearchRecords({ setSearchOpen, searchResults, setSearchResults }) {
 
     return (
         <div className="search-container">
-          <TextField
-            className="search-textfield"
-            onChange={e => setSearchTerm(e.target.value)}
-            value={searchTerm}
-            size="small"
-            onKeyDown={handleKeyPress}
-            placeholder="Hae levyistä..."
-          />
-          <span className="search-span" onClick={() => searchRecords()}>Hae</span>
+            <TextField
+                className="search-textfield"
+                onChange={e => setSearchTerm(e.target.value)}
+                value={searchTerm}
+                size="small"
+                onKeyDown={handleKeyPress}
+                placeholder="Hae levyistä..."
+            />
+            <span className="search-span" onClick={() => searchRecords()}>Hae</span>
         </div>
-      );
+    );
 }
 
 export default SearchRecords;

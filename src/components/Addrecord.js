@@ -116,8 +116,8 @@ function AddRecord({ loggedInUser }) {
                 const columns = row.split(";");
                 return {
                     artist: columns[0],
-                    label: trimQuotes(columns[1]),
-                    title: trimQuotes(columns[2]),
+                    title: trimQuotes(columns[1]),
+                    label: trimQuotes(columns[2]),
                     year: parseInt(columns[3]),
                     size: columns[4],
                     kan: columns[5],
