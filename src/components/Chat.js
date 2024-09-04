@@ -10,7 +10,7 @@ import '../styling/Chat.css';
 
 import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
 
-function ChatRoom({ loggedInUser, conversationId, setConversationId, conversationMessages, setConversationMessages, fetchConversationId, fetchConversationMessages, newMessageState, setNewMessageState, adminNewMessageIds, setAdminNewMessageIds }) {
+function ChatRoom({ loggedInUser, conversationId, setConversationId, conversationMessages, setConversationMessages, fetchConversationId, fetchConversationMessages, newMessageState, setNewMessageState, adminNewMessageIds, setAdminNewMessageIds, setNewMessageCount }) {
     const [message, setMessage] = useState("");
     const [allUsers, setAllUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState("");
@@ -196,7 +196,7 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
                 .then(responseData => {
                     console.log(responseData);
                     newMessageState(false);
-                    newMessageCount(0);
+                    setNewMessageCount(0);
                 })
                 .catch(error => {
                     console.error("There was a problem with the fetch operation:", error);
