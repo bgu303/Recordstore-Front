@@ -495,7 +495,6 @@ function App() {
               </Link>
             )}
             <div className="searchBarDiv first">
-              {loggedInUser.role !== "ADMIN" && (
                 <div style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -515,7 +514,6 @@ function App() {
                     />
                   )}
                 </div>
-              )}
             </div>
             <div className="searchUnderline"></div>
           </div>
@@ -561,7 +559,6 @@ function App() {
             </Link>
           )}
           <div className="searchBarDiv second">
-            {loggedInUser.role !== "ADMIN" && (
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -582,7 +579,6 @@ function App() {
                   />
                 )}
               </div>
-            )}
           </div>
         </div>
         <Routes>
