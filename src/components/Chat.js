@@ -19,7 +19,7 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
     const navigate = useNavigate();
     const currentTime = new Date().toISOString(); // This will give the current time in ISO 8601 format
     const SYSTEM_USER_ID = 58; // This is the ID for System messages. CHANGE IF NEEDED
-    const POPPI_MIKKO_ID = 14; // This is the ID for PoppiMikko, CHANGE IF POPPIMIKKO USERID CHANGES
+    const POPPI_MIKKO_ID = 57; // This is the ID for PoppiMikko, CHANGE IF POPPIMIKKO USERID CHANGES
 
     useEffect(() => {
         if (!localStorage.getItem("isLoggedIn")) {

@@ -24,7 +24,7 @@ function CreateUser() {
             return alert("Täytä kaikki kentät.");
         }
         if (user.email.length >= 50) {
-            return alert("Käytä lyhyempää sähköpostiosoitetta")
+            return alert("Käytä lyhyempää sähköpostiosoitetta");
         }
         if (user.password !== user.confirmPassword) {
             return alert("Salasanat eivät ole samat");
@@ -33,14 +33,14 @@ function CreateUser() {
         //Take into use when testing phase is over.
         /* if (user.password.length < 9) {
             return alert("Salasanan tulee olla vähintään 9 merkkiä pitkä.");
-
+    
         }
-
+    
         if (!/[A-Z]/.test(user.password)) {
             return alert("Salasanassa tulee olla vähintään yksi iso kirjain.");
-
+    
         }
-
+    
         if (!/[0-9]/.test(user.password)) {
             return alert("Salasanassa tulee olla vähintään yksi numero.");
         } */
@@ -54,10 +54,10 @@ function CreateUser() {
                     password: user.password,
                     role: user.role
                 })
-            })
+            });
 
             if (!response.ok) {
-                if (response.status === 501) {
+                if (response.status === 409) { // Conflict, meaning email already in use
                     return alert("Sähköposti on jo käytössä.");
                 }
                 alert("Jokin meni vikaan käyttäjää luodessa.");
@@ -70,10 +70,10 @@ function CreateUser() {
                 });
                 alert("Käyttäjä luotu!");
                 navigate("/login");
-
             }
         } catch (error) {
             console.log(`Error in creating user: ${error}`);
+            alert("Jokin meni vikaan käyttäjää luodessa.");
         }
     }
 
