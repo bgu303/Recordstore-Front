@@ -195,6 +195,8 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
                 })
                 .then(responseData => {
                     console.log(responseData);
+                    newMessageState(false);
+                    newMessageCount(0);
                 })
                 .catch(error => {
                     console.error("There was a problem with the fetch operation:", error);
