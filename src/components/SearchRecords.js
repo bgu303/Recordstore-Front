@@ -26,7 +26,7 @@ function SearchRecords({ setSearchOpen, searchResults, setSearchResults }) {
                 console.log("Search results:", responseData);
                 
                 responseData = responseData.filter(record => record.sold === 0);
-                setRecords(responseData);
+                setSearchResults(responseData);
                 navigate("/search")
             })
             .catch(error => {
