@@ -88,23 +88,31 @@ function FrontPage() {
     }, [records]);
 
     const getRandomRecords = () => {
-        const shuffled = records.sort(() => 0.5 - Math.random());
-        const selectedRecords = shuffled.slice(0, 10);
-        setRandomRecords(selectedRecords)
-    }
+        if (records && records.length > 0) {
+            const shuffled = records.sort(() => 0.5 - Math.random());
+            const selectedRecords = shuffled.slice(0, 10);
+            setRandomRecords(selectedRecords);
+        } else {
+            setRandomRecords([]);
+        }
+    };
 
     // Function to render playlists by source
     const renderPlaylists = (source) => {
-        return playlists
-            .filter(playlist => playlist.playlist_source === source).reverse()
-            .map((playlist, index) => (
-                <div key={index}>
-                    <a className="homePageAnchorTag" href={playlist.playlist_url} target="_blank" rel="noopener noreferrer">
-                        {playlist.playlist_name}
-                    </a>
-                    <br />
-                </div>
-            ));
+        if (playlists && playlists.length > 0) {
+            return playlists
+                .filter(playlist => playlist.playlist_source === source).reverse()
+                .map((playlist, index) => (
+                    <div key={index}>
+                        <a className="homePageAnchorTag" href={playlist.playlist_url} target="_blank" rel="noopener noreferrer">
+                            {playlist.playlist_name}
+                        </a>
+                        <br />
+                    </div>
+                ));
+        } else {
+            return <p>No playlists available for {source}</p>;
+        }
     };
 
     return (
