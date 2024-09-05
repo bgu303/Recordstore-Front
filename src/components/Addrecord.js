@@ -120,8 +120,8 @@ function AddRecord({ loggedInUser }) {
                     label: trimQuotes(columns[2]),
                     year: parseInt(columns[3]),
                     size: columns[4],
-                    kan: columns[5],
-                    lev: columns[6],
+                    lev: columns[5],
+                    kan: columns[6],
                     genre: columns[7],
                     price: parseFloat(columns[8]),
                     discogs: columns[9],
@@ -169,7 +169,6 @@ function AddRecord({ loggedInUser }) {
         { headerName: "Hinta", field: "price", flex: 1, cellStyle: { textAlign: "right" } },
         { headerName: "Discogs", field: "discogs", flex: 1, cellStyle: { textAlign: "right" } }
     ];
-
 
     return (
         <>
