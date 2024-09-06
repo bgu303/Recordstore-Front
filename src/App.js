@@ -169,15 +169,13 @@ function App() {
           const unreadMessages = responseData.filter(message => message.isread_admin === 0);
           const unreadMessagesCount = unreadMessages.length;
 
-          if (unreadMessagesCount.length === 0) {
-            return;
+          if (unreadMessagesCount > 0) {
+            // Extract unique sender IDs from unread messages
+            const uniqueSenderIds = [...new Set(unreadMessages.map(message => message.sender_id))];
+            setAdminNewMessageIds(uniqueSenderIds);
+            setNewMessageState(true); // Set only when there are unread messages
           }
 
-          // Extract unique sender IDs from unread messages
-          const uniqueSenderIds = [...new Set(unreadMessages.map(message => message.sender_id))];
-          setAdminNewMessageIds(uniqueSenderIds);
-          setNewMessageState(true);
-          
         }
       })
       .catch(error => {
@@ -249,7 +247,7 @@ function App() {
       if (message.conversationId === conversationId) {
         setConversationMessages(prevMessages => [...prevMessages, message]);
         setNewMessageState(true);
-        
+
         return;
       }
     });
@@ -269,7 +267,7 @@ function App() {
       if (message.conversationId === conversationId) {
         setConversationMessages(prevMessages => [...prevMessages, message]);
         setNewMessageState(true);
-        
+
         return;
       }
 
