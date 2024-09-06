@@ -56,6 +56,7 @@ function App() {
   const [isOpen, setIsOpen] = useState(false);
   const [newMessageCount, setNewMessageCount] = useState(null);
   const [newOrderCount, setNewOrderCount] = useState(0);
+  const [imageError, setImageError] = useState(false); //This is to track if Logo fails to load -> it displays "Etusivu" - text.
 
   //Idk if this will be used anymore, if anything I should make all of the things that use token use the token state as above ^ CURRENTLY USED ONLY IN LOGIN. Fix maybe?
   const token1 = localStorage.getItem("jwtToken")
@@ -70,6 +71,7 @@ function App() {
   });
 
   const [cartTotal, setCartTotal] = useState(0);
+  const logo = "https://i.imgur.com/baI8pOI.png"
 
   useEffect(() => {
     const storedIsLoggedIn = localStorage.getItem("isLoggedIn");
@@ -387,15 +389,15 @@ function App() {
   const handleLogout = (callback) => {
     setIsLoggedIn(false);
     setLoggedInUser({
-        email: "",
-        role: "",
-        id: null,
-        token: null
+      email: "",
+      role: "",
+      id: null,
+      token: null
     });
     localStorage.clear();
 
     if (callback) callback();
-}
+  }
 
   //This is used to "Logout" so to speak, to check if the token is expired ---> empties login details and localStorage.
   useEffect(() => {
@@ -414,7 +416,7 @@ function App() {
     } else {
       handleLogout();
     }
-  }, []); 
+  }, []);
 
   return (
     <Router>
@@ -426,13 +428,24 @@ function App() {
         </div>
         <nav className={`navbar ${isOpen ? "isOpen" : ""}`}>
           <div className="nav-left">
-            <Link
-              to="/"
-              className={`nav-link logo ${activePath === "/" ? "active" : ""}`}
-              onClick={() => clickedLink("/", setActivePath)}
-            >
-              Etusivu
-            </Link>
+            <div className="nav-left">
+              <Link
+                to="/"
+                className={`nav-link logo ${activePath === "/" ? "active" : ""}`}
+                onClick={() => clickedLink("/", setActivePath)}
+              >
+                {imageError ? (
+                  "Etusivu"
+                ) : (
+                  <img
+                    src="https://i.imgur.com/baI8pOI.png"
+                    alt="Logo"
+                    style={{ height: '25px' }}
+                    onError={() => setImageError(true)}
+                  />
+                )}
+              </Link>
+            </div>
             <Link
               to="/records"
               className={`nav-link ${activePath === "/records" ? "active" : ""}`}
@@ -495,25 +508,25 @@ function App() {
               </Link>
             )}
             <div className="searchBarDiv first">
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '10px'
-                }}>
-                  <IconButton
-                    style={{ color: 'white', paddingLeft: 15 }}
-                    onClick={() => openSearch()}
-                  >
-                    <SearchIcon />
-                  </IconButton>
-                  {searchOpen && (
-                    <SearchRecords
-                      setSearchOpen={setSearchOpen}
-                      searchResults={searchResults}
-                      setSearchResults={setSearchResults}
-                    />
-                  )}
-                </div>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px'
+              }}>
+                <IconButton
+                  style={{ color: 'white', paddingLeft: 15 }}
+                  onClick={() => openSearch()}
+                >
+                  <SearchIcon />
+                </IconButton>
+                {searchOpen && (
+                  <SearchRecords
+                    setSearchOpen={setSearchOpen}
+                    searchResults={searchResults}
+                    setSearchResults={setSearchResults}
+                  />
+                )}
+              </div>
             </div>
             <div className="searchUnderline"></div>
           </div>
@@ -559,26 +572,26 @@ function App() {
             </Link>
           )}
           <div className="searchBarDiv second">
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px'
-              }}>
-                <IconButton
-                  style={{ color: 'white', paddingLeft: 15 }}
-                  onClick={() => openSearch()}
-                >
-                  <SearchIcon />
-                </IconButton>
-                {searchOpen && (
-                  <SearchRecords
-                    setSearchOpen={setSearchOpen}
-                    searchResults={searchResults}
-                    setSearchResults={setSearchResults}
-                    setIsOpen={setIsOpen}
-                  />
-                )}
-              </div>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px'
+            }}>
+              <IconButton
+                style={{ color: 'white', paddingLeft: 15 }}
+                onClick={() => openSearch()}
+              >
+                <SearchIcon />
+              </IconButton>
+              {searchOpen && (
+                <SearchRecords
+                  setSearchOpen={setSearchOpen}
+                  searchResults={searchResults}
+                  setSearchResults={setSearchResults}
+                  setIsOpen={setIsOpen}
+                />
+              )}
+            </div>
           </div>
         </div>
         <Routes>
