@@ -458,7 +458,7 @@ function App() {
                 onClick={() => clickedLink("/chat", setActivePath)}
               >
                 Chatti
-                {newMessageState > 0 && <span className="notification-badge-shoppingcart notification-badge"></span>}
+                {newMessageState && <span className="notification-badge-shoppingcart notification-badge"></span>}
               </Link>
             )}
             {isLoggedIn && loggedInUser.role !== "ADMIN" && (
