@@ -54,7 +54,6 @@ function App() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
-  const [newMessageCount, setNewMessageCount] = useState(null);
   const [newOrderCount, setNewOrderCount] = useState(0);
   const [imageError, setImageError] = useState(false); //This is to track if Logo fails to load -> it displays "Etusivu" - text.
 
@@ -137,7 +136,6 @@ function App() {
 
         if (unreadMessagesCount > 0) {
           setNewMessageState(true);
-          setNewMessageCount(unreadMessagesCount);
         }
       } else {
         throw new Error("Something went wrong");
@@ -179,7 +177,7 @@ function App() {
           const uniqueSenderIds = [...new Set(unreadMessages.map(message => message.sender_id))];
           setAdminNewMessageIds(uniqueSenderIds);
           setNewMessageState(true);
-          setNewMessageCount(unreadMessagesCount);
+          
         }
       })
       .catch(error => {
@@ -251,7 +249,7 @@ function App() {
       if (message.conversationId === conversationId) {
         setConversationMessages(prevMessages => [...prevMessages, message]);
         setNewMessageState(true);
-        setNewMessageCount(prevCount => prevCount + 1);
+        
         return;
       }
     });
@@ -268,16 +266,17 @@ function App() {
     }
 
     const handleMessage = (message) => {
+      setNewMessageState(true);
       if (message.conversationId === conversationId) {
         setConversationMessages(prevMessages => [...prevMessages, message]);
-        setNewMessageState(true);
-        setNewMessageCount(prevCount => prevCount + 1);
+        // setNewMessageState(true); Might be useless delete if yes yes.
+        
         return;
       }
 
       adminConversationIds.forEach(id => {
         if (message.conversationId === id.id) {
-          setNewMessageState(true);
+          // setNewMessageState(true); Might be useless delete if yes yes.
 
           // Add the conversationId to the adminNewMessageIds state if it doesn't already exist
           setAdminNewMessageIds((prevIds) => {
@@ -460,7 +459,7 @@ function App() {
                 onClick={() => clickedLink("/chat", setActivePath)}
               >
                 Chatti
-                {newMessageState && newMessageCount > 0 && <span className="notification-badge-shoppingcart notification-badge">{newMessageCount}</span>}
+                {newMessageState > 0 && <span className="notification-badge-shoppingcart notification-badge"></span>}
               </Link>
             )}
             {isLoggedIn && loggedInUser.role !== "ADMIN" && (
@@ -600,7 +599,7 @@ function App() {
           <Route path="/createuser" element={<CreateUser />} />
           <Route path="/login" element={<Login isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} setToken={setToken} />} />
           <Route path="/shoppingcart" element={<Shoppingcart loggedInUser={loggedInUser} customerInfo={customerInfo} setCustomerInfo={setCustomerInfo} cartTotal={cartTotal} setCartTotal={setCartTotal} shoppingcart={shoppingcart} setShoppingcart={setShoppingcart} setShoppingcartSize={setShoppingcartSize} conversationId={conversationId} />} />
-          <Route path="/chat" element={<ChatRoom loggedInUser={loggedInUser} conversationId={conversationId} setConversationId={setConversationId} conversationMessages={conversationMessages} setConversationMessages={setConversationMessages} fetchConversationId={fetchConversationId} fetchConversationMessages={fetchConversationMessages} newMessageState={newMessageState} setNewMessageState={setNewMessageState} setNewMessageCount={setNewMessageCount} adminNewMessageIds={adminNewMessageIds} setAdminNewMessageIds={setAdminNewMessageIds} />} />
+          <Route path="/chat" element={<ChatRoom loggedInUser={loggedInUser} conversationId={conversationId} setConversationId={setConversationId} conversationMessages={conversationMessages} setConversationMessages={setConversationMessages} fetchConversationId={fetchConversationId} fetchConversationMessages={fetchConversationMessages} newMessageState={newMessageState} setNewMessageState={setNewMessageState} adminNewMessageIds={adminNewMessageIds} setAdminNewMessageIds={setAdminNewMessageIds} />} />
           <Route path="/addrecord" element={<AddRecord loggedInUser={loggedInUser} />} />
           <Route path="/orders" element={<Orders getAllOrders={getAllOrders} />} />
           <Route path="/ordersummary" element={<Ordersummary customerInfo={customerInfo} cartTotal={cartTotal} loggedInUser={loggedInUser} />} />

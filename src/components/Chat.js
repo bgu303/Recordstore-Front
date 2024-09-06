@@ -10,7 +10,7 @@ import '../styling/Chat.css';
 
 import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
 
-function ChatRoom({ loggedInUser, conversationId, setConversationId, conversationMessages, setConversationMessages, fetchConversationId, fetchConversationMessages, newMessageState, setNewMessageState, adminNewMessageIds, setAdminNewMessageIds, setNewMessageCount }) {
+function ChatRoom({ loggedInUser, conversationId, setConversationId, conversationMessages, setConversationMessages, fetchConversationId, fetchConversationMessages, newMessageState, setNewMessageState, adminNewMessageIds, setAdminNewMessageIds }) {
     const [message, setMessage] = useState("");
     const [allUsers, setAllUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState("");
@@ -168,7 +168,6 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
 
         //These are here as a test for now, this should make the new chat message count better for admin....Hopefully.
         setNewMessageState(false);
-        setNewMessageCount(0);
     }
 
     const handleKeyPress = (e) => {
@@ -206,7 +205,6 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
                     if (isMounted) {
                         console.log(responseData);
                         newMessageState(false);
-                        setNewMessageCount(0);
                     }
                 })
                 .catch(error => {

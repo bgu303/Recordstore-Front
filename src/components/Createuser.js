@@ -12,6 +12,7 @@ import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
 function CreateUser() {
     const [user, setUser] = useState({
         email: "",
+        confirmEmail: "",
         password: "",
         confirmPassword: "",
         role: "USER"
@@ -30,6 +31,10 @@ function CreateUser() {
         
         if (user.password !== user.confirmPassword) {
             return alert("Salasanat eivät ole samat");
+        }
+
+        if (user.confirmEmail !== user.email) {
+            return alert("Sähköpostit eivät täsmää.");
         }
         
         // Uncomment these checks when testing phase is over.
@@ -105,6 +110,17 @@ function CreateUser() {
                         size="small"
                         onChange={e => setUser({ ...user, email: e.target.value })}
                         value={user.email}
+                        onKeyDown={handleKeyPress}
+                        style={{ backgroundColor: "white", borderRadius: 10 }}
+                    />
+                </div>
+                <div>
+                    <label style={{ fontWeight: "bold", display: "block", marginBottom: 10 }}>Sähköposti uudelleen*</label>
+                    <TextField
+                        label="Sähköposti uudelleen"
+                        size="small"
+                        onChange={e => setUser({ ...user, confirmEmail: e.target.value })}
+                        value={user.confirmEmail}
                         onKeyDown={handleKeyPress}
                         style={{ backgroundColor: "white", borderRadius: 10 }}
                     />
