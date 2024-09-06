@@ -165,6 +165,10 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
         const updatedMessageIds = adminNewMessageIds.filter(id => id != event.target.value);
         setSelectedUser(event.target.value);
         setAdminNewMessageIds(updatedMessageIds);
+
+        //These are here as a test for now, this should make the new chat message count better for admin....Hopefully.
+        setNewMessageState(false);
+        setNewMessageCount(0);
     }
 
     const handleKeyPress = (e) => {
