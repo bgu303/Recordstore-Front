@@ -193,6 +193,8 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
                 return;
             }
 
+            let isMounted = true;
+
             fetch(`${BASE_URL_CLOUD}/chat/chatmessagechecker/${conversationId}`)
                 .then(response => {
                     if (!response.ok) {
@@ -201,15 +203,23 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
                     return response.json();
                 })
                 .then(responseData => {
-                    console.log(responseData);
-                    newMessageState(false);
-                    setNewMessageCount(0);
+                    if (isMounted) {
+                        console.log(responseData);
+                        newMessageState(false);
+                        setNewMessageCount(0);
+                    }
                 })
                 .catch(error => {
-                    console.error("There was a problem with the fetch operation:", error);
+                    if (isMounted) {
+                        console.error("There was a problem with the fetch operation:", error);
+                    }
                 });
+                
+            return () => {
+                isMounted = false;
+            };
         };
-    }, []);
+    }, [conversationId]);
 
     const convertNewlinesToBr = (text) => {
         return text.replace(/\n/g, '<br>');
@@ -226,10 +236,10 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
                             <div
                                 key={index}
                                 className={`message ${message.sender_id === loggedInUser.id
-                                        ? 'message-right'
-                                        : message.sender_id === SYSTEM_USER_ID
-                                            ? 'message-system'
-                                            : ''
+                                    ? 'message-right'
+                                    : message.sender_id === SYSTEM_USER_ID
+                                        ? 'message-system'
+                                        : ''
                                     }`}
                             >
                                 <div
@@ -246,10 +256,10 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
                                 >
                                     <div
                                         className={`message-content ${message.sender_id === loggedInUser.id
-                                                ? 'message-sent'
-                                                : message.sender_id === SYSTEM_USER_ID
-                                                    ? 'message-system-content'
-                                                    : 'message-received'
+                                            ? 'message-sent'
+                                            : message.sender_id === SYSTEM_USER_ID
+                                                ? 'message-system-content'
+                                                : 'message-received'
                                             }`}
                                     >
                                         <strong

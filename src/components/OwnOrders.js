@@ -112,10 +112,10 @@ function OwnOrders({ loggedInUser }) {
                                 )}
                             </p>
                             {order[0].customer_paymentoption === "Tilisiirto" && (
-                                <p>Maksa tilisiirto tilisoitteeseen FI12 244 000 9000. Lisää maksun yhteydessä kommenttikenttään tilauksen koodi: <b>{order[0].order_code}</b></p>
+                                <p>Maksa tilisiirto tilisoitteeseen TILINUMEROTÄHÄN Lisää maksun yhteydessä kommenttikenttään tilauksen koodi: <b>{order[0].order_code}</b></p>
                             )}
                             {order[0].customer_paymentoption === "MobilePay" && (
-                                <p>Maksa MobilePay puhelinnumeroon 050 432 5432. Lisää maksun yhteydessä kommenttikenttään koodi: <b style={{ color: "#2155ff" }}>{order[0].order_code}</b></p>
+                                <p>Maksa MobilePay puhelinnumeroon 050 5736932. Lisää maksun yhteydessä kommenttikenttään koodi: <b style={{ color: "#2155ff" }}>{order[0].order_code}</b></p>
                             )}
                             <hr className="separator" />
                             <h4>

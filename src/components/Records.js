@@ -168,7 +168,7 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
                 { field: "lev", headerName: "Rec", filter: true, suppressMovable: true, width: isMobile ? 120 : undefined, flex: isMobile ? undefined : 0.8, cellStyle: { textAlign: "center" } },
                 { field: "kan", headerName: "PS", filter: true, suppressMovable: true, width: isMobile ? 120 : undefined, flex: isMobile ? undefined : 0.8, cellStyle: { textAlign: "center" } },
                 { field: "genre", headerName: "Genre", filter: true, suppressMovable: true, width: isMobile ? 120 : undefined, flex: isMobile ? undefined : 1.2, cellStyle: { textAlign: "center" } },
-                { field: "price", headerName: "Hinta", filter: true, suppressMovable: true, cellStyle: { textAlign: "right" }, width: isMobile ? 100 : undefined, flex: isMobile ? undefined : 1 },
+                { field: "price", headerName: "€uro", filter: true, suppressMovable: true, cellStyle: { textAlign: "right" }, width: isMobile ? 100 : undefined, flex: isMobile ? undefined : 1 },
                 {
                     field: "discogs",
                     headerName: "Discogs",

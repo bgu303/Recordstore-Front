@@ -59,7 +59,7 @@ function DeleteUser() {
                     />
                 </div>
                 <div>
-                    <label style={{ fontWeight: "bold", display: "block", marginBottom: 10 }}>Sähköposti*</label>
+                    <label style={{ fontWeight: "bold", display: "block", marginBottom: 10 }}>Salasana*</label>
                     <TextField
                         label="Salasana"
                         size="small"
