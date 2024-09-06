@@ -266,17 +266,16 @@ function App() {
     }
 
     const handleMessage = (message) => {
-      setNewMessageState(true);
       if (message.conversationId === conversationId) {
         setConversationMessages(prevMessages => [...prevMessages, message]);
-        // setNewMessageState(true); Might be useless delete if yes yes.
+        setNewMessageState(true);
         
         return;
       }
 
       adminConversationIds.forEach(id => {
         if (message.conversationId === id.id) {
-          // setNewMessageState(true); Might be useless delete if yes yes.
+          setNewMessageState(true);
 
           // Add the conversationId to the adminNewMessageIds state if it doesn't already exist
           setAdminNewMessageIds((prevIds) => {
