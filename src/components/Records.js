@@ -4,10 +4,12 @@ import { AgGridReact } from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
 import 'ag-grid-community/styles/ag-theme-material.css';
 import { Button } from '@mui/material';
+import TextField from '@mui/material/TextField';
 import Sizefilter from './Sizefilter';
 import '../styling/Records.css'
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import CircularProgress from '@mui/material/CircularProgress';
+import EditIcon from '@mui/icons-material/Edit';
 
 import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
 
@@ -19,6 +21,9 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
     const [discogsImageUrl, setDiscogsImageUrl] = useState("");
     const [isImageLoading, setIsImageLoading] = useState(false);
     const [imageLoadTimeout, setImageLoadTimeout] = useState(false);
+    const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
+    const [editedRecord, setEditedRecord] = useState({});
+    const [originalSoldStatus, setOriginalSoldStatus] = useState(null);
     const DISCOGS_API_KEY = process.env.REACT_APP_DISCOGS_API_KEY;
 
     const getRecords = () => {
@@ -79,6 +84,45 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
                 })
         }
     }
+
+    const editRecord = (record) => {
+        setEditedRecord(record);
+        setOriginalSoldStatus(record.sold);
+        setIsEditPopupOpen(true);  
+    };
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setEditedRecord((prev) => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
+    const handleEditComplete = (data) => {
+        // Ensure "sold" is preserved in the updated record
+        const updatedRecord = {
+            ...editedRecord,
+            sold: originalSoldStatus.sold
+        };
+
+        fetch(`${BASE_URL_CLOUD}/records/editrecord`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify({ record: updatedRecord })
+        })
+            .then(response => response.json())
+            .then(data => {
+                setIsEditPopupOpen(false);
+                getRecords();
+            })
+            .catch(error => {
+                console.error("Error updating record: ", error);
+            });
+    };
 
     const addToCart = async (data) => {
         console.log(data)
@@ -215,7 +259,9 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
                     hide: localStorage.getItem("loggedInUserRole") !== "ADMIN"
                 },
                 {
-                    field: "sold", headerName: "Status", filter: true, suppressMovable: true, width: isMobile ? 150 : undefined,
+                    field: "sold", headerName: "Status", filter: true, suppressMovable: true,
+                    width: isMobile ? 150 : undefined,
+                    flex: isMobile ? undefined : 1.2,
                     hide: localStorage.getItem("loggedInUserRole") !== "ADMIN",
                     cellRenderer: params => {
                         return params.value === 0 ? "Myytävänä" : "Myyty";
@@ -227,6 +273,19 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
                     flex: isMobile ? undefined : 1.2,
                     suppressMovable: true,
                     cellStyle: { textAlign: "center" },
+                    hide: localStorage.getItem("loggedInUserRole") !== "ADMIN"
+                },
+                {
+                    cellRenderer: params => (
+                        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%" }}>
+                            <EditIcon
+                                style={{ cursor: "pointer", color: "#4682B4" }}
+                                onClick={() => editRecord(params.data)}
+                            />
+                        </div>
+                    ),
+                    width: isMobile ? 80 : 90,
+                    suppressMovable: true,
                     hide: localStorage.getItem("loggedInUserRole") !== "ADMIN"
                 },
             ]);
@@ -334,6 +393,124 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
                         ) : (
                             <p>Kuva ei saatavilla.</p>
                         )}
+                    </div>
+                </div>
+            )}
+            {isEditPopupOpen && (
+                <div className="popup-overlay">
+                    <div className="popup-inner">
+                        <h2>Muokkaa levyä</h2>
+                        <form>
+                            <TextField
+                                label="Artisti"
+                                name="artist"
+                                value={editedRecord.artist || ''}
+                                onChange={handleInputChange}
+                                margin="normal"
+                                size="small"
+                                fullWidth
+                            />
+                            <TextField
+                                label="Levyn nimi"
+                                name="title"
+                                value={editedRecord.title || ''}
+                                onChange={handleInputChange}
+                                margin="normal"
+                                size="small"
+                                fullWidth
+                            />
+                            <TextField
+                                label="Levy-yhtiö"
+                                name="label"
+                                value={editedRecord.label || ''}
+                                onChange={handleInputChange}
+                                margin="normal"
+                                size="small"
+                                fullWidth
+                            />
+                            <TextField
+                                label="Vuosi"
+                                name="year"
+                                type="number"
+                                value={editedRecord.year || ''}
+                                onChange={handleInputChange}
+                                margin="normal"
+                                size="small"
+                                fullWidth
+                            />
+                            <TextField
+                                label="Koko"
+                                name="size"
+                                value={editedRecord.size || ''}
+                                onChange={handleInputChange}
+                                margin="normal"
+                                size="small"
+                                fullWidth
+                            />
+                            <TextField
+                                label="Rec"
+                                name="lev"
+                                value={editedRecord.lev || ''}
+                                onChange={handleInputChange}
+                                margin="normal"
+                                size="small"
+                                fullWidth
+                            />
+                            <TextField
+                                label="PS"
+                                name="kan"
+                                value={editedRecord.kan || ''}
+                                onChange={handleInputChange}
+                                margin="normal"
+                                size="small"
+                                fullWidth
+                            />
+                            <TextField
+                                label="Discogs"
+                                name="discogs"
+                                value={editedRecord.discogs || ''}
+                                onChange={handleInputChange}
+                                margin="normal"
+                                size="small"
+                                fullWidth
+                            />
+                            <TextField
+                                label="Genre"
+                                name="genre"
+                                value={editedRecord.genre || ''}
+                                onChange={handleInputChange}
+                                margin="normal"
+                                size="small"
+                                fullWidth
+                            />
+                            <TextField
+                                label="€uro"
+                                name="price"
+                                type="number"
+                                value={editedRecord.price || ''}
+                                onChange={handleInputChange}
+                                margin="normal"
+                                size="small"
+                                fullWidth
+                            />
+                            <TextField
+                                label="Hyllypaikka"
+                                name="shelf_space"
+                                value={editedRecord.shelf_space || ''}
+                                onChange={handleInputChange}
+                                margin="normal"
+                                size="small"
+                                fullWidth
+                            />
+                        </form>
+                        <div className="popup-buttons">
+                            <Button variant="contained" color="success" onClick={handleEditComplete}>
+                                Valmis
+                            </Button>
+                            <Button variant="contained" color="error" onClick={() => setIsEditPopupOpen(false)}>
+                               Peruuta
+                            </Button>
+                        </div>
                     </div>
                 </div>
             )}

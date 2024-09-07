@@ -125,6 +125,7 @@ function AddRecord({ loggedInUser }) {
                     genre: columns[7],
                     price: parseFloat(columns[8]),
                     discogs: columns[9],
+                    shelf_space: columns[10]
                 };
             })
             //Filters rows that dont have artist, so empty row at the end of the file.
@@ -167,7 +168,8 @@ function AddRecord({ loggedInUser }) {
         { headerName: "PS", field: "kan", flex: 1 },
         { headerName: "Genre", field: "genre", flex: 1 },
         { headerName: "Hinta", field: "price", flex: 1, cellStyle: { textAlign: "right" } },
-        { headerName: "Discogs", field: "discogs", flex: 1, cellStyle: { textAlign: "right" } }
+        { headerName: "Discogs", field: "discogs", flex: 1, cellStyle: { textAlign: "right" } },
+        { headerName: "Hyllypaikka", field: "shelf_space", flex: 1 }
     ];
 
     return (
