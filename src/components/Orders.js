@@ -153,7 +153,8 @@ function Orders({ getAllOrders }) {
             textContent += `${item.title}, `;
             textContent += `${item.label}, `;
             textContent += `${item.size}, `;
-            textContent += `${item.price}€\n\n`;
+            textContent += `${item.price}€, `;
+            textContent += `${item.shelf_space}\n\n`
         });
 
         const totalPrice = orderItem.reduce((total, item) => total + item.price, 0);
