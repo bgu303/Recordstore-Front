@@ -145,7 +145,7 @@ function FrontPage() {
                         <br /><br />
                         <b>Postikulut</b><br />Lisätään, jos ei ole nouto Vuosaaresta. Jos tilauksessa on yksikin LP, MLP tai 12" niin silloin kyseessä on paketti ja postikulut ovat <b>9 euroa.</b> Muissa tapauksissa postikulut ovat <b>5 euroa.</b> Huomioithan hinnanlisäyksen tilausta tehdessäsi.
                         <br /><br />
-                        <b>Chatti</b><br />Tarkoitettu tilauksen tekemisen jälkeen asioiden sopimiseen, esimerkiksi sopiminen noudosta. Chatti on tarkoitettu vain tilausten hoitoon, joten jätetään muut keskustelut toiselle somealustalle. Jos chat viestit eivät näytä lähtevän, chattikupla näyttää väärää uusien viestien lukumäärää tai muuten vaan jotain ongelmia, koita <b>päivittää sivu.</b>
+                        <b>Chatti</b><br />Tarkoitettu tilauksen tekemisen jälkeen asioiden sopimiseen, esimerkiksi sopiminen noudosta. Chatti on tarkoitettu vain tilausten hoitoon, joten jätetään muut keskustelut toiselle somealustalle. Jos chatin kanssa ongelmia, koita <b>päivittää sivu (F5).</b>
                         <br /><br />
                         <b>Ilmoitustaulu</b><br />Ilmoitustaulu sijaitsee oikeassa reunassa ja sinne tulee tietoa, jos olen lisännyt levyjä tai milloin olen "lomalla" eli kauppa on kiinni. Tai ihan mitä tahansa, mitä mieleen tulee.
                         <br /><br />

@@ -28,6 +28,7 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import socket from './components/socket';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import blop from "./audio/blop.mp3"
 
 import { BASE_URL, BASE_URL_CLOUD } from './components/Apiconstants';
 
@@ -95,7 +96,6 @@ function App() {
     if (!isLoggedIn || localStorage.getItem("loggedInUserRole") === "ADMIN") {
       return;
     }
-
     try {
       const response = await fetch(`${BASE_URL_CLOUD}/chat/getconversationid/${localStorage.getItem("loggedInUserId")}`);
       if (response.ok) {
@@ -175,7 +175,6 @@ function App() {
             setAdminNewMessageIds(uniqueSenderIds);
             setNewMessageState(true); // Set only when there are unread messages
           }
-
         }
       })
       .catch(error => {
@@ -240,6 +239,7 @@ function App() {
 
   //This useEffect is used to handle the socket logic for non-admin users. 
   useEffect(() => {
+    
     if (localStorage.getItem("loggedInUserRole") === "ADMIN") {
       return;
     }
@@ -247,7 +247,6 @@ function App() {
       if (message.conversationId === conversationId) {
         setConversationMessages(prevMessages => [...prevMessages, message]);
         setNewMessageState(true);
-
         return;
       }
     });
@@ -267,7 +266,6 @@ function App() {
       if (message.conversationId === conversationId) {
         setConversationMessages(prevMessages => [...prevMessages, message]);
         setNewMessageState(true);
-
         return;
       }
 

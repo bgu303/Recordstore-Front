@@ -53,15 +53,18 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
                 }
             })
             .then(responseData => {
-                const filteredUsers = responseData.filter(user => user.id != localStorage.getItem("loggedInUserId"));
-                setAllUsers(filteredUsers)
-            })
+                const loggedInUserId = localStorage.getItem("loggedInUserId");
 
+                const filteredUsers = responseData.filter(user =>
+                    user.id != loggedInUserId && user.email !== "Järjestelmä"
+                );
+                setAllUsers(filteredUsers);
+            })
             .catch(error => {
                 console.log(error.message);
                 setAllUsers([]);
-            })
-    }
+            });
+    };
 
     const sendMessage = () => {
         if (message.trim() === "") {
@@ -212,7 +215,7 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
                         console.error("There was a problem with the fetch operation:", error);
                     }
                 });
-                
+
             return () => {
                 isMounted = false;
             };
@@ -303,6 +306,7 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
                             onChange={e => setMessage(e.target.value)}
                             value={message}
                             onKeyDown={handleKeyPress}
+                            className="chatTextField"
                         />
                         {loggedInUser.role === "USER" && (
                             <IconButton
@@ -330,12 +334,12 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
                                 value={selectedUser}
                                 onChange={handleUserChange}
                             >
-                                <option value="">Valitse käyttäjä kenen kanssa chatata</option>
                                 {allUsers.map(user => (
                                     <option
                                         key={user.id}
                                         value={user.id}
-                                        style={adminNewMessageIds.includes(user.id) ? { backgroundColor: "#f52b5d" } : {}}
+                                        style={adminNewMessageIds.includes(user.id) ? { backgroundColor: "#f52b5d" } : {}
+                                    }
                                     >
                                         {user.email}
                                     </option>

@@ -99,6 +99,10 @@
     margin-top: 5px;
 }
 
+.chatTextField {
+    width: 420px;
+}
+
 @media (max-width: 768px) {
     .chat-box {
         height: 350px;
@@ -126,6 +130,10 @@
     .select-user {
         width: 100%; /* Full width select */
         max-width: none; /* Remove max-width on smaller screens */
+    }
+
+    .chatTextField {
+        width: 250px;
     }
 }
 

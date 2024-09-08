@@ -174,6 +174,31 @@ function Orders({ getAllOrders }) {
         saveToFile(textContent, filename);
     };
 
+    const deleteItemFromOrder = (orderId, recordId) => {
+        const confirmation = window.confirm("Haluatko varmasti poistaa levyn tilauksesta?");
+
+        if (confirmation) {
+            fetch(`${BASE_URL_CLOUD}/orders/deletefromorder/${orderId}/${recordId}`, {
+                method: "DELETE",
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        console.log("Failed to delete order item.");
+                    } else {
+                        getOrders();
+                        getAllOrders();
+                    }
+                })
+                .catch(error => {
+                    console.log("Error deleting order item:", error);
+                });
+        }
+    }
+
     return (
         <>
             <div className="mainDivAllOrders">
@@ -206,6 +231,7 @@ function Orders({ getAllOrders }) {
                                         <b>Levy-yhtiö:</b> {item.label}<br />
                                         <b>Koko:</b> {item.size}<br />
                                         <b>Hinta:</b> {item.price}€<br />
+                                        <Button onClick={() => deleteItemFromOrder(orderId, item.record_id)} size="small" color="error" variant="contained">Poista</Button>
                                     </li>
                                 );
                             })}
@@ -247,7 +273,7 @@ function Orders({ getAllOrders }) {
                         </div>
                         <h4>Status: <span style={{ color: getStatusColor(order[0].order_status) }}>{order[0].order_status}</span></h4>
                         <div style={{ textAlign: "center" }}>
-                            <Button color="error" variant="contained" onClick={() => deleteOrder(orderId)}>Poista</Button>
+                            <Button color="error" variant="contained" onClick={() => deleteOrder(orderId)}>Poista koko tilaus</Button>
                         </div>
                         <div style={{ textAlign: "center", marginTop: "10px" }}>
                             <Button color="success" variant="contained" onClick={() => print(order)}>Tulosta</Button>
