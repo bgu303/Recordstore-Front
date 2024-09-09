@@ -297,27 +297,33 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                         />
                     </div>
                     <h3 style={{ marginLeft: "20px" }}>
-                        Yhteensä: {cartTotal} €
+                        Tilauksen hinta: {cartTotal} €
+
                         {shoppingcart.some(item => ["LP", '12"', "MLP"].includes(item.size)) ? (
-                            <span> + 9€ postitusmaksu (Jos ei nouto Vuosaaresta).</span>
+                            <>
+                                <div>Postimaksu (jos ei nouto Vuosaaresta): 9€</div>
+                                <div>Loppusumma: {cartTotal + 9} €</div>
+                            </>
                         ) : (
-                            <span> + 5€ postitusmaksu (Jos ei nouto Vuosaaresta).</span>
+                            <>
+                                <div>Postimaksu (jos ei nouto Vuosaaresta): 5 €</div>
+                                <div>Yhteensä: {cartTotal + 5} €</div>
+                            </>
                         )}
                     </h3>
-
                     <div className="orderInfoDiv">
                         <h3>Tilaajan Tiedot</h3>
-                        <TextField label="Koko nimi"
+                        <TextField label="Koko nimi*"
                             onChange={e => setCustomerInfo({ ...customerInfo, name: e.target.value })}
                             value={customerInfo.name}
                             style={{ backgroundColor: "white", borderRadius: 10 }}
                         />
-                        <TextField label="Puhelinnumero"
+                        <TextField label="Puhelinnumero*"
                             onChange={e => setCustomerInfo({ ...customerInfo, phoneNumber: e.target.value })}
                             value={customerInfo.phoneNumber}
                             style={{ backgroundColor: "white", borderRadius: 10 }}
                         />
-                        <TextField label="Sähköposti"
+                        <TextField label="Sähköposti*"
                             onChange={e => setCustomerInfo({ ...customerInfo, email: e.target.value })}
                             value={customerInfo.email}
                             style={{ backgroundColor: "white", borderRadius: 10 }}
