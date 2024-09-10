@@ -11,7 +11,7 @@ function UserListTool() {
     const [allUsers, setAllUsers] = useState([]);
 
     const getAllUsers = () => {
-        fetch(`${BASE_URL}/user/getallusers`)
+        fetch(`${BASE_URL_CLOUD}/user/getallusers`)
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -39,7 +39,7 @@ function UserListTool() {
 
     const allowOrdering = (data) => {
         const userId = data.id;
-        fetch(`${BASE_URL}/user/toggleorderingaccess`, {
+        fetch(`${BASE_URL_CLOUD}/user/toggleorderingaccess`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -66,7 +66,7 @@ function UserListTool() {
         const userId = data.id;
         
         if (window.confirm("Haluatko varmasti poistaa käyttäjän?")) {
-            fetch(`${BASE_URL}/user/deleteuseradmin`, {
+            fetch(`${BASE_URL_CLOUD}/user/deleteuseradmin`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
