@@ -17,6 +17,7 @@ import SearchedRecords from './components/SearchedRecords';
 import TermsOfUse from './components/Termsofuse';
 import PrivacyStatement from './components/Privacystatement';
 import FrontPageTool from './components/Frontpagetool';
+import UserListTool from './components/UserlistTool';
 import "./App.css";
 import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
@@ -490,6 +491,13 @@ function App() {
                 >
                   Etusivutyökalu
                 </Link>
+                <Link
+                  to="/usertool"
+                  className={`nav-link ${activePath === "/usertool" ? "active" : ""}`}
+                  onClick={() => clickedLink("/usertool", setActivePath)}
+                >
+                  Käyttäjähallintatyökalu
+                </Link>
               </>
             )}
             {isLoggedIn && loggedInUser.role !== "ADMIN" && (
@@ -605,6 +613,7 @@ function App() {
           <Route path="/termsofuse" element={<TermsOfUse />} />
           <Route path="/privacystatement" element={<PrivacyStatement />} />
           <Route path="/frontpagetool" element={<FrontPageTool />} />
+          <Route path="/usertool" element={<UserListTool />} />
         </Routes>
       </div>
     </Router>

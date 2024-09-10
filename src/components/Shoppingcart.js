@@ -330,7 +330,7 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                         />
                         <div>
                             <FormControl>
-                                <FormLabel>Maksutapa</FormLabel>
+                                <FormLabel>Maksutapa*</FormLabel>
                                 <RadioGroup
                                     aria-label="paymentOption"
                                     name="paymentOption"
@@ -357,7 +357,7 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                         </div>
                         <div>
                             <FormControl>
-                                <FormLabel>Toimitustapa</FormLabel>
+                                <FormLabel>Toimitustapa*</FormLabel>
                                 <RadioGroup
                                     aria-label="shippingOption"
                                     name="shippingOption"
