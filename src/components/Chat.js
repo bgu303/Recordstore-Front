@@ -228,130 +228,131 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
 
     return (
         <>
-            <div className="chat-container">
-                <h2 className="chatTitle">Chatti</h2>
-                <p className="chatParagraph"><b>Tämä Chat on tarkoitettu vain levykauppojen hoitoon. Jos haluat jutella muista asioista, ota PoppiMikkoon yhteyttä toisen sosiaalimedian kautta.</b></p>
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                    <div className="chat-box">
-                        {conversationMessages.map((message, index) => (
-                            <div
-                                key={index}
-                                className={`message ${message.sender_id === loggedInUser.id
-                                    ? 'message-right'
-                                    : message.sender_id === SYSTEM_USER_ID
-                                        ? 'message-system'
-                                        : ''
-                                    }`}
-                            >
-                                <div
+            <div className="chat-container" style={{ display: "flex" }}>
+                {loggedInUser.role === "ADMIN" && (
+                    <div className="user-list" style={{ width: "20%", borderRight: "1px solid #ccc", padding: "10px", overflowY: "auto" }}>
+                        <ul style={{ listStyleType: "none", padding: 0 }}>
+                            {allUsers.map(user => (
+                                <li
+                                    key={user.id}
+                                    onClick={() => handleUserChange({ target: { value: user.id } })}
+                                    className={user.id === selectedUser ? 'active-chat' : ''}
                                     style={{
-                                        display: "flex",
-                                        flexDirection: "column",
-                                        alignItems:
-                                            message.sender_id === loggedInUser.id
-                                                ? "flex-end"
-                                                : message.sender_id === SYSTEM_USER_ID
-                                                    ? "center"
-                                                    : "flex-start",
+                                        padding: "10px",
+                                        backgroundColor: adminNewMessageIds.includes(user.id) ? "#f52b5d" : "transparent",
+                                        cursor: "pointer",
                                     }}
                                 >
+                                    {user.email}
+                                </li>
+
+                            ))}
+                        </ul>
+                    </div>
+                )}
+                <div style={{ width: loggedInUser.role === "ADMIN" ? "80%" : "100%", padding: "10px" }}>
+                    <h2 className="chatTitle">Chatti</h2>
+                    <p className="chatParagraph"><b>Tämä Chat on tarkoitettu vain levykauppojen hoitoon. Jos haluat jutella muista asioista, ota PoppiMikkoon yhteyttä toisen sosiaalimedian kautta.</b></p>
+                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                        <div className="chat-box">
+                            {conversationMessages.map((message, index) => (
+                                <div
+                                    key={index}
+                                    className={`message ${message.sender_id === loggedInUser.id
+                                        ? 'message-right'
+                                        : message.sender_id === SYSTEM_USER_ID
+                                            ? 'message-system'
+                                            : ''
+                                        }`}
+                                >
                                     <div
-                                        className={`message-content ${message.sender_id === loggedInUser.id
-                                            ? 'message-sent'
-                                            : message.sender_id === SYSTEM_USER_ID
-                                                ? 'message-system-content'
-                                                : 'message-received'
-                                            }`}
+                                        style={{
+                                            display: "flex",
+                                            flexDirection: "column",
+                                            alignItems:
+                                                message.sender_id === loggedInUser.id
+                                                    ? "flex-end"
+                                                    : message.sender_id === SYSTEM_USER_ID
+                                                        ? "center"
+                                                        : "flex-start",
+                                        }}
                                     >
-                                        <strong
-                                            style={{
-                                                fontSize: "18px",
-                                                color: message.sender_id === SYSTEM_USER_ID ? "#FF5733" : "#333",
-                                            }}
-                                        >
-                                            {message.sender_id === loggedInUser.id
-                                                ? "Sinä"
+                                        <div
+                                            className={`message-content ${message.sender_id === loggedInUser.id
+                                                ? 'message-sent'
                                                 : message.sender_id === SYSTEM_USER_ID
-                                                    ? "Järjestelmä"
-                                                    : message.sender_id === POPPI_MIKKO_ID
-                                                        ? "PoppiMikko"
-                                                        : ""}
-                                        </strong>
-                                        <span
-                                            style={{
-                                                fontSize: "16px",
-                                                color: "black",
-                                                marginTop: "5px",
-                                                display: "block",
-                                                textAlign: "left"
-                                            }}
-                                            dangerouslySetInnerHTML={{ __html: convertNewlinesToBr(message.message) }}
-                                        />
-                                    </div>
-                                    <div
-                                        className={`message-time ${message.sender_id === SYSTEM_USER_ID ? 'message-time-system' : ''
-                                            }`}
-                                    >
-                                        {format(new Date(message.created_at), 'dd.MM.yyyy HH:mm')}
+                                                    ? 'message-system-content'
+                                                    : 'message-received'
+                                                }`}
+                                        >
+                                            <strong
+                                                style={{
+                                                    fontSize: "18px",
+                                                    color: message.sender_id === SYSTEM_USER_ID ? "#FF5733" : "#333",
+                                                }}
+                                            >
+                                                {message.sender_id === loggedInUser.id
+                                                    ? "Sinä"
+                                                    : message.sender_id === SYSTEM_USER_ID
+                                                        ? "Järjestelmä"
+                                                        : message.sender_id === POPPI_MIKKO_ID
+                                                            ? "PoppiMikko"
+                                                            : ""}
+                                            </strong>
+                                            <span
+                                                style={{
+                                                    fontSize: "16px",
+                                                    color: "black",
+                                                    marginTop: "5px",
+                                                    display: "block",
+                                                    textAlign: "left"
+                                                }}
+                                                dangerouslySetInnerHTML={{ __html: convertNewlinesToBr(message.message) }}
+                                            />
+                                        </div>
+                                        <div
+                                            className={`message-time ${message.sender_id === SYSTEM_USER_ID ? 'message-time-system' : ''
+                                                }`}
+                                        >
+                                            {format(new Date(message.created_at), 'dd.MM.yyyy HH:mm')}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
-                        <div ref={messagesEndRef} />
-                    </div>
-
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                        <TextField
-                            label="Lähetä viesti"
-                            onChange={e => setMessage(e.target.value)}
-                            value={message}
-                            onKeyDown={handleKeyPress}
-                            className="chatTextField"
-                        />
-                        {loggedInUser.role === "USER" && (
-                            <IconButton
-                                style={{ marginLeft: 10 }}
-                                color="success"
-                                onClick={() => sendMessage()}
-                            >
-                                <SendIcon />
-                            </IconButton>
-                        )}
-                        {loggedInUser.role === "ADMIN" && (
-                            <IconButton
-                                style={{ marginLeft: 10 }}
-                                color="success"
-                                onClick={() => adminSendMessage()}
-                            >
-                                <SendIcon />
-                            </IconButton>
-                        )}
-                    </div>
-                    {loggedInUser.role === "ADMIN" && (
-                        <div>
-                            <select
-                                className="select-user"
-                                value={selectedUser}
-                                onChange={handleUserChange}
-                            >
-                                {allUsers.map(user => (
-                                    <option
-                                        key={user.id}
-                                        value={user.id}
-                                        style={adminNewMessageIds.includes(user.id) ? { backgroundColor: "#f52b5d" } : {}
-                                    }
-                                    >
-                                        {user.email}
-                                    </option>
-                                ))}
-                            </select>
+                            ))}
+                            <div ref={messagesEndRef} />
                         </div>
-                    )}
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                            <TextField
+                                label="Lähetä viesti"
+                                onChange={e => setMessage(e.target.value)}
+                                value={message}
+                                onKeyDown={handleKeyPress}
+                                className="chatTextField"
+                            />
+                            {loggedInUser.role === "USER" && (
+                                <IconButton
+                                    style={{ marginLeft: 10 }}
+                                    color="success"
+                                    onClick={() => sendMessage()}
+                                >
+                                    <SendIcon />
+                                </IconButton>
+                            )}
+                            {loggedInUser.role === "ADMIN" && (
+                                <IconButton
+                                    style={{ marginLeft: 10 }}
+                                    color="success"
+                                    onClick={() => adminSendMessage()}
+                                >
+                                    <SendIcon />
+                                </IconButton>
+                            )}
+                        </div>
+                    </div>
                 </div>
             </div>
         </>
     );
-
 }
 
 export default ChatRoom;

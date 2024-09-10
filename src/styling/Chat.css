@@ -104,6 +104,11 @@
     width: 420px;
 }
 
+.active-chat {
+    border: 2px solid rgb(49, 49, 255);
+    border-radius: 4px;
+}
+
 @media (max-width: 768px) {
     .chat-box {
         height: 350px;
