@@ -3,6 +3,7 @@ import { AgGridReact } from 'ag-grid-react';
 import { Switch, Button } from '@mui/material';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-material.css';
+import { useNavigate } from 'react-router-dom';
 
 import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
 
@@ -10,6 +11,15 @@ function UserListTool() {
     const token = localStorage.getItem("jwtToken")
     const [allUsers, setAllUsers] = useState([]);
 
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const userRole = localStorage.getItem("loggedInUserRole");
+        if (userRole !== "ADMIN") {
+            navigate("/records");
+        }
+    }, [navigate]);
+    
     const getAllUsers = () => {
         fetch(`${BASE_URL_CLOUD}/user/getallusers`)
             .then(response => {
