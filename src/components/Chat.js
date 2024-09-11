@@ -17,6 +17,8 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
     const messagesEndRef = useRef(null);
     const token = localStorage.getItem("jwtToken");
     const navigate = useNavigate();
+    const [isAscending, setIsAscending] = useState(true);
+    const [sortedUsers, setSortedUsers] = useState(allUsers);
     const currentTime = new Date().toISOString(); // This will give the current time in ISO 8601 format
     const SYSTEM_USER_ID = 58; // This is the ID for System messages. CHANGE IF NEEDED
     const POPPI_MIKKO_ID = 57; // This is the ID for PoppiMikko, CHANGE IF POPPIMIKKO USERID CHANGES
@@ -226,13 +228,46 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
         return text.replace(/\n/g, '<br>');
     };
 
+    // Update sortedUsers when allUsers changes
+    useEffect(() => {
+        setSortedUsers(allUsers);
+    }, [allUsers]);
+
+    // Function to toggle sorting
+    const toggleSort = () => {
+        const sorted = [...sortedUsers].sort((a, b) => {
+            if (isAscending) {
+                return a.email.localeCompare(b.email);
+            } else {
+                return b.email.localeCompare(a.email);
+            }
+        });
+        setSortedUsers(sorted);
+        setIsAscending(!isAscending);
+    };
+
     return (
         <>
             <div className="chat-container" style={{ display: "flex" }}>
                 {loggedInUser.role === "ADMIN" && (
-                    <div className="user-list" style={{ width: "20%", borderRight: "1px solid #ccc", padding: "10px", overflowY: "auto" }}>
+                    <div className="user-list" style={{ width: "20%", maxHeight: 750, borderRight: "1px solid #ccc", padding: "10px", overflowY: "auto" }}>
+                        <div style={{ marginBottom: "10px", textAlign: "center" }}>
+                            <Button
+                                onClick={() => toggleSort()}
+                                style={{
+                                    padding: "5px 10px",
+                                    cursor: "pointer",
+                                    backgroundColor: "#007bff",
+                                    color: "white",
+                                    border: "none",
+                                    borderRadius: "4px"
+                                }}
+                            >
+                                Aakkosta
+                            </Button>
+                        </div>
                         <ul style={{ listStyleType: "none", padding: 0 }}>
-                            {allUsers.map(user => (
+                            {sortedUsers.map(user => (
                                 <li
                                     key={user.id}
                                     onClick={() => handleUserChange({ target: { value: user.id } })}
@@ -243,9 +278,8 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
                                         cursor: "pointer",
                                     }}
                                 >
-                                    {user.email}
+                                    {user.user_name}
                                 </li>
-
                             ))}
                         </ul>
                     </div>

@@ -103,6 +103,7 @@ function UserListTool() {
     };
     
     const columnDefs = [
+        { headerName: "Nimi", field: "user_name", sortable: true, filter: true, cellStyle: { textAlign: "center" } },
         { headerName: "Sähköposti", field: "email", sortable: true, filter: true, cellStyle: { textAlign: "center" } },
         {
             headerName: "Onko tilaaminen sallittu",
@@ -127,7 +128,7 @@ function UserListTool() {
     return (
         <>
             <h1 style={{ textAlign: "center" }}>Käyttäjätyökalu</h1>
-            <div className="ag-theme-material trainings" style={{ height: 1000, width: 900, fontSize: 11, fontWeight: "bold", margin: "auto" }}>
+            <div className="ag-theme-material trainings" style={{ height: 700, width: 1100, fontSize: 11, fontWeight: "bold", margin: "auto" }}>
                 <AgGridReact
                     rowData={allUsers}
                     columnDefs={columnDefs}

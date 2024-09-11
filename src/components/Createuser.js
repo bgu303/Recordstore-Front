@@ -14,6 +14,8 @@ function CreateUser() {
         email: "",
         confirmEmail: "",
         password: "",
+        name: "",
+        nickName: "",
         confirmPassword: "",
         role: "USER"
     })
@@ -22,8 +24,16 @@ function CreateUser() {
     const navigate = useNavigate();
 
     const createUser = async () => {
-        if (user.email.trim() === "" || user.password.trim() === "" || user.confirmPassword === "") {
+        if (user.email.trim() === "" || user.password.trim() === "" || user.confirmPassword === "" || user.name === "" || user.nickName === "") {
             return alert("Täytä kaikki kentät.");
+        }
+
+        if (user.name.length >= 70) {
+            return alert("Käytä lyhyempää nimeä.");
+        }
+
+        if (user.name.length >= 16) {
+            return alert("Käytä lyhyempää nimimerkkiä.");
         }
 
         if (user.email.length >= 50) {
@@ -48,10 +58,6 @@ function CreateUser() {
             return alert("Salasanassa tulee olla vähintään yksi iso kirjain.");
         }
         
-        if (!/[0-9]/.test(user.password)) {
-            return alert("Salasanassa tulee olla vähintään yksi numero.");
-        }
-        
         if (!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/.test(user.email)) {
             return alert("Syötä kelvollinen sähköpostiosoite.");
         }
@@ -64,7 +70,9 @@ function CreateUser() {
                 body: JSON.stringify({
                     email: user.email,
                     password: user.password,
-                    role: user.role
+                    role: user.role,
+                    name: user.name,
+                    nickName: user.nickName
                 })
             });
 
@@ -127,6 +135,28 @@ function CreateUser() {
                     />
                 </div>
                 <div>
+                    <label style={{ fontWeight: "bold", display: "block", marginBottom: 10 }}>Etu- ja Sukunimi*</label>
+                    <TextField
+                        label="Etu- ja sukunimi"
+                        size="small"
+                        onChange={e => setUser({ ...user, name: e.target.value })}
+                        value={user.name}
+                        onKeyDown={handleKeyPress}
+                        style={{ backgroundColor: "white", borderRadius: 10 }}
+                    />
+                </div>
+                <div>
+                    <label style={{ fontWeight: "bold", display: "block", marginBottom: 10 }}>Nimimerkki*</label>
+                    <TextField
+                        label="Nimimerkki"
+                        size="small"
+                        onChange={e => setUser({ ...user, nickName: e.target.value })}
+                        value={user.nickName}
+                        onKeyDown={handleKeyPress}
+                        style={{ backgroundColor: "white", borderRadius: 10 }}
+                    />
+                </div>
+                <div>
                     <label style={{ fontWeight: "bold", display: "block", marginBottom: 10 }}>Salasana*</label>
                     <TextField
                         label="Salasana"
@@ -151,10 +181,12 @@ function CreateUser() {
                     />
                 </div>
                 <div style={{ marginTop: 10, textAlign: "center" }}>
-                    <p style={{ margin: 0 }}>Salasanassa tulee olla vähintään 9 merkkiä, iso kirjain ja numero.</p>
+                    <p style={{ marginBottom: 10 }}>Salasanassa tulee olla vähintään 9 merkkiä ja iso merkki.</p>
+                    <p style={{ marginBottom: 10 }}>Sähköposti, etu- ja sukunimi <b>vain PoppiMikon</b> nähtävissä.</p>
+                    <p style={{ marginBottom: 10 }}>Nimimerkki kaikkien nähtävissä yleisessä Chatissä.</p>
                 </div>
                 <Button color="success" variant="contained" style={{ borderRadius: "15px", marginTop: "10px" }} onClick={() => createUser()}>Luo käyttäjä</Button>
-                <p style={{ textAlign: "center" }}>Luomalla käyttäjän hyväksyt <span style={{ cursor: "pointer", color: "purple", fontWeight: "bold" }} onClick={()=> goToTermsAndServices()}>Käyttöehdot.</span></p>
+                <p style={{ textAlign: "center" }}>Luomalla käyttäjän hyväksyt <span style={{ cursor: "pointer", color: "purple", fontWeight: "bold" }} onClick={() => goToTermsAndServices()}>Käyttöehdot.</span></p>
                 {termsOfUseOpen && (<div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
                     <div style={{ flex: "1", padding: "20px", maxWidth: "800px", margin: "auto" }}>
                         <h3 style={{ borderBottom: "2px solid #333", paddingBottom: "10px" }}>Käyttöehdot</h3>
