@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { TextField } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import SendIcon from '@mui/icons-material/Send';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { format } from 'date-fns';
 import socket from './socket';
 import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
@@ -87,6 +88,42 @@ function GlobalChat({ loggedInUser }) {
         }
     }
 
+    const deleteMessage = (messageId) => {
+        fetch(`${BASE_URL_CLOUD}/chat/deletefromglobalchat/${messageId}`, {
+            method: "DELETE",
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+        }).then(() => {
+            socket.emit("messageDeletedGlobalChat", { messageId });
+            getAllGlobalMessages();
+        });
+    };
+
+    const removeMessageFromUI = (messageId) => {
+        const messageElement = document.getElementById(`message-${messageId}`);
+        if (messageElement) {
+            messageElement.remove();
+        }
+    };
+
+    useEffect(() => {
+        socket.on("messageDeleted", (data) => {
+            const { messageId } = data;
+            console.log(`Message with ID ${messageId} was deleted`);
+
+            // Update the state to remove the message from the UI
+            setAllGlobalMessages(prevMessages => prevMessages.filter(msg => msg.id !== messageId));
+        });
+
+        // Cleanup the event listener on unmount
+        return () => {
+            socket.off("messageDeleted");
+        };
+    }, [socket, setAllGlobalMessages]);
+
+
     return (
         <>
             <h1 style={{ textAlign: "center" }}>Yleinen Chatti</h1>
@@ -111,11 +148,9 @@ function GlobalChat({ loggedInUser }) {
                                     color: "#333",
                                 }
                                 : {};
+
                         return (
-                            <div
-                                key={index}
-                                className={`message ${messageClass}`}
-                            >
+                            <div key={index} className={`message ${messageClass}`}>
                                 <div
                                     style={{
                                         display: "flex",
@@ -125,7 +160,7 @@ function GlobalChat({ loggedInUser }) {
                                 >
                                     <div
                                         className={`message-content ${message.user_id === loggedInUser.id ? 'message-sent' : 'message-received'}`}
-                                        style={customStyles} // Apply the custom styles here
+                                        style={customStyles}
                                     >
                                         <strong
                                             style={{
@@ -149,6 +184,16 @@ function GlobalChat({ loggedInUser }) {
                                     <div className="message-time">
                                         {format(new Date(message.created_at), 'dd.MM.yyyy HH:mm')}
                                     </div>
+                                    {loggedInUser.role === "ADMIN" && message.user_id !== loggedInUser.id && (
+                                        <IconButton
+                                            size="small"
+                                            color="error"
+                                            onClick={() => deleteMessage(message.id)}
+                                        >
+                                            <DeleteIcon fontSize="small" />
+                                        </IconButton>
+                                    )}
+
                                 </div>
                             </div>
                         );

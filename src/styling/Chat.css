@@ -11,7 +11,7 @@
     height: 550px;
     overflow-y: auto;
     width: 100%;
-    max-width: 450px;
+    max-width: 600px;
     margin: 0 auto 20px auto;
 }
 
@@ -28,6 +28,8 @@
     padding: 8px;
     border-radius: 5px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    max-width: 500px;
+    word-wrap: break-word;
 }
 
 .message-sent {

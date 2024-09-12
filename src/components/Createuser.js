@@ -32,7 +32,7 @@ function CreateUser() {
             return alert("Käytä lyhyempää nimeä.");
         }
 
-        if (user.nickName.length >= 16) {
+        if (user.nickName.length >= 20) {
             return alert("Käytä lyhyempää nimimerkkiä.");
         }
 
