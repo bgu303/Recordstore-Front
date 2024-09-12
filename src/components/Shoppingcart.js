@@ -299,7 +299,7 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                     <h3 style={{ marginLeft: "20px" }}>
                         Tilauksen hinta: {cartTotal} €
 
-                        {shoppingcart.some(item => ["LP", '12"', "MLP"].includes(item.size)) ? (
+                        {shoppingcart.some(item => ["LP", '12"', "MLP", "MAGAZINE", "BOOK", "DVD"].includes(item.size)) ? (
                             <>
                                 <div>Postimaksu (jos ei nouto Vuosaaresta): 9€</div>
                                 <div>Loppusumma: {cartTotal + 9} €</div>

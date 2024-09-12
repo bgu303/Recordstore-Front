@@ -209,7 +209,7 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
                 .then(responseData => {
                     if (isMounted) {
                         console.log(responseData);
-                        newMessageState(false);
+                        setNewMessageState(false);
                     }
                 })
                 .catch(error => {
@@ -237,14 +237,30 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
     const toggleSort = () => {
         const sorted = [...sortedUsers].sort((a, b) => {
             if (isAscending) {
-                return a.email.localeCompare(b.email);
+                return a.user_name.localeCompare(b.user_name);
             } else {
-                return b.email.localeCompare(a.email);
+                return b.user_name.localeCompare(a.user_name);
             }
         });
         setSortedUsers(sorted);
         setIsAscending(!isAscending);
     };
+
+    useEffect(() => {
+        if (localStorage.getItem("loggedInUserRole") === "ADMIN") {
+            return;
+        }
+        socket.on("message", (message) => {
+            if (message.conversationId === conversationId) {
+                setConversationMessages(prevMessages => [...prevMessages, message]);
+                return;
+            }
+        });
+
+        return () => {
+            socket.off("message");
+        };
+    }, [conversationId]);
 
     return (
         <>

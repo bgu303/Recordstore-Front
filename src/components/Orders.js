@@ -161,7 +161,7 @@ function Orders({ getAllOrders }) {
 
         let postageFee = 0;
         if (orderItem[0].customer_shippingoption === "Posti") {
-            postageFee = orderItem.some(item => ["LP", '12"', "MLP"].includes(item.size)) ? 9 : 5;
+            postageFee = orderItem.some(item => ["LP", '12"', "MLP", "MAGAZINE", "BOOK", "DVD"].includes(item.size)) ? 9 : 5;
             textContent += `Hinta yhteensä: ${totalPrice}€ + ${postageFee}€ postitusmaksu\n`;
         } else {
             textContent += `Hinta yhteensä: ${totalPrice}€\n`;
@@ -240,10 +240,10 @@ function Orders({ getAllOrders }) {
                             Hinta yhteensä: {getTotalPrice(order)}€
                             {order[0].customer_shippingoption === "Posti" && (
                                 <>
-                                    <b> + {order.some(item => ["LP", '12"', "MLP"].includes(item.size)) ? "9€" : "5€"} postitusmaksu</b>
+                                    <b> + {order.some(item => ["LP", '12"', "MLP", "MAGAZINE", "BOOK", "DVD"].includes(item.size)) ? "9€" : "5€"} postitusmaksu</b>
                                     <br />
                                     <p>Kokonaishinta:
-                                        <b> {getTotalPrice(order) + (order.some(item => ["LP", '12"', "MLP"].includes(item.size)) ? 9 : 5)}€</b>
+                                        <b> {getTotalPrice(order) + (order.some(item => ["LP", '12"', "MLP", "MAGAZINE", "BOOK", "DVD"].includes(item.size)) ? 9 : 5)}€</b>
                                     </p>
                                 </>
                             )}

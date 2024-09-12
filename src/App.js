@@ -18,6 +18,7 @@ import TermsOfUse from './components/Termsofuse';
 import PrivacyStatement from './components/Privacystatement';
 import FrontPageTool from './components/Frontpagetool';
 import UserListTool from './components/UserlistTool';
+import GlobalChat from './components/Globalchat';
 import "./App.css";
 import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
@@ -38,6 +39,7 @@ function App() {
   const [loggedInUser, setLoggedInUser] = useState({
     email: "",
     role: "",
+    nickname: "",
     id: null,
     token: null
   });
@@ -240,7 +242,6 @@ function App() {
 
   //This useEffect is used to handle the socket logic for non-admin users. 
   useEffect(() => {
-    
     if (localStorage.getItem("loggedInUserRole") === "ADMIN") {
       return;
     }
@@ -386,6 +387,7 @@ function App() {
     setLoggedInUser({
       email: "",
       role: "",
+      nickname: "",
       id: null,
       token: null
     });
@@ -454,8 +456,17 @@ function App() {
                 className={`nav-link ${activePath === "/chat" ? "active" : ""}`}
                 onClick={() => clickedLink("/chat", setActivePath)}
               >
-                Chatti
+                Chatti PoppiMikon kanssa
                 {newMessageState && <span className="notification-badge-shoppingcart notification-badge"></span>}
+              </Link>
+            )}
+            {isLoggedIn && (
+              <Link
+                to="/globalchat"
+                className={`nav-link ${activePath === "/globalchat" ? "active" : ""}`}
+                onClick={() => clickedLink("/globalchat", setActivePath)}
+              >
+                Julkinen Chatti
               </Link>
             )}
             {isLoggedIn && loggedInUser.role !== "ADMIN" && (
@@ -603,6 +614,7 @@ function App() {
           <Route path="/login" element={<Login isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} setToken={setToken} />} />
           <Route path="/shoppingcart" element={<Shoppingcart loggedInUser={loggedInUser} customerInfo={customerInfo} setCustomerInfo={setCustomerInfo} cartTotal={cartTotal} setCartTotal={setCartTotal} shoppingcart={shoppingcart} setShoppingcart={setShoppingcart} setShoppingcartSize={setShoppingcartSize} conversationId={conversationId} />} />
           <Route path="/chat" element={<ChatRoom loggedInUser={loggedInUser} conversationId={conversationId} setConversationId={setConversationId} conversationMessages={conversationMessages} setConversationMessages={setConversationMessages} fetchConversationId={fetchConversationId} fetchConversationMessages={fetchConversationMessages} newMessageState={newMessageState} setNewMessageState={setNewMessageState} adminNewMessageIds={adminNewMessageIds} setAdminNewMessageIds={setAdminNewMessageIds} />} />
+          <Route path="/globalchat" element={<GlobalChat loggedInUser={loggedInUser} />} />
           <Route path="/addrecord" element={<AddRecord loggedInUser={loggedInUser} />} />
           <Route path="/orders" element={<Orders getAllOrders={getAllOrders} />} />
           <Route path="/ordersummary" element={<Ordersummary customerInfo={customerInfo} cartTotal={cartTotal} loggedInUser={loggedInUser} />} />

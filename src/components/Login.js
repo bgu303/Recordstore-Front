@@ -31,6 +31,7 @@ function Login({ isLoggedIn, setIsLoggedIn, loggedInUser, setLoggedInUser, conve
             localStorage.setItem("loggedInUserEmail", loggedInUser.email);
             localStorage.setItem("loggedInUserRole", loggedInUser.role);
             localStorage.setItem("jwtToken", loggedInUser.token)
+            localStorage.setItem("loggedInUserNickname", loggedInUser.nickname)
         }
     }, [isLoggedIn])
 
@@ -64,6 +65,7 @@ function Login({ isLoggedIn, setIsLoggedIn, loggedInUser, setLoggedInUser, conve
                 setLoggedInUser({
                     email: decodedToken.email,
                     role: decodedToken.userRole,
+                    nickname: decodedToken.userNickname,
                     id: decodedToken.userId,
                     token: token
                 });
