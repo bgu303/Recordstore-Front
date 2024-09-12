@@ -571,7 +571,7 @@ function App() {
               </>
             )}
             {isLoggedIn && (
-              <Logout setIsLoggedIn={setIsLoggedIn} setLoggedInUser={setLoggedInUser} setNewMessageState={setNewMessageState} handleLogout={handleLogout} />
+              <Logout loggedInUser={loggedInUser} handleLogout={handleLogout} />
             )}
           </div>
         </nav>

@@ -6,6 +6,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { format } from 'date-fns';
 import socket from './socket';
 import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
+import { useNavigate } from "react-router-dom";
 
 function GlobalChat({ loggedInUser }) {
     const [message, setMessage] = useState("");
@@ -13,6 +14,13 @@ function GlobalChat({ loggedInUser }) {
     const messagesEndRef = useRef(null);
     const currentTime = new Date().toISOString();
     const token = localStorage.getItem("jwtToken");
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!localStorage.getItem("isLoggedIn")) {
+            navigate("/records")
+        }
+    }, [])
 
     useEffect(() => {
         // Join global chat room
@@ -101,13 +109,6 @@ function GlobalChat({ loggedInUser }) {
         });
     };
 
-    const removeMessageFromUI = (messageId) => {
-        const messageElement = document.getElementById(`message-${messageId}`);
-        if (messageElement) {
-            messageElement.remove();
-        }
-    };
-
     useEffect(() => {
         socket.on("messageDeleted", (data) => {
             const { messageId } = data;
@@ -126,7 +127,11 @@ function GlobalChat({ loggedInUser }) {
 
     return (
         <>
-            <h1 style={{ textAlign: "center" }}>Yleinen Chatti</h1>
+            <div style={{ textAlign: "center" }}>
+                <h1>Yleinen Chatti</h1>
+                <h3>Tämä Chatti on tarkoitettu yleiseen jutusteluun musiikista, tai mistä muusta tahansa kaikkien käyttäjien kesken.<br/><br/>Myös PoppiMikko saattaa osallistua keskusteluun toisinaan</h3>
+                <h4>Juttelet käyttäjänimellä: {loggedInUser.nickname}</h4>
+            </div>
             <div style={{ textAlign: "center" }}>
                 <div className="chat-box">
                     {allGlobalMessages.map((message, index) => {

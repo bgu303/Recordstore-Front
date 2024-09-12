@@ -4,7 +4,7 @@ import IconButton from '@mui/material/IconButton';
 import LogoutIcon from '@mui/icons-material/Logout';
 import '../styling/Logout.css';
 
-function Logout({ setIsLoggedIn, setLoggedInUser, setNewMessageState, handleLogout }) {
+function Logout({ loggedInUser, handleLogout }) {
     const navigate = useNavigate();
 
     const handleLogoutAndNavigate = () => {
@@ -14,11 +14,11 @@ function Logout({ setIsLoggedIn, setLoggedInUser, setNewMessageState, handleLogo
     };
 
     return (
-        <div className="logoutDiv" onClick={() => handleLogoutAndNavigate()}>
-            <span style={{ color: "white" }}>Kirjaudu ulos</span><IconButton
+        <div className="logoutDiv">
+            <span style={{ color: "white" }}>{loggedInUser.email}</span><IconButton
                 style={{ marginLeft: 10, color: "white" }}  
             >
-                <LogoutIcon />
+                <LogoutIcon  onClick={() => handleLogoutAndNavigate()} />
             </IconButton>
         </div>
     )
