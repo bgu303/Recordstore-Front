@@ -16,9 +16,10 @@ function Logout({ loggedInUser, handleLogout }) {
     return (
         <div className="logoutDiv">
             <span style={{ color: "white" }}>{loggedInUser.email}</span><IconButton
-                style={{ marginLeft: 10, color: "white" }}  
+                style={{ marginLeft: 10, color: "white" }}
+                onClick={() => handleLogoutAndNavigate()}
             >
-                <LogoutIcon  onClick={() => handleLogoutAndNavigate()} />
+                <LogoutIcon/>
             </IconButton>
         </div>
     )

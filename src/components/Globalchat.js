@@ -23,20 +23,21 @@ function GlobalChat({ loggedInUser }) {
     }, [])
 
     useEffect(() => {
-        // Join global chat room
-        socket.emit("joinGlobalChat");
-
-        // Listen for new messages
-        socket.on("message", (newMessage) => {
-            setAllGlobalMessages(prevMessages => [...prevMessages, newMessage]);
-        });
-
-        // Cleanup on component unmount
-        return () => {
-            socket.off("message");
-        };
+        const timeoutId = setTimeout(() => {
+            socket.emit("joinGlobalChat");
+    
+            socket.on("message", (newMessage) => {
+                setAllGlobalMessages(prevMessages => [...prevMessages, newMessage]);
+                console.log(newMessage)
+            });
+    
+            return () => {
+                socket.off("message");
+            };
+        }, 500);
+        return () => clearTimeout(timeoutId);
     }, []);
-
+    
     useEffect(() => {
         getAllGlobalMessages();
     }, []);
@@ -72,7 +73,7 @@ function GlobalChat({ loggedInUser }) {
             socket.emit("sendMessageGlobalChat", {
                 message: message,
                 sender_id: loggedInUser.id,
-                sender_nickname: loggedInUser.nickname,
+                sender_nickname: localStorage.getItem("loggedInUserNickname"),
                 created_at: currentTime
             });
         });
@@ -124,13 +125,12 @@ function GlobalChat({ loggedInUser }) {
         };
     }, [socket, setAllGlobalMessages]);
 
-
     return (
         <>
             <div style={{ textAlign: "center" }}>
                 <h1>Yleinen Chatti</h1>
                 <h3>Tämä Chatti on tarkoitettu yleiseen jutusteluun musiikista, tai mistä muusta tahansa kaikkien käyttäjien kesken.<br/><br/>Myös PoppiMikko saattaa osallistua keskusteluun toisinaan</h3>
-                <h4>Juttelet käyttäjänimellä: {loggedInUser.nickname}</h4>
+                <h4>Juttelet käyttäjänimellä: {localStorage.getItem("loggedInUserNickname")}</h4>
             </div>
             <div style={{ textAlign: "center" }}>
                 <div className="chat-box">
