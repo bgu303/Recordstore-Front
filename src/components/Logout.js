@@ -15,7 +15,7 @@ function Logout({ loggedInUser, handleLogout }) {
 
     return (
         <div className="logoutDiv">
-            <span style={{ color: "white" }}>{loggedInUser.email}</span><IconButton
+            <span style={{ color: "white" }} onClick={() => handleLogoutAndNavigate()}>Kirjaudu ulos</span><IconButton
                 style={{ marginLeft: 10, color: "white" }}
                 onClick={() => handleLogoutAndNavigate()}
             >

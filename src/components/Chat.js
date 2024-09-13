@@ -374,6 +374,8 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
                         <div style={{ display: "flex", alignItems: "center" }}>
                             <TextField
                                 label="Lähetä viesti"
+                                multiline
+                                rows={3}
                                 onChange={e => setMessage(e.target.value)}
                                 value={message}
                                 onKeyDown={handleKeyPress}

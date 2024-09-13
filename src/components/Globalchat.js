@@ -25,19 +25,19 @@ function GlobalChat({ loggedInUser }) {
     useEffect(() => {
         const timeoutId = setTimeout(() => {
             socket.emit("joinGlobalChat");
-    
+
             socket.on("message", (newMessage) => {
                 setAllGlobalMessages(prevMessages => [...prevMessages, newMessage]);
                 console.log(newMessage)
             });
-    
+
             return () => {
                 socket.off("message");
             };
         }, 500);
         return () => clearTimeout(timeoutId);
     }, []);
-    
+
     useEffect(() => {
         getAllGlobalMessages();
     }, []);
@@ -128,11 +128,11 @@ function GlobalChat({ loggedInUser }) {
     return (
         <>
             <div style={{ textAlign: "center" }}>
-                <h1>Yleinen Chatti</h1>
-                <h3>Tämä Chatti on tarkoitettu yleiseen jutusteluun musiikista, tai mistä muusta tahansa kaikkien käyttäjien kesken.<br/><br/>Myös PoppiMikko saattaa osallistua keskusteluun toisinaan</h3>
-                <h4>Juttelet käyttäjänimellä: {localStorage.getItem("loggedInUserNickname")}</h4>
+                <h2>Julkinen Chatti</h2>
+                <h4>Tämä Chatti on tarkoitettu yleiseen jutusteluun musiikista, tai mistä muusta tahansa kaikkien käyttäjien kesken.</h4>
+                <h5>Juttelet käyttäjänimellä: {localStorage.getItem("loggedInUserNickname")}</h5>
             </div>
-            <div style={{ textAlign: "center" }}>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                 <div className="chat-box">
                     {allGlobalMessages.map((message, index) => {
                         const isJukka = message.user_nickname === "Jukka (Ylläpitäjä)";
@@ -189,7 +189,7 @@ function GlobalChat({ loggedInUser }) {
                                     <div className="message-time">
                                         {format(new Date(message.created_at), 'dd.MM.yyyy HH:mm')}
                                     </div>
-                                    {loggedInUser.role === "ADMIN" && message.user_id !== loggedInUser.id && (
+                                    {loggedInUser.role === "ADMIN" && (
                                         <IconButton
                                             size="small"
                                             color="error"
@@ -205,20 +205,25 @@ function GlobalChat({ loggedInUser }) {
                     })}
                     <div ref={messagesEndRef} />
                 </div>
-                <TextField
-                    label="Lähetä viesti"
-                    onChange={e => setMessage(e.target.value)}
-                    onKeyDown={handleKeyPress}
-                    value={message}
-                    className="chatTextField"
-                />
-                <IconButton
-                    style={{ marginLeft: 10 }}
-                    color="success"
-                    onClick={() => sendMessage()}
-                >
-                    <SendIcon />
-                </IconButton>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                    <TextField
+                        label="Lähetä viesti"
+                        multiline
+                        rows={3}
+                        onChange={e => setMessage(e.target.value)}
+                        onKeyDown={handleKeyPress}
+                        value={message}
+                        className="chatTextField"
+                    />
+                    <IconButton
+                        style={{ marginLeft: 10, alignSelf: "center" }}
+                        color="success"
+                        onClick={() => sendMessage()}
+                    >
+                        <SendIcon />
+                    </IconButton>
+                </div>
+
             </div>
         </>
     );
