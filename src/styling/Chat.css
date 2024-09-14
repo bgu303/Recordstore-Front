@@ -112,6 +112,14 @@
     font-weight: bold;
 }
 
+.user-list {
+    width: 20%;
+    max-height: 750px;
+    border-right: 1px solid #ccc;
+    padding: 10px;
+    overflow-y: auto;
+}
+
 @media (max-width: 768px) {
     .chat-box {
         height: 350px;
@@ -128,21 +136,26 @@
     }
 
     .text-field {
-        width: 100%; /* Full width input field */
+        width: 100%;
     }
 
     .send-button {
-        margin-left: 0; /* Remove margin on smaller screens */
-        margin-top: 10px; /* Add top margin for separation */
+        margin-left: 0;
+        margin-top: 10px;
     }
 
     .select-user {
-        width: 100%; /* Full width select */
-        max-width: none; /* Remove max-width on smaller screens */
+        width: 100%;
+        max-width: none;
     }
 
     .chatTextField {
         width: 270px;
+    }
+
+    .user-list {
+        font-size: 11px;
+        padding-left: 0px;
     }
 }
 

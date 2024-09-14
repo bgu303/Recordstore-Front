@@ -245,6 +245,7 @@ function App() {
     if (localStorage.getItem("loggedInUserRole") === "ADMIN") {
       return;
     }
+    
     socket.on("message", (message) => {
       if (message.conversationId === conversationId) {
         setConversationMessages(prevMessages => [...prevMessages, message]);

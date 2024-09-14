@@ -250,34 +250,37 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
         if (localStorage.getItem("loggedInUserRole") === "ADMIN") {
             return;
         }
-        socket.on("message", (message) => {
-            if (message.conversationId === conversationId) {
-                setConversationMessages(prevMessages => [...prevMessages, message]);
-                return;
-            }
-        });
 
-        return () => {
-            socket.off("message");
-        };
+        if (socket.connected) {
+            const messageHandler = (message) => {
+                if (message.conversationId === conversationId) {
+                    setConversationMessages(prevMessages => [...prevMessages, message]);
+                }
+            };
+
+            const isListenerAttached = socket.hasListeners?.("message");
+
+            if (!isListenerAttached) {
+                socket.on("message", messageHandler);
+            }
+
+            return () => {
+                socket.off("message", messageHandler);
+            };
+        }
     }, [conversationId]);
 
     return (
         <>
             <div className="chat-container" style={{ display: "flex" }}>
                 {loggedInUser.role === "ADMIN" && (
-                    <div className="user-list" style={{ width: "20%", maxHeight: 750, borderRight: "1px solid #ccc", padding: "10px", overflowY: "auto" }}>
+                    <div className="user-list">
                         <div style={{ marginBottom: "10px", textAlign: "center" }}>
                             <Button
                                 onClick={() => toggleSort()}
-                                style={{
-                                    padding: "5px 10px",
-                                    cursor: "pointer",
-                                    backgroundColor: "#007bff",
-                                    color: "white",
-                                    border: "none",
-                                    borderRadius: "4px"
-                                }}
+                                className="sort-button"
+                                variant="contained"
+                                size="small"
                             >
                                 Aakkosta
                             </Button>

@@ -26,13 +26,12 @@ function GlobalChat({ loggedInUser }) {
         const timeoutId = setTimeout(() => {
             socket.emit("joinGlobalChat");
 
-            socket.on("message", (newMessage) => {
+            socket.on("sendMessageGlobalChat", (newMessage) => {
                 setAllGlobalMessages(prevMessages => [...prevMessages, newMessage]);
-                console.log(newMessage)
             });
 
             return () => {
-                socket.off("message");
+                socket.off("sendMessageGlobalChat");
             };
         }, 500);
         return () => clearTimeout(timeoutId);
