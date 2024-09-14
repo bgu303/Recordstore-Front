@@ -3,7 +3,7 @@ import '../styling/Orderlist.css'
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
+import { BASE_URL } from './Apiconstants';
 
 function Orders({ getAllOrders }) {
     const [orderData, setOrderData] = useState([]);
@@ -12,7 +12,7 @@ function Orders({ getAllOrders }) {
     const [orderStatus, setOrderStatus] = useState("");
 
     const getOrders = () => {
-        fetch(`${BASE_URL_CLOUD}/orders/getorderdata`, {
+        fetch(`${BASE_URL}/orders/getorderdata`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
@@ -41,7 +41,7 @@ function Orders({ getAllOrders }) {
 
     const deleteOrder = (data) => {
         if (window.confirm("Haluatko varmasti poistaa Tilauksen?")) {
-            fetch(`${BASE_URL_CLOUD}/orders/deleteorder/${data}`,
+            fetch(`${BASE_URL}/orders/deleteorder/${data}`,
                 {
                     method: "DELETE",
                     headers: {
@@ -93,7 +93,7 @@ function Orders({ getAllOrders }) {
         if (orderStatus === "") {
             return;
         }
-        fetch(`${BASE_URL_CLOUD}/orders/changeorderstatus/${id}/${orderStatus}`)
+        fetch(`${BASE_URL}/orders/changeorderstatus/${id}/${orderStatus}`)
             .then(response => {
                 if (!response.ok) {
                     console.log("Failed to update Status.");
@@ -178,7 +178,7 @@ function Orders({ getAllOrders }) {
         const confirmation = window.confirm("Haluatko varmasti poistaa levyn tilauksesta?");
 
         if (confirmation) {
-            fetch(`${BASE_URL_CLOUD}/orders/deletefromorder/${orderId}/${recordId}`, {
+            fetch(`${BASE_URL}/orders/deletefromorder/${orderId}/${recordId}`, {
                 method: "DELETE",
                 headers: {
                     'Authorization': `Bearer ${token}`,

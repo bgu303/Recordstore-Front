@@ -3,7 +3,7 @@ import { TextField, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import '../styling/Feedback.css';
 
-import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
+import { BASE_URL } from './Apiconstants';
 
 function SendFeedback({ loggedInUser }) {
     const [feedbackMessage, setFeedbackMessage] = useState("");
@@ -24,7 +24,7 @@ function SendFeedback({ loggedInUser }) {
             return alert("Palautteen tulee olla alle 1000 merkkiä.")
         }
         try {
-            const response = await fetch(`${BASE_URL_CLOUD}/feedback/sendfeedback`, {
+            const response = await fetch(`${BASE_URL}/feedback/sendfeedback`, {
                 method: "POST",
                 headers: {
                     'Authorization': `Bearer ${token}`,

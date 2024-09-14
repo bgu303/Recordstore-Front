@@ -32,7 +32,7 @@ import socket from './components/socket';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import blop from "./audio/blop.mp3"
 
-import { BASE_URL, BASE_URL_CLOUD } from './components/Apiconstants';
+import { BASE_URL } from './components/Apiconstants';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -100,7 +100,7 @@ function App() {
       return;
     }
     try {
-      const response = await fetch(`${BASE_URL_CLOUD}/chat/getconversationid/${localStorage.getItem("loggedInUserId")}`);
+      const response = await fetch(`${BASE_URL}/chat/getconversationid/${localStorage.getItem("loggedInUserId")}`);
       if (response.ok) {
         const data = await response.json();
         if (data.length > 0) {
@@ -124,7 +124,7 @@ function App() {
     }
 
     try {
-      const response = await fetch(`${BASE_URL_CLOUD}/chat/getconversationmessages/${conversationId}`, {
+      const response = await fetch(`${BASE_URL}/chat/getconversationmessages/${conversationId}`, {
         headers: {
           "Authorization": `Bearer ${token}`
         }
@@ -153,7 +153,7 @@ function App() {
       return;
     }
 
-    fetch(`${BASE_URL_CLOUD}/chat/getallconversationmessages`)
+    fetch(`${BASE_URL}/chat/getallconversationmessages`)
       .then(response => {
         if (response.ok) {
           return response.json();
@@ -190,7 +190,7 @@ function App() {
       return;
     }
 
-    fetch(`${BASE_URL_CLOUD}/chat/getallconversationids`)
+    fetch(`${BASE_URL}/chat/getallconversationids`)
       .then(response => {
         if (response.ok) {
           return response.json()
@@ -304,7 +304,7 @@ function App() {
     if (localStorage.getItem("loggedInUserRole") === "ADMIN") {
       return;
     }
-    fetch(`${BASE_URL_CLOUD}/shoppingcart/shoppingcartitems/${localStorage.getItem("loggedInUserId")}`)
+    fetch(`${BASE_URL}/shoppingcart/shoppingcartitems/${localStorage.getItem("loggedInUserId")}`)
       .then(response => {
         if (response.ok) {
           return response.json();
@@ -324,7 +324,7 @@ function App() {
       return;
     }
 
-    fetch(`${BASE_URL_CLOUD}/orders/getallorders/`, {
+    fetch(`${BASE_URL}/orders/getallorders/`, {
       headers: {
         "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
       }

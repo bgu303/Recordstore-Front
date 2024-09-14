@@ -8,7 +8,7 @@ import '../styling/Createuser.css'
 import { jwtDecode } from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
 
-import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
+import { BASE_URL } from './Apiconstants';
 
 function Login({ isLoggedIn, setIsLoggedIn, loggedInUser, setLoggedInUser, conversationId, setConversationId, conversationMessages, setConversationMessages, setToken }) {
     const [user, setUser] = useState({
@@ -40,7 +40,7 @@ function Login({ isLoggedIn, setIsLoggedIn, loggedInUser, setLoggedInUser, conve
             return alert("Täytä molemmat kentät");
         }
 
-        fetch(`${BASE_URL_CLOUD}/user/login`, {
+        fetch(`${BASE_URL}/user/login`, {
             method: "POST",
             headers: { "Content-type": "application/json" },
             body: JSON.stringify({

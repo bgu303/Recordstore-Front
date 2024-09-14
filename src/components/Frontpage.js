@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import Footer from './Footer';
 import ImageBanner from './Imagebanner';
 
-import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
+import { BASE_URL } from './Apiconstants';
 
 function FrontPage() {
     const navigate = useNavigate();
@@ -23,7 +23,7 @@ function FrontPage() {
     ];
 
     const getRecords = () => {
-        fetch(`${BASE_URL_CLOUD}/records`)
+        fetch(`${BASE_URL}/records`)
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -42,7 +42,7 @@ function FrontPage() {
     }
 
     const showNotifications = () => {
-        fetch(`${BASE_URL_CLOUD}/notifications/`)
+        fetch(`${BASE_URL}/notifications/`)
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -56,7 +56,7 @@ function FrontPage() {
     }
 
     const showPlaylists = () => {
-        fetch(`${BASE_URL_CLOUD}/playlists/`)
+        fetch(`${BASE_URL}/playlists/`)
             .then(response => {
                 if (response.ok) {
                     return response.json();

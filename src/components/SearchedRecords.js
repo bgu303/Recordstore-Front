@@ -6,7 +6,7 @@ import 'ag-grid-community/styles/ag-theme-material.css';
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import CircularProgress from '@mui/material/CircularProgress';
 
-import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
+import { BASE_URL } from './Apiconstants';
 
 function SearchedRecords({ searchResults, loggedInUser, showShoppingcart }) {
 
@@ -38,7 +38,7 @@ function SearchedRecords({ searchResults, loggedInUser, showShoppingcart }) {
     const addToCart = async (data) => {
         console.log(`UserId: ${loggedInUser.id} itemId: ${data.id}`);
         try {
-            const response = await fetch(`${BASE_URL_CLOUD}/shoppingcart/addtocart`, {
+            const response = await fetch(`${BASE_URL}/shoppingcart/addtocart`, {
                 method: "POST",
                 headers: { "Content-type": "application/json" },
                 body: JSON.stringify({

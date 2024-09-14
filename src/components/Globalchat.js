@@ -7,13 +7,14 @@ import { format } from 'date-fns';
 import socket from './socket';
 import { useNavigate } from "react-router-dom";
 
-import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
+import { BASE_URL } from './Apiconstants';
 
 function GlobalChat({ loggedInUser }) {
     const [message, setMessage] = useState("");
     const [allGlobalMessages, setAllGlobalMessages] = useState([]);
+    const [lastMessageTime, setLastMessageTime] = useState(0);
+    const [cooldownPeriod, setCooldownPeriod] = useState(15000);
     const messagesEndRef = useRef(null);
-    const currentTime = new Date().toISOString();
     const token = localStorage.getItem("jwtToken");
     const navigate = useNavigate();
 
@@ -28,7 +29,13 @@ function GlobalChat({ loggedInUser }) {
             socket.emit("joinGlobalChat");
 
             socket.on("sendMessageGlobalChat", (newMessage) => {
-                setAllGlobalMessages(prevMessages => [...prevMessages, newMessage]);
+                setAllGlobalMessages(prevMessages => [
+                    ...prevMessages,
+                    {
+                        ...newMessage,
+                        id: newMessage.message_id
+                    }
+                ]);
             });
 
             return () => {
@@ -43,7 +50,7 @@ function GlobalChat({ loggedInUser }) {
     }, []);
 
     const getAllGlobalMessages = () => {
-        fetch(`${BASE_URL_CLOUD}/chat/getglobalmessages`)
+        fetch(`${BASE_URL}/chat/getglobalmessages`)
             .then(response => response.json())
             .then(data => {
                 setAllGlobalMessages(data);
@@ -51,14 +58,23 @@ function GlobalChat({ loggedInUser }) {
     };
 
     const sendMessage = () => {
-        if (message.trim() === "") {
+        const currentTime = Date.now();
+
+        if (currentTime - lastMessageTime < cooldownPeriod) {
+            const timeLeft = Math.ceil((cooldownPeriod - (currentTime - lastMessageTime)) / 1000);
+            return alert(`Voit lähettää uuden viestin ${timeLeft} sekunnin kuluttua.`);
+        }
+
+        let trimmedMessage = message.trim();
+
+        if (trimmedMessage === "") {
             return alert("Ei tyhjiä viestejä.");
         }
-        if (message.trim().length > 600) {
+        if (trimmedMessage.length > 600) {
             return alert("Ei yli 600 merkin viestejä.");
         }
 
-        fetch(`${BASE_URL_CLOUD}/chat/sendmessageglobal`, {
+        fetch(`${BASE_URL}/chat/sendmessageglobal`, {
             method: "POST",
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -66,17 +82,22 @@ function GlobalChat({ loggedInUser }) {
             },
             body: JSON.stringify({
                 userId: loggedInUser.id,
-                message: message
+                message: trimmedMessage
             })
-        }).then(() => {
-            setMessage("");
-            socket.emit("sendMessageGlobalChat", {
-                message: message,
-                sender_id: loggedInUser.id,
-                sender_nickname: localStorage.getItem("loggedInUserNickname"),
-                created_at: currentTime
-            });
-        });
+        })
+            .then(response => response.json())
+            .then(data => {
+                setMessage("");
+                setLastMessageTime(currentTime);
+                socket.emit("sendMessageGlobalChat", {
+                    message: trimmedMessage,
+                    sender_id: loggedInUser.id,
+                    sender_nickname: localStorage.getItem("loggedInUserNickname"),
+                    created_at: currentTime,
+                    message_id: data.message_id
+                });
+            })
+            .catch(error => console.error('Error:', error));
     };
 
     useEffect(() => {
@@ -93,12 +114,18 @@ function GlobalChat({ loggedInUser }) {
 
     const handleKeyPress = (e) => {
         if (e.keyCode === 13) {
-            sendMessage();
+            if (e.shiftKey) {
+                e.preventDefault(); // Prevents the default action of the Enter key
+                setMessage(message + '\n');
+            } else {
+                e.preventDefault();
+                sendMessage();
+            }
         }
-    }
+    };
 
     const deleteMessage = (messageId) => {
-        fetch(`${BASE_URL_CLOUD}/chat/deletefromglobalchat/${messageId}`, {
+        fetch(`${BASE_URL}/chat/deletefromglobalchat/${messageId}`, {
             method: "DELETE",
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -113,7 +140,7 @@ function GlobalChat({ loggedInUser }) {
     const deleteMessageUser = (messageId) => {
         const userId = localStorage.getItem("loggedInUserId") || loggedInUser.id;
 
-        fetch(`${BASE_URL_CLOUD}/chat/deletefromglobalchat/${userId}/${messageId}`, {
+        fetch(`${BASE_URL}/chat/deletefromglobalchat/${userId}/${messageId}`, {
             method: "DELETE",
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -143,7 +170,6 @@ function GlobalChat({ loggedInUser }) {
             setAllGlobalMessages(prevMessages => prevMessages.filter(msg => msg.id !== messageId));
         });
 
-        // Cleanup the event listener on unmount
         return () => {
             socket.off("messageDeleted");
         };

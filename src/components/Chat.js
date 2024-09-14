@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { format } from 'date-fns';
 import '../styling/Chat.css';
 
-import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
+import { BASE_URL } from './Apiconstants';
 
 function ChatRoom({ loggedInUser, conversationId, setConversationId, conversationMessages, setConversationMessages, fetchConversationId, fetchConversationMessages, newMessageState, setNewMessageState, adminNewMessageIds, setAdminNewMessageIds }) {
     const [message, setMessage] = useState("");
@@ -34,7 +34,7 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
             return;
         }
 
-        fetch(`${BASE_URL_CLOUD}/chat/getconversationid/${selectedUser}`)
+        fetch(`${BASE_URL}/chat/getconversationid/${selectedUser}`)
             .then(response => {
                 if (response.ok) {
                     return response.json()
@@ -46,7 +46,7 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
     }
 
     const getAllUsers = () => {
-        fetch(`${BASE_URL_CLOUD}/user/getallusers`)
+        fetch(`${BASE_URL}/user/getallusers`)
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -76,7 +76,7 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
             return alert("Ei yli 600 merkin viestejä.");
         }
 
-        fetch(`${BASE_URL_CLOUD}/chat/sendmessage`, {
+        fetch(`${BASE_URL}/chat/sendmessage`, {
             method: "POST",
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -97,7 +97,7 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
             return alert("Ei tyhjiä viestejä.");
         }
 
-        fetch(`${BASE_URL_CLOUD}/chat/adminsendmessage`, {
+        fetch(`${BASE_URL}/chat/adminsendmessage`, {
             method: "POST",
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -114,7 +114,7 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
     }
 
     const adminOpenConversation = () => {
-        fetch(`${BASE_URL_CLOUD}/chat/admingetconversationmessages/${selectedUser}`, {
+        fetch(`${BASE_URL}/chat/admingetconversationmessages/${selectedUser}`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
@@ -199,7 +199,7 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
 
             let isMounted = true;
 
-            fetch(`${BASE_URL_CLOUD}/chat/chatmessagechecker/${conversationId}`)
+            fetch(`${BASE_URL}/chat/chatmessagechecker/${conversationId}`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error("Something went wrong.");

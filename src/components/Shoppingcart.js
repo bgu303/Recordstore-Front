@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 import socket from './socket';
 import '../styling/Shoppingcart.css'
 
-import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
+import { BASE_URL } from './Apiconstants';
 
 function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, setCartTotal, shoppingcart, setShoppingcart, setShoppingcartSize, conversationId }) {
     const [columnDefinitions, setColumnDefinitions] = useState([]);
@@ -73,7 +73,7 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
     }
 
     const showShoppingcart = () => {
-        fetch(`${BASE_URL_CLOUD}/shoppingcart/shoppingcartitems/${localStorage.getItem("loggedInUserId")}`, {
+        fetch(`${BASE_URL}/shoppingcart/shoppingcartitems/${localStorage.getItem("loggedInUserId")}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -97,7 +97,7 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                 return alert("Jokin meni vikaan");
             }
 
-            fetch(`${BASE_URL_CLOUD}/shoppingcart/shoppingcartdelete/${data.id}`, {
+            fetch(`${BASE_URL}/shoppingcart/shoppingcartdelete/${data.id}`, {
                 method: "DELETE",
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -130,7 +130,7 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                 return alert("Ostoskori on tyhjä. Lisää tuotteita ennen tilauksen lähettämistä.");
             }
             try {
-                const response = fetch(`${BASE_URL_CLOUD}/shoppingcart/sendcart2`, {
+                const response = fetch(`${BASE_URL}/shoppingcart/sendcart2`, {
                     method: "POST",
                     headers: { "Content-type": "application/json" },
                     body: JSON.stringify({
@@ -142,7 +142,7 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                 if (!response.ok) {
                     return alert("Jokin meni vikaan");
                 } else {
-                    fetch(`${BASE_URL_CLOUD}/shoppingcart/shoppingcartdeleteall/${loggedInUser.id}`, { method: "DELETE" })
+                    fetch(`${BASE_URL}/shoppingcart/shoppingcartdeleteall/${loggedInUser.id}`, { method: "DELETE" })
                         .then(response => {
                             if (response.ok) {
                                 showShoppingcart();
@@ -164,7 +164,7 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
     const sendMessageOrderNotificationMessage = (orderId, orderCode) => {
         const message = `Uusi tilaus vastaanotettu!\n\nTilauksen ID: ${orderId}\n\nNimi: ${customerInfo.name}\n\nSähköposti: ${customerInfo.email}\n\nPuhelinnumero: ${customerInfo.phoneNumber}\n\nMaksutapa: ${customerInfo.paymentOption}${(customerInfo.paymentOption === "MobilePay" || customerInfo.paymentOption === "Tilisiirto") ? `\n\nMaksukoodi: ${orderCode}` : ""}\n\nToimitustapa: ${customerInfo.shippingOption} ${customerInfo.address ? `\n\nOsoite:\n${customerInfo.address}` : ""}`;
 
-        fetch(`${BASE_URL_CLOUD}/chat/sendautomatedmessage`, {
+        fetch(`${BASE_URL}/chat/sendautomatedmessage`, {
             method: "POST",
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -219,7 +219,7 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
 
         if (window.confirm("Lähetetäänkö ostoskori?")) {
             try {
-                const response = await fetch(`${BASE_URL_CLOUD}/shoppingcart/sendcart`, {
+                const response = await fetch(`${BASE_URL}/shoppingcart/sendcart`, {
                     method: "POST",
                     headers: { "Content-type": "application/json" },
                     body: JSON.stringify({
@@ -233,7 +233,7 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                     const data = await response.json();
 
                     if (data.success) {
-                        const deleteResponse = await fetch(`${BASE_URL_CLOUD}/shoppingcart/shoppingcartdeleteall/${loggedInUser.id}`, { method: "DELETE" });
+                        const deleteResponse = await fetch(`${BASE_URL}/shoppingcart/shoppingcartdeleteall/${loggedInUser.id}`, { method: "DELETE" });
 
                         if (deleteResponse.ok) {
                             showShoppingcart();

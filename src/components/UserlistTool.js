@@ -5,7 +5,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-material.css';
 import { useNavigate } from 'react-router-dom';
 
-import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
+import { BASE_URL } from './Apiconstants';
 
 function UserListTool() {
     const token = localStorage.getItem("jwtToken")
@@ -21,7 +21,7 @@ function UserListTool() {
     }, [navigate]);
     
     const getAllUsers = () => {
-        fetch(`${BASE_URL_CLOUD}/user/getallusers`)
+        fetch(`${BASE_URL}/user/getallusers`)
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -49,7 +49,7 @@ function UserListTool() {
 
     const allowOrdering = (data) => {
         const userId = data.id;
-        fetch(`${BASE_URL_CLOUD}/user/toggleorderingaccess`, {
+        fetch(`${BASE_URL}/user/toggleorderingaccess`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -76,7 +76,7 @@ function UserListTool() {
         const userId = data.id;
         
         if (window.confirm("Haluatko varmasti poistaa käyttäjän?")) {
-            fetch(`${BASE_URL_CLOUD}/user/deleteuseradmin`, {
+            fetch(`${BASE_URL}/user/deleteuseradmin`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

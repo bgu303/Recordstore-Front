@@ -11,7 +11,7 @@ import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import CircularProgress from '@mui/material/CircularProgress';
 import EditIcon from '@mui/icons-material/Edit';
 
-import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
+import { BASE_URL } from './Apiconstants';
 
 function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) {
     const [columnDefinitions, setColumnDefinitions] = useState([]);
@@ -27,7 +27,7 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
     const DISCOGS_API_KEY = process.env.REACT_APP_DISCOGS_API_KEY;
 
     const getRecords = () => {
-        fetch(`${BASE_URL_CLOUD}/records`)
+        fetch(`${BASE_URL}/records`)
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -68,7 +68,7 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
 
     const deleteRecord = (data) => {
         if (window.confirm("Oletko varma että haluat poistaa levyn?")) {
-            fetch(`${BASE_URL_CLOUD}/records/${data.id}`, {
+            fetch(`${BASE_URL}/records/${data.id}`, {
                 method: "DELETE",
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -106,7 +106,7 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
             sold: originalSoldStatus.sold
         };
 
-        fetch(`${BASE_URL_CLOUD}/records/editrecord`, {
+        fetch(`${BASE_URL}/records/editrecord`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -127,7 +127,7 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
     const addToCart = async (data) => {
         console.log(data)
         try {
-            const response = await fetch(`${BASE_URL_CLOUD}/shoppingcart/addtocart`, {
+            const response = await fetch(`${BASE_URL}/shoppingcart/addtocart`, {
                 method: "POST",
                 headers: { "Content-type": "application/json" },
                 body: JSON.stringify({
@@ -157,7 +157,7 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
         let recordId = data.id
 
         if (soldStatus === 0) {
-            fetch(`${BASE_URL_CLOUD}/records/updatesoldstatustosold/${recordId}`, {
+            fetch(`${BASE_URL}/records/updatesoldstatustosold/${recordId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
@@ -176,7 +176,7 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
         }
 
         if (soldStatus === 1) {
-            fetch(`${BASE_URL_CLOUD}/records/updatesoldstatustonotsold/${recordId}`, {
+            fetch(`${BASE_URL}/records/updatesoldstatustonotsold/${recordId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'

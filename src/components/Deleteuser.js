@@ -3,7 +3,7 @@ import { Button } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
+import { BASE_URL } from './Apiconstants';
 
 function DeleteUser() {
     const [user, setUser] = useState({
@@ -16,7 +16,7 @@ function DeleteUser() {
     const deleteUser = () => {
         const confirmation = window.confirm("Haluatko varmasti poistaa käyttäjäsi?");
         if (confirmation) {
-            fetch(`${BASE_URL_CLOUD}/user/deleteuser`, {
+            fetch(`${BASE_URL}/user/deleteuser`, {
                 method: "POST",
                 headers: { "Content-type": "application/json" },
                 body: JSON.stringify({

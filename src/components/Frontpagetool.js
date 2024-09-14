@@ -11,7 +11,7 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
 
-import { BASE_URL, BASE_URL_CLOUD } from "./Apiconstants";
+import { BASE_URL } from "./Apiconstants";
 
 function FrontPageTool() {
     const [notification, setNotification] = useState("");
@@ -33,7 +33,7 @@ function FrontPageTool() {
     }, [])
 
     const getNotifications = () => {
-        fetch(`${BASE_URL_CLOUD}/notifications/`)
+        fetch(`${BASE_URL}/notifications/`)
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -52,7 +52,7 @@ function FrontPageTool() {
         }
 
         try {
-            const response = await fetch(`${BASE_URL_CLOUD}/notifications/addnotification`, {
+            const response = await fetch(`${BASE_URL}/notifications/addnotification`, {
                 method: "POST",
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -76,7 +76,7 @@ function FrontPageTool() {
     const deleteNotification = (data) => {
         const notificationId = data.id;
 
-        fetch(`${BASE_URL_CLOUD}/notifications/notificationdelete/${notificationId}`, {
+        fetch(`${BASE_URL}/notifications/notificationdelete/${notificationId}`, {
             method: "DELETE",
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -93,7 +93,7 @@ function FrontPageTool() {
     }
 
     const getPlaylists = () => {
-        fetch(`${BASE_URL_CLOUD}/playlists/`)
+        fetch(`${BASE_URL}/playlists/`)
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -111,7 +111,7 @@ function FrontPageTool() {
             return alert("Täytä kaikki soittolistaa koskettavat kentät.")
         }
         try {
-            const response = await fetch(`${BASE_URL_CLOUD}/playlists/addplaylist`, {
+            const response = await fetch(`${BASE_URL}/playlists/addplaylist`, {
                 method: "POST",
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -141,7 +141,7 @@ function FrontPageTool() {
     const deletePlaylist = (data) => {
         const playlistId = data.id;
 
-        fetch(`${BASE_URL_CLOUD}/playlists/playlistdelete/${playlistId}`, {
+        fetch(`${BASE_URL}/playlists/playlistdelete/${playlistId}`, {
             method: "DELETE",
             headers: {
                 'Authorization': `Bearer ${token}`,

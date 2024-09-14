@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import '../styling/Ownorderlist.css'
 
-import { BASE_URL, BASE_URL_CLOUD } from "./Apiconstants";
+import { BASE_URL } from "./Apiconstants";
 
 function OwnOrders({ loggedInUser }) {
     const [orderData, setOrderData] = useState([]);
@@ -22,7 +22,7 @@ function OwnOrders({ loggedInUser }) {
     }, [loggedInUser]);
 
     const getOrders = () => {
-        fetch(`${BASE_URL_CLOUD}/orders/getorderdatabyid/${loggedInUser.id}`)
+        fetch(`${BASE_URL}/orders/getorderdatabyid/${loggedInUser.id}`)
             .then(response => {
                 if (response.ok) {
                     return response.json();
