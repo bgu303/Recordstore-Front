@@ -5,8 +5,9 @@ import SendIcon from '@mui/icons-material/Send';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { format } from 'date-fns';
 import socket from './socket';
-import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
 import { useNavigate } from "react-router-dom";
+
+import { BASE_URL, BASE_URL_CLOUD } from './Apiconstants';
 
 function GlobalChat({ loggedInUser }) {
     const [message, setMessage] = useState("");
@@ -109,10 +110,34 @@ function GlobalChat({ loggedInUser }) {
         });
     };
 
+    const deleteMessageUser = (messageId) => {
+        const userId = localStorage.getItem("loggedInUserId") || loggedInUser.id;
+
+        fetch(`${BASE_URL_CLOUD}/chat/deletefromglobalchat/${userId}/${messageId}`, {
+            method: "DELETE",
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Failed to delete message");
+                }
+                return response.json();
+            })
+            .then(() => {
+                socket.emit("messageDeletedGlobalChat", { messageId });
+                getAllGlobalMessages();
+            })
+            .catch(error => {
+                console.error("Error deleting message:", error);
+            });
+    };
+
     useEffect(() => {
         socket.on("messageDeleted", (data) => {
             const { messageId } = data;
-            console.log(`Message with ID ${messageId} was deleted`);
 
             // Update the state to remove the message from the UI
             setAllGlobalMessages(prevMessages => prevMessages.filter(msg => msg.id !== messageId));
@@ -188,6 +213,15 @@ function GlobalChat({ loggedInUser }) {
                                     <div className="message-time">
                                         {format(new Date(message.created_at), 'dd.MM.yyyy HH:mm')}
                                     </div>
+                                    {localStorage.getItem("loggedInUserId") == message.user_id && loggedInUser.role !== "ADMIN" && (
+                                        <IconButton
+                                            size="small"
+                                            color="error"
+                                            onClick={() => deleteMessageUser(message.id)}
+                                        >
+                                            <DeleteIcon fontSize="small" />
+                                        </IconButton>
+                                    )}
                                     {loggedInUser.role === "ADMIN" && (
                                         <IconButton
                                             size="small"
@@ -197,7 +231,6 @@ function GlobalChat({ loggedInUser }) {
                                             <DeleteIcon fontSize="small" />
                                         </IconButton>
                                     )}
-
                                 </div>
                             </div>
                         );
