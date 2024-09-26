@@ -19,6 +19,8 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
     const navigate = useNavigate();
     const [isAscending, setIsAscending] = useState(true);
     const [sortedUsers, setSortedUsers] = useState(allUsers);
+    const [lastMessageTime, setLastMessageTime] = useState(0);
+    const [cooldownPeriod, setCooldownPeriod] = useState(15000);
     const currentTime = new Date().toISOString(); // This will give the current time in ISO 8601 format
     const SYSTEM_USER_ID = 58; // This is the ID for System messages. CHANGE IF NEEDED
     const POPPI_MIKKO_ID = 57; // This is the ID for PoppiMikko, CHANGE IF POPPIMIKKO USERID CHANGES
@@ -69,10 +71,19 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
     };
 
     const sendMessage = () => {
-        if (message.trim() === "") {
+        const currentTime = Date.now();
+
+        if (currentTime - lastMessageTime < cooldownPeriod) {
+            const timeLeft = Math.ceil((cooldownPeriod - (currentTime - lastMessageTime)) / 1000);
+            return alert(`Voit lähettää uuden viestin ${timeLeft} sekunnin kuluttua.`);
+        }
+
+        let trimmedMessage = message.trim();
+
+        if (trimmedMessage === "") {
             return alert("Ei tyhjiä viestejä.");
         }
-        if (message.trim().length > 600) {
+        if (trimmedMessage.length > 600) {
             return alert("Ei yli 600 merkin viestejä.");
         }
 
@@ -85,11 +96,12 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
             body: JSON.stringify({
                 userId: loggedInUser.id,
                 conversationId: conversationId,
-                message: message
+                message: trimmedMessage
             })
         })
         setMessage("");
-        socket.emit("sendMessage", { message: message, sender_id: loggedInUser.id, conversationId: conversationId, created_at: currentTime });
+        setLastMessageTime(currentTime);
+        socket.emit("sendMessage", { message: trimmedMessage, sender_id: loggedInUser.id, conversationId: conversationId, created_at: currentTime });
     }
 
     const adminSendMessage = () => {
@@ -176,16 +188,16 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
     }
 
     const handleKeyPress = (e) => {
-        if (loggedInUser.role === "ADMIN") {
-            if (e.keyCode === 13) {
-                adminSendMessage();
-                return;
+        if (e.keyCode === 13) {
+            if (e.shiftKey) {
+                e.preventDefault(); // Prevents the default action of the Enter key
+                setMessage(message + '\n');
+            } else {
+                e.preventDefault();
+                sendMessage();
             }
         }
-        if (e.keyCode === 13) {
-            sendMessage();
-        }
-    }
+    };
 
     useEffect(() => {
         setNewMessageState(false)

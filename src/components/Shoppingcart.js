@@ -299,15 +299,15 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                     <h3 style={{ marginLeft: "20px" }}>
                         Tilauksen hinta: {cartTotal} €
 
-                        {shoppingcart.some(item => ["LP", '12"', "MLP", "MAGAZINE", "BOOK", "DVD"].includes(item.size)) ? (
+                        {shoppingcart.some(item => ["LP", '12"', "MLP"].includes(item.size)) ? (
                             <>
-                                <div>Postimaksu (jos ei nouto Vuosaaresta): 9€</div>
-                                <div>Loppusumma: {cartTotal + 9} €</div>
+                                <div>Postimaksu (jos ei nouto Vuosaaresta): 9,90€</div>
+                                <div>Loppusumma: {cartTotal + 9.90} €</div>
                             </>
                         ) : (
                             <>
-                                <div>Postimaksu (jos ei nouto Vuosaaresta): 5 €</div>
-                                <div>Yhteensä: {cartTotal + 5} €</div>
+                                <div>Postimaksu (jos ei nouto Vuosaaresta): 7,90€</div>
+                                <div>Yhteensä: {(cartTotal + 7.90).toFixed(2)} €</div>
                             </>
                         )}
                     </h3>

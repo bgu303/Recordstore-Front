@@ -48,8 +48,6 @@ function CreateUser() {
             return alert("Sähköpostit eivät täsmää.");
         }
 
-        // Uncomment these checks when testing phase is over.
-        /* 
         if (user.password.length < 9) {
             return alert("Salasanan tulee olla vähintään 9 merkkiä pitkä.");
         }
@@ -61,7 +59,6 @@ function CreateUser() {
         if (!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/.test(user.email)) {
             return alert("Syötä kelvollinen sähköpostiosoite.");
         }
-        */
 
         try {
             const response = await fetch(`${BASE_URL}/user/createuser`, {

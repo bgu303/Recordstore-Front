@@ -16,11 +16,6 @@ function FrontPage() {
     const [randomRecords, setRandomRecords] = useState([]);
     const [notifications, setNotifications] = useState([]);
     const [playlists, setPlaylists] = useState([])
-    const columnDefs = [
-        { headerName: "Artisti", field: "artist", width: 240, filter: false, suppressMovable: true, sortable: false },
-        { headerName: "Levyn nimi", field: "title", width: 240, filter: false, suppressMovable: true, sortable: false },
-        { headerName: "Hinta", field: "price", width: 100, cellStyle: { textAlign: "right" }, filter: false, suppressMovable: true, sortable: false }
-    ];
 
     const getRecords = () => {
         fetch(`${BASE_URL}/records`)
@@ -47,7 +42,7 @@ function FrontPage() {
                 if (response.ok) {
                     return response.json();
                 } else {
-                    console.log("Failed to fetch notifications.")
+                    console.log("Failed to fetch notifications.");
                 }
             })
             .then(responseData => {
@@ -111,7 +106,7 @@ function FrontPage() {
                     </div>
                 ));
         } else {
-            return <p>No playlists available for {source}</p>;
+            return <p>Ei soittolistoja</p>;
         }
     };
 
@@ -143,9 +138,9 @@ function FrontPage() {
                         <br /><br />
                         <b>Maksutavat</b><br />Sivusto ei tällä hetkellä tue suoraa maksujärjestelmää, joten maksamiseen on kolme vaihtoehtoa: MobilePay, tilisiirto tai käteinen noudon yhteydessä. Tilausta tehdessäsi pääset valitsemaan maksutavan.
                         <br /><br />
-                        <b>Postikulut</b><br />Lisätään, jos ei ole nouto Vuosaaresta. Jos tilauksessa on yksikin LP, MLP, 12", MAGAZINE, BOOK, DVD niin silloin kyseessä on paketti ja postikulut ovat <b>9 euroa.</b> Muissa tapauksissa postikulut ovat <b>5 euroa.</b> Huomioithan hinnanlisäyksen tilausta tehdessäsi.
+                        <b>Postikulut</b><br />Lisätään, jos ei ole nouto Vuosaaresta. Jos tilauksessa on yksikin LP, MLP, 12" niin silloin kyseessä on paketti ja postikulut ovat <b>9,90 euroa.</b> Muissa tapauksissa postikulut ovat <b>7,90 euroa.</b> Erikoistapauksissa (Esim 1 CD) postikulut pienemmät. Erikoistapauksista ilmoitetaan Chatin kautta. Huomioithan hinnanlisäyksen tilausta tehdessäsi.
                         <br /><br />
-                        <b>Chatti</b><br />Tarkoitettu tilauksen tekemisen jälkeen asioiden sopimiseen, esimerkiksi sopiminen noudosta. Chatti on tarkoitettu vain tilausten hoitoon, joten jätetään muut keskustelut toiselle somealustalle. Jos chatin kanssa ongelmia, koita <b>päivittää sivu (F5).</b>
+                        <b>Chatti</b><br />Tarkoitettu tilauksen tekemisen jälkeen asioiden sopimiseen, esimerkiksi sopiminen noudosta. Chatti on tarkoitettu vain tilausten hoitoon, joten jätetään muut keskustelut yleiseen chattiin tai toiselle somealustalle. Jos chatin kanssa ongelmia, koita <b>päivittää sivu (F5).</b>
                         <br /><br />
                         <b>Ilmoitustaulu</b><br />Ilmoitustaulu sijaitsee oikeassa reunassa ja sinne tulee tietoa, jos olen lisännyt levyjä tai milloin olen "lomalla" eli kauppa on kiinni. Tai ihan mitä tahansa, mitä mieleen tulee.
                         <br /><br />
@@ -207,7 +202,6 @@ function FrontPage() {
                             <b className="formatLabel">Sekalaiset</b> – mitä tahansa muuta, mitä ei mainittu yllä.
                         </span>
                     </p>
-
                     <h2 className="homePageTitles">Koko eli Size</h2>
                     <p className="genreNSizeFormatter">
                         <span className="formatItem">
@@ -246,7 +240,21 @@ function FrontPage() {
                                     </li>
                                 ))
                             ) : (
-                                <li>No notifications available</li>
+                                <li style={{
+                                    color: "white",
+                                    fontSize: 24,
+                                    height: 400,
+                                    backgroundColor: "#cc0000",
+                                    textAlign: "center",
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center"
+                                }}>
+                                    PoppiMikko huoltokatkolla.
+                                    <br/>
+                                    Sivusto palaa käyttöön mahdollisimman pian.
+                                </li>
+
                             )}
                         </ul>
                     </div>
