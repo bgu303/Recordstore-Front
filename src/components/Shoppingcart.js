@@ -302,7 +302,7 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                         {shoppingcart.some(item => ["LP", '12"', "MLP"].includes(item.size)) ? (
                             <>
                                 <div>Postimaksu (jos ei nouto Vuosaaresta): 9,90€</div>
-                                <div>Loppusumma: {cartTotal + 9.90} €</div>
+                                <div>Yhteensä: {(cartTotal + 9.90).toFixed(2)} €</div>
                             </>
                         ) : (
                             <>
