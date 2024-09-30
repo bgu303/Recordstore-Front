@@ -105,10 +105,9 @@ function OwnOrders({ loggedInUser }) {
                                 Hinta yhteensä: {getTotalPrice(order)}€
                                 {order[0].customer_shippingoption === "Posti" && (
                                     <>
-                                        <b> + {order.some(item => ["LP", '12"', "MLP"].includes(item.size)) ? "9,90€" : "7,90€"} postitusmaksu</b>
+                                        <b> + 7,90€ postitusmaksu</b>
                                         <br />
-                                        Kokonaishinta: <b>{(getTotalPrice(order) + (order.some(item => ["LP", '12"', "MLP"].includes(item.size)) ? 9.90 : 7.90)).toFixed(2)}€</b>
-
+                                        Kokonaishinta: <b>{(getTotalPrice(order) + 7.90).toFixed(2)}€</b>
                                     </>
                                 )}
                             </p>

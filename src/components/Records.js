@@ -230,6 +230,7 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
                     ),
                 },
                 {
+                    headerName: "Kuva",
                     cellRenderer: params => (
                         <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%" }}>
                             <InsertPhotoIcon
@@ -372,7 +373,11 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
                     columnDefs={simplifiedColumnDefinitions}
                     localeText={finnishTranslations}
                     getRowHeight={() => 40}
-                    gridOptions={gridOptions}
+                    gridOptions={{
+                        ...gridOptions,
+                        pagination: true,
+                        paginationPageSize: 1000
+                    }}
                 />
             </div>
             {showPicture && (

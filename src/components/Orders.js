@@ -160,13 +160,14 @@ function Orders({ getAllOrders }) {
         const totalPrice = orderItem.reduce((total, item) => total + item.price, 0);
 
         let postageFee = 0;
+
         if (orderItem[0].customer_shippingoption === "Posti") {
-            postageFee = orderItem.some(item => ["LP", '12"', "MLP"].includes(item.size)) ? 9.90 : 7.90;
+            postageFee = 7.90;
             textContent += `Hinta yhteensä: ${totalPrice}€ + ${postageFee}€ postitusmaksu\n`;
         } else {
             textContent += `Hinta yhteensä: ${totalPrice}€\n`;
         }
-
+        
         const finalPrice = totalPrice + postageFee;
         textContent += `Kokonaishinta: ${finalPrice}€\n`;
 
@@ -240,10 +241,10 @@ function Orders({ getAllOrders }) {
                             Hinta yhteensä: {getTotalPrice(order)}€
                             {order[0].customer_shippingoption === "Posti" && (
                                 <>
-                                    <b> + {order.some(item => ["LP", '12"', "MLP"].includes(item.size)) ? "9,90€" : "7,90€"} postitusmaksu</b>
+                                    <b> + 7,90€ postitusmaksu</b>
                                     <br />
                                     <p>Kokonaishinta:
-                                        <b> {(getTotalPrice(order) + (order.some(item => ["LP", '12"', "MLP"].includes(item.size)) ? 9.90 : 7.90)).toFixed(2)}€</b>
+                                        <b> {(getTotalPrice(order) + 7.90).toFixed(2)}€</b>
                                     </p>
                                 </>
                             )}

@@ -15,7 +15,8 @@ function FrontPage() {
     const [records, setRecords] = useState([]);
     const [randomRecords, setRandomRecords] = useState([]);
     const [notifications, setNotifications] = useState([]);
-    const [playlists, setPlaylists] = useState([])
+    const [playlists, setPlaylists] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     const getRecords = () => {
         fetch(`${BASE_URL}/records`)
@@ -36,6 +37,7 @@ function FrontPage() {
             });
     }
 
+
     const showNotifications = () => {
         fetch(`${BASE_URL}/notifications/`)
             .then(response => {
@@ -46,9 +48,16 @@ function FrontPage() {
                 }
             })
             .then(responseData => {
-                setNotifications(responseData)
+                setNotifications(responseData);
             })
-    }
+            .catch(error => {
+                console.log("Error fetching notifications: ", error);
+            })
+            .finally(() => {
+                setIsLoading(false); // Stop loading after fetching data
+            });
+    };
+
 
     const showPlaylists = () => {
         fetch(`${BASE_URL}/playlists/`)
@@ -138,7 +147,7 @@ function FrontPage() {
                         <br /><br />
                         <b>Maksutavat</b><br />Sivusto ei tällä hetkellä tue suoraa maksujärjestelmää, joten maksamiseen on kolme vaihtoehtoa: MobilePay, tilisiirto tai käteinen noudon yhteydessä. Tilausta tehdessäsi pääset valitsemaan maksutavan.
                         <br /><br />
-                        <b>Postikulut</b><br />Lisätään, jos ei ole nouto Vuosaaresta. Jos tilauksessa on yksikin LP, MLP, 12" niin silloin kyseessä on paketti ja postikulut ovat <b>9,90 euroa.</b> Muissa tapauksissa postikulut ovat <b>7,90 euroa.</b> Erikoistapauksissa (Esim 1 CD) postikulut pienemmät. Erikoistapauksista ilmoitetaan Chatin kautta. Huomioithan hinnanlisäyksen tilausta tehdessäsi.
+                        <b>Postikulut</b><br />Lisätään, jos ei ole nouto Vuosaaresta. Postikulut ovat <b>7,90 euroa.</b> Erikoistapauksissa (Esim 1 CD) postikulut pienemmät. Erikoistapauksista ilmoitetaan Chatin kautta. Huomioithan hinnanlisäyksen tilausta tehdessäsi.
                         <br /><br />
                         <b>Chatti</b><br />Tarkoitettu tilauksen tekemisen jälkeen asioiden sopimiseen, esimerkiksi sopiminen noudosta. Chatti on tarkoitettu vain tilausten hoitoon, joten jätetään muut keskustelut yleiseen chattiin tai toiselle somealustalle. Jos chatin kanssa ongelmia, koita <b>päivittää sivu (F5).</b>
                         <br /><br />
@@ -232,29 +241,42 @@ function FrontPage() {
                     <div className="section">
                         <h2 className="homePageTitles">Ilmoitustaulu</h2>
                         <ul className="ulFrontPage">
-                            {notifications && notifications.length > 0 ? (
-                                notifications.slice().reverse().map((notif, index) => (
-                                    <li key={index}>
-                                        <p>{notif.notification_text}</p>
-                                        <span className="notification-time">Julkaistu: {new Date(notif.created_at).toLocaleString()}</span>
-                                    </li>
-                                ))
-                            ) : (
+                            {isLoading ? (
                                 <li style={{
-                                    color: "white",
                                     fontSize: 24,
                                     height: 400,
-                                    backgroundColor: "#cc0000",
+                                    backgroundColor: "#e9f0f7",
                                     textAlign: "center",
                                     display: "flex",
                                     justifyContent: "center",
                                     alignItems: "center"
                                 }}>
-                                    PoppiMikko huoltokatkolla.
-                                    <br/>
-                                    Sivusto palaa käyttöön mahdollisimman pian.
+                                    Ladataan ilmoituksia...
                                 </li>
-
+                            ) : (
+                                notifications && notifications.length > 0 ? (
+                                    notifications.slice().reverse().map((notif, index) => (
+                                        <li key={index}>
+                                            <p>{notif.notification_text}</p>
+                                            <span className="notification-time">Julkaistu: {new Date(notif.created_at).toLocaleString()}</span>
+                                        </li>
+                                    ))
+                                ) : (
+                                    <li style={{
+                                        color: "white",
+                                        fontSize: 24,
+                                        height: 400,
+                                        backgroundColor: "#cc0000",
+                                        textAlign: "center",
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center"
+                                    }}>
+                                        PoppiMikko huoltokatkolla.
+                                        <br />
+                                        Sivusto palaa käyttöön mahdollisimman pian.
+                                    </li>
+                                )
                             )}
                         </ul>
                     </div>

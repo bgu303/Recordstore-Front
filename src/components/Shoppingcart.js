@@ -298,19 +298,10 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                     </div>
                     <h3 style={{ marginLeft: "20px" }}>
                         Tilauksen hinta: {cartTotal} €
-
-                        {shoppingcart.some(item => ["LP", '12"', "MLP"].includes(item.size)) ? (
-                            <>
-                                <div>Postimaksu (jos ei nouto Vuosaaresta): 9,90€</div>
-                                <div>Yhteensä: {(cartTotal + 9.90).toFixed(2)} €</div>
-                            </>
-                        ) : (
-                            <>
-                                <div>Postimaksu (jos ei nouto Vuosaaresta): 7,90€</div>
-                                <div>Yhteensä: {(cartTotal + 7.90).toFixed(2)} €</div>
-                            </>
-                        )}
+                        <div>Postimaksu (jos ei nouto Vuosaaresta): 7,90€</div>
+                        <div>Yhteensä: {(cartTotal + 7.90).toFixed(2)} €</div>
                     </h3>
+
                     <div className="orderInfoDiv">
                         <h3>Tilaajan Tiedot</h3>
                         <TextField label="Koko nimi*"
