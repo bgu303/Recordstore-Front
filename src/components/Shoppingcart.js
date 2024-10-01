@@ -298,8 +298,8 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                     </div>
                     <h3 style={{ marginLeft: "20px" }}>
                         Tilauksen hinta: {cartTotal} €
-                        <div>Postimaksu (jos ei nouto Vuosaaresta): 7,90€</div>
-                        <div>Yhteensä: {(cartTotal + 7.90).toFixed(2)} €</div>
+                        <div>Postimaksu (jos ei nouto Vuosaaresta): 6,90€</div>
+                        <div>Yhteensä: {(cartTotal + 6.90).toFixed(2)} €</div>
                     </h3>
 
                     <div className="orderInfoDiv">
