@@ -36,9 +36,8 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
                 }
             })
             .then(responseData => {
-                // Filter out sold records if the user is not an admin.
                 if (localStorage.getItem("loggedInUserRole") !== "ADMIN") {
-                    responseData = responseData.filter(record => record.sold === 0);
+                    responseData = responseData.filter(record => record.sold === 0 && record.is_inshoppingcart === 0);
                 }
                 setRecords(responseData);
             })
@@ -47,7 +46,7 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
                 setRecords([]);
             });
     }
-
+    
     const handleDiscogsLink = (data) => {
         const discogsSubStr = data.substring(1);
         fetch(`https://api.discogs.com/releases/${discogsSubStr}`)
@@ -144,6 +143,7 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
             } else {
                 showShoppingcart();
                 alert(`Ostoskoriin lisääminen onnistui!\nArtisti: ${data.artist}\nLevyn nimi: ${data.title}\nKoko: ${data.size}\nKannen kunto: ${data.kan}\nLevyn kunto: ${data.lev}\nHinta: ${data.price}`);
+                getRecords();
                 return;
             }
         } catch (error) {
@@ -365,8 +365,10 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
 
     return (
         <>
-            <h1 style={{ textAlign: "center" }}>PoppiMikon levylista</h1>
-            <div className="ag-theme-material trainings" style={{ height: "80vh", width: "95%", margin: "auto", fontSize: 11, fontWeight: "bold" }}>
+            <h2 style={{ textAlign: "center" }}>PoppiMikon levylista</h2>
+            <h5 style={{ textAlign: "center" }}>Jokaisen sarakkeen voi järjestää aakkosjärjestykseen klikkaamalla sarakkeen otsikkoa.</h5>
+            <h5 style={{ textAlign: "center" }}>Levylistasta voi hakea yhdellä tai useammalla sarakkeella klikkaamalla sarakeotsikon haku-menua.</h5>
+            <div className="ag-theme-material trainings" style={{ height: "75vh", width: "95%", margin: "auto", fontSize: 11, fontWeight: "bold" }}>
                 <AgGridReact
                     reactiveCustomComponents
                     rowData={records}

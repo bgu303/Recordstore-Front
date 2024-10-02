@@ -23,9 +23,7 @@ function SearchRecords({ setSearchOpen, searchResults, setSearchResults }) {
                 }
             })
             .then(responseData => {
-                console.log("Search results:", responseData);
-                
-                responseData = responseData.filter(record => record.sold === 0);
+                responseData = responseData.filter(record => record.sold === 0 && record.is_inshoppingcart === 0);
                 setSearchResults(responseData);
                 navigate("/search")
             })

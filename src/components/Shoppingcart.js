@@ -118,48 +118,6 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
         }
     }
 
-    const sendOrder2 = () => {
-        if (window.confirm("Lähetetäänkö ostoskori?")) {
-            if (customerInfo.name.trim() === "" || customerInfo.phoneNumber.trim() === "" || customerInfo.email.trim() === "") {
-                return alert("Täytä kaikki tilaukseen liittyvät kentät.");
-            }
-            if (customerInfo.address.trim() === "" && customerInfo.shippingOption === "Posti") {
-                return alert("Täytä kaikki tilaukseen liittyvät kentät.")
-            }
-            if (shoppingcart.length === 0) {
-                return alert("Ostoskori on tyhjä. Lisää tuotteita ennen tilauksen lähettämistä.");
-            }
-            try {
-                const response = fetch(`${BASE_URL}/shoppingcart/sendcart2`, {
-                    method: "POST",
-                    headers: { "Content-type": "application/json" },
-                    body: JSON.stringify({
-                        shoppingcart,
-                        customerInfo
-                    })
-                });
-
-                if (!response.ok) {
-                    return alert("Jokin meni vikaan");
-                } else {
-                    fetch(`${BASE_URL}/shoppingcart/shoppingcartdeleteall/${loggedInUser.id}`, { method: "DELETE" })
-                        .then(response => {
-                            if (response.ok) {
-                                showShoppingcart();
-                            } else {
-                                alert("Jotain meni vikaan.");
-                                console.log(response);
-                            }
-                        });
-                    navigate("/ordersummary");
-                }
-            } catch (error) {
-                console.log(`Error in sending order: ${error}`);
-            }
-        } else {
-            alert("Ostoskoria ei lähetetty.");
-        }
-    };
 
     const sendMessageOrderNotificationMessage = (orderId, orderCode) => {
         const message = `Uusi tilaus vastaanotettu!\n\nTilauksen ID: ${orderId}\n\nNimi: ${customerInfo.name}\n\nSähköposti: ${customerInfo.email}\n\nPuhelinnumero: ${customerInfo.phoneNumber}\n\nMaksutapa: ${customerInfo.paymentOption}${(customerInfo.paymentOption === "MobilePay" || customerInfo.paymentOption === "Tilisiirto") ? `\n\nMaksukoodi: ${orderCode}` : ""}\n\nToimitustapa: ${customerInfo.shippingOption} ${customerInfo.address ? `\n\nOsoite:\n${customerInfo.address}` : ""}`;
@@ -298,8 +256,8 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                     </div>
                     <h3 style={{ marginLeft: "20px" }}>
                         Tilauksen hinta: {cartTotal} €
-                        <div>Postimaksu (jos ei nouto Vuosaaresta): 6,90€</div>
-                        <div>Yhteensä: {(cartTotal + 6.90).toFixed(2)} €</div>
+                        <div>Postimaksu (jos ei nouto Vuosaaresta): 7,50€</div>
+                        <div>Yhteensä: {(cartTotal + 7.50).toFixed(2)} €</div>
                     </h3>
 
                     <div className="orderInfoDiv">

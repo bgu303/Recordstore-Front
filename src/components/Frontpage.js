@@ -147,7 +147,7 @@ function FrontPage() {
                         <br /><br />
                         <b>Maksutavat</b><br />Sivusto ei tällä hetkellä tue suoraa maksujärjestelmää, joten maksamiseen on kolme vaihtoehtoa: MobilePay, tilisiirto tai käteinen noudon yhteydessä. Tilausta tehdessäsi pääset valitsemaan maksutavan.
                         <br /><br />
-                        <b>Postikulut</b><br />Lisätään, jos ei ole nouto Vuosaaresta. Postikulut ovat <b>6,90 euroa</b> ja postitetaan Matkahuollon kautta. Erikoistapauksissa (Esim 1 CD) postikulut pienemmät. Erikoistapauksista ilmoitetaan Chatin kautta. Huomioithan hinnanlisäyksen tilausta tehdessäsi.
+                        <b>Postikulut</b><br />Lisätään, jos ei ole nouto Vuosaaresta. Postikulut ovat <b>7,50 euroa</b> ja postitetaan Matkahuollon kautta. Erikoistapauksissa (Esim 1 CD) postikulut pienemmät. Erikoistapauksista ilmoitetaan Chatin kautta. Huomioithan hinnanlisäyksen tilausta tehdessäsi.
                         <br /><br />
                         <b>Chatti</b><br />Tarkoitettu tilauksen tekemisen jälkeen asioiden sopimiseen, esimerkiksi sopiminen noudosta. Chatti on tarkoitettu vain tilausten hoitoon, joten jätetään muut keskustelut yleiseen chattiin tai toiselle somealustalle. Jos chatin kanssa ongelmia, koita <b>päivittää sivu (F5).</b>
                         <br /><br />
