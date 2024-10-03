@@ -35,7 +35,6 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
         if (loggedInUser.role === "USER") {
             return;
         }
-
         fetch(`${BASE_URL}/chat/getconversationid/${selectedUser}`)
             .then(response => {
                 if (response.ok) {
@@ -159,6 +158,9 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
 
     //This fetches the conversation messages and is called every time conversation id changes, so in theory it should automatically open the chat.
     useEffect(() => {
+        if (loggedInUser.role === "ADMIN") {
+            return setConversationMessages([]);
+        }
         fetchConversationMessages();
     }, [conversationId])
 
