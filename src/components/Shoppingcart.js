@@ -314,9 +314,9 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                                     onChange={handleShippingOption}
                                 >
                                     <FormControlLabel
-                                        value="Posti"
+                                        value="Matkahuolto"
                                         control={<Radio />}
-                                        label="Posti"
+                                        label="Matkahuolto"
                                     />
                                     <FormControlLabel
                                         value="Nouto Vuosaaresta"
@@ -326,7 +326,7 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                                 </RadioGroup>
                             </FormControl>
                         </div>
-                        {customerInfo.shippingOption === "Posti" && (
+                        {customerInfo.shippingOption === "Matkahuolto" && (
                             <TextField label="Postitusosoite"
                                 onChange={e => setCustomerInfo({ ...customerInfo, address: e.target.value })}
                                 value={customerInfo.address}
