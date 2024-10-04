@@ -196,7 +196,11 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
                 setMessage(message + '\n');
             } else {
                 e.preventDefault();
-                sendMessage();
+                if (localStorage.getItem("loggedInUserRole") === "ADMIN") {
+                    adminSendMessage();
+                } else {
+                    sendMessage();
+                }
             }
         }
     };
