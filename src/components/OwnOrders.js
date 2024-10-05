@@ -103,7 +103,7 @@ function OwnOrders({ loggedInUser }) {
                             </ul>
                             <p>
                                 Hinta yhteensä: {getTotalPrice(order)}€
-                                {order[0].customer_shippingoption === "Posti" && (
+                                {order[0].customer_shippingoption === "Matkahuolto" && (
                                     <>
                                         <b> + 7,50€ postitusmaksu</b>
                                         <br />

@@ -161,7 +161,7 @@ function Orders({ getAllOrders }) {
 
         let postageFee = 0;
 
-        if (orderItem[0].customer_shippingoption === "Posti") {
+        if (orderItem[0].customer_shippingoption === "Matkahuolto") {
             postageFee = 7.50;
             textContent += `Hinta yhteensä: ${totalPrice}€ + ${postageFee}€ postitusmaksu\n`;
         } else {
@@ -239,7 +239,7 @@ function Orders({ getAllOrders }) {
                         </ul>
                         <p>
                             Hinta yhteensä: {getTotalPrice(order)}€
-                            {order[0].customer_shippingoption === "Posti" && (
+                            {order[0].customer_shippingoption === "Matkahuolto" && (
                                 <>
                                     <b> + 7,50€ postitusmaksu</b>
                                     <br />

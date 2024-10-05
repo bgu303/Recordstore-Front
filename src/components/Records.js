@@ -141,9 +141,8 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
                 }
                 return alert("Jokin meni vikaan lisätessä koriin");
             } else {
-                showShoppingcart();
                 alert(`Ostoskoriin lisääminen onnistui!\nArtisti: ${data.artist}\nLevyn nimi: ${data.title}\nKoko: ${data.size}\nKannen kunto: ${data.kan}\nLevyn kunto: ${data.lev}\nHinta: ${data.price}`);
-                getRecords();
+                showShoppingcart();
                 return;
             }
         } catch (error) {
