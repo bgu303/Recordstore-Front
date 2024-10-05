@@ -366,9 +366,9 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
     return (
         <>
             <h2 style={{ textAlign: "center" }}>PoppiMikon levylista</h2>
-            <h5 style={{ textAlign: "center" }}>Jokaisen sarakkeen voi järjestää aakkosjärjestykseen klikkaamalla sarakkeen otsikkoa.</h5>
+            <h5 style={{ textAlign: "center" }}>Jokaisen sarakkeen voi järjestää aakkosjärjestykseen klikkaamalla sarakkeen otsikkoa.<br/>Sarakkeiden kokoa voi muuttaa tarttumalla hiirellä otsikko sarakkeen reunasta.</h5>
             <h5 style={{ textAlign: "center" }}>Levylistasta voi hakea yhdellä tai useammalla sarakkeella klikkaamalla sarakeotsikon haku-menua.</h5>
-            <div className="ag-theme-material trainings" style={{ height: "75vh", width: "95%", margin: "auto", fontSize: 11, fontWeight: "bold" }}>
+            <div className="ag-theme-material trainings" style={{ height: "73vh", width: "95%", margin: "auto", fontSize: 11, fontWeight: "bold" }}>
                 <AgGridReact
                     reactiveCustomComponents
                     rowData={records}
