@@ -115,7 +115,7 @@ function OwnOrders({ loggedInUser }) {
                                 <p>Maksa tilisiirto tilisoitteeseen DANSKE BANK: FI37 8000 2203 1664 33. Lisää maksun yhteydessä kommenttikenttään tilauksen koodi: <b>{order[0].order_code}</b></p>
                             )}
                             {order[0].customer_paymentoption === "MobilePay" && (
-                                <p>Maksa MobilePay puhelinnumeroon 050 5736932. Lisää maksun yhteydessä kommenttikenttään koodi: <b style={{ color: "#2155ff" }}>{order[0].order_code}</b></p>
+                                <p>Maksa MobilePay puhelinnumeroon 050 5736934. Lisää maksun yhteydessä kommenttikenttään koodi: <b style={{ color: "#2155ff" }}>{order[0].order_code}</b></p>
                             )}
                             <hr className="separator" />
                             <h4>

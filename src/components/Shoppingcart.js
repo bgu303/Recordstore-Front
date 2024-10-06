@@ -118,7 +118,6 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
         }
     }
 
-
     const sendMessageOrderNotificationMessage = (orderId, orderCode) => {
         const message = `Uusi tilaus vastaanotettu!\n\nTilauksen ID: ${orderId}\n\nNimi: ${customerInfo.name}\n\nSähköposti: ${customerInfo.email}\n\nPuhelinnumero: ${customerInfo.phoneNumber}\n\nMaksutapa: ${customerInfo.paymentOption}${(customerInfo.paymentOption === "MobilePay" || customerInfo.paymentOption === "Tilisiirto") ? `\n\nMaksukoodi: ${orderCode}` : ""}\n\nToimitustapa: ${customerInfo.shippingOption} ${customerInfo.address ? `\n\nOsoite:\n${customerInfo.address}` : ""}`;
 
