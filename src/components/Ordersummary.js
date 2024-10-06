@@ -32,8 +32,8 @@ function Ordersummary({ loggedInUser, customerInfo, cartTotal }) {
                 <p>Tilauksen maksutapa: <b>{customerInfo.paymentOption}</b></p>
                 <p>Tilauksen hinta yhteensä: <b>{cartTotal} euroa + mahdolliset toimituskustannukset.</b></p>
                 <p>Kiitos tilauksestasi. Sinuun ollaan henkilökohtaisesti Chatin kautta yhteydessä.</p>
-                <p>Pääset näkemään omat tilauksesi <span style={{ color: "green", cursor: "pointer", fontWeight: "bold" }} onClick={() => returnFrontpage()}>TÄSTÄ</span></p>
-                <p>Tilauksestasi lähtee myös tieto Chattiin kaupankäynnin helpottamiseksi. Chattiin pääset <span style={{ color: "green", cursor: "pointer", fontWeight: "bold" }} onClick={() => returnToChat()}>TÄSTÄ</span></p>
+                <p>Kaikki tilaukseen liittyvät tiedot löytyvät <span style={{ color: "green", cursor: "pointer", fontWeight: "bold" }} onClick={() => returnFrontpage()}>TÄSTÄ.</span> (Puhelinnumero/Tilinumero + muut tilaustiedot)</p>
+                <p>Tilauksestasi lähtee myös tieto Chattiin kaupankäynnin helpottamiseksi. Chattiin pääset <span style={{ color: "green", cursor: "pointer", fontWeight: "bold" }} onClick={() => returnToChat()}>TÄSTÄ.</span></p>
             </div>
         </>
     )
