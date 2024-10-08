@@ -227,6 +227,7 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
                 .then(responseData => {
                     if (isMounted) {
                         console.log(responseData);
+                        console.log("moi");
                         setNewMessageState(false);
                     }
                 })

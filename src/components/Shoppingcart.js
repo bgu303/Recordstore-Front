@@ -152,8 +152,8 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
         if (customerInfo.email.length > 50) {
             return alert("Sähköpostiosoite ei voi olla yli 50 merkkiä pitkä.");
         }
-        if (customerInfo.address.length > 100) {
-            return alert("Osoite ei voi olla yli 100 merkkiä pitkä.");
+        if (customerInfo.address.length > 200) {
+            return alert("Osoite ei voi olla yli 200 merkkiä pitkä.");
         }
         if (!/^\d+$/.test(customerInfo.phoneNumber)) {
             return alert("Puhelinnumeron tulee sisältää vain numeroita.");
