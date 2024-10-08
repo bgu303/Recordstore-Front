@@ -326,7 +326,7 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                             </FormControl>
                         </div>
                         {customerInfo.shippingOption === "Matkahuolto" && (
-                            <TextField label="Postitusosoite"
+                            <TextField label="Postitusosoite/Lähin Matkahuollon toimipiste."
                                 onChange={e => setCustomerInfo({ ...customerInfo, address: e.target.value })}
                                 value={customerInfo.address}
                                 multiline
