@@ -326,13 +326,16 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                             </FormControl>
                         </div>
                         {customerInfo.shippingOption === "Matkahuolto" && (
-                            <TextField label="Postitusosoite/Lähin Matkahuollon toimipiste."
+                            <>
+                            <div>Kätevin Matkahuollon pakettipiste/-automaatti</div>
+                            <TextField label="Matkahuollon toimipiste"
                                 onChange={e => setCustomerInfo({ ...customerInfo, address: e.target.value })}
                                 value={customerInfo.address}
                                 multiline
                                 rows={4}
                                 style={{ backgroundColor: "white", borderRadius: 10 }}
                             />
+                            </>
                         )}
                         <div style={{ textAlign: "center", marginBottom: "15px" }}>
                             <Button size="large" color="success" variant="contained" onClick={() => sendOrder()}>Lähetä</Button>
