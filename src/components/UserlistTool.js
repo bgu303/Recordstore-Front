@@ -19,7 +19,7 @@ function UserListTool() {
             navigate("/records");
         }
     }, [navigate]);
-    
+
     const getAllUsers = () => {
         fetch(`${BASE_URL}/user/getallusers`)
             .then(response => {
@@ -74,7 +74,7 @@ function UserListTool() {
 
     const deleteUser = (data) => {
         const userId = data.id;
-        
+
         if (window.confirm("Haluatko varmasti poistaa käyttäjän?")) {
             fetch(`${BASE_URL}/user/deleteuseradmin`, {
                 method: 'DELETE',
@@ -84,40 +84,47 @@ function UserListTool() {
                 },
                 body: JSON.stringify({ userId: userId })
             })
-            .then(response => {
-                if (response.ok) {
-                    // Refresh user list after successful deletion
-                    getAllUsers();
-                } else {
-                    return response.json().then(errorData => {
-                        alert("Jokin meni pieleen.");
-                    });
-                }
-            })
-            .catch(error => {
-                alert("Käyttäjää poistaessa tapahtui virhe.");
-            });
+                .then(response => {
+                    if (response.ok) {
+                        // Refresh user list after successful deletion
+                        getAllUsers();
+                    } else {
+                        return response.json().then(errorData => {
+                            alert("Jokin meni pieleen.");
+                        });
+                    }
+                })
+                .catch(error => {
+                    alert("Käyttäjää poistaessa tapahtui virhe.");
+                });
         } else {
             console.log("Jokin meni pieleen.");
         }
     };
-    
+
     const columnDefs = [
         { headerName: "Nimi", field: "user_name", sortable: true, filter: true, cellStyle: { textAlign: "center" } },
         { headerName: "Nimimerkki", field: "user_nickname", sortable: true, filter: true, cellStyle: { textAlign: "center" } },
         { headerName: "Sähköposti", field: "email", sortable: true, filter: true, cellStyle: { textAlign: "center" } },
         {
-            headerName: "Onko tilaaminen sallittu",
-            field: "can_order",
+            headerName: "Luontipäivä",
+            field: "created_at",
+            sortable: true,
+            filter: true,
             cellStyle: { textAlign: "center" },
-            cellRenderer: params => {
-                return params.value === 0 ? "Tilaaminen ei sallittua" : "Tilaaminen sallittu";
+            valueFormatter: (params) => {
+                if (params.value) {
+                    const date = new Date(params.value);
+                    const day = String(date.getDate()).padStart(2, '0');
+                    const month = String(date.getMonth() + 1).padStart(2, '0');
+                    const year = date.getFullYear();
+                    const hours = String(date.getHours()).padStart(2, '0');
+                    const minutes = String(date.getMinutes()).padStart(2, '0');
+                    const seconds = String(date.getSeconds()).padStart(2, '0');
+                    return `${day}.${month}.${year} ${hours}:${minutes}:${seconds}`;
+                }
+                return "";
             }
-        },
-        {
-            cellRenderer: params => <Button size="small" variant="contained" color="success" onClick={() => allowOrdering(params.data)}>Muuta sallimista</Button>,
-            suppressMovable: true,
-            cellStyle: { textAlign: "center" },
         },
         {
             cellRenderer: params => <Button size="small" variant="contained" color="error" onClick={() => deleteUser(params.data)}>Poista käyttäjä</Button>,
