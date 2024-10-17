@@ -10,6 +10,7 @@ function Orders({ getAllOrders }) {
     const token = localStorage.getItem('jwtToken');
     const navigate = useNavigate();
     const [orderStatus, setOrderStatus] = useState("");
+    const [filter, setFilter] = useState("Käsittelyssä");
 
     const getOrders = () => {
         fetch(`${BASE_URL}/orders/getorderdata`, {
@@ -167,7 +168,7 @@ function Orders({ getAllOrders }) {
         } else {
             textContent += `Hinta yhteensä: ${totalPrice}€\n`;
         }
-        
+
         const finalPrice = totalPrice + postageFee;
         textContent += `Kokonaishinta: ${finalPrice}€\n`;
 
@@ -200,11 +201,32 @@ function Orders({ getAllOrders }) {
         }
     }
 
+    // Function to handle the filter change
+    const handleFilterChange = (e) => {
+        setFilter(e.target.value);
+    };
+
+    // Function to filter orders based on status
+    const filteredOrders = () => {
+        return Object.entries(orderData).filter(([orderId, order]) => {
+            if (filter === "Kaikki") return true;  // Show all orders if filter is "Kaikki"
+            // Show only "Vastaanotettu" or "Käsittelyssä" if filter is "Käsittelyssä"
+            return order[0].order_status === "Vastaanotettu" || order[0].order_status === "Käsittelyssä";
+        });
+    };
+
     return (
         <>
             <div className="mainDivAllOrders">
                 <h1>Tilaukset</h1>
-                {Object.entries(orderData).reverse().map(([orderId, order]) => (
+                <div style={{ marginBottom: '20px' }}>
+                    <label htmlFor="statusFilter">Näytä tilaukset:</label>
+                    <select id="statusFilter" style={{ marginLeft: "10px", fontSize: "16px" }}value={filter} onChange={handleFilterChange}>
+                        <option value="Käsittelyssä">Käsittelyssä</option>
+                        <option value="Kaikki">Kaikki</option>
+                    </select>
+                </div>
+                {filteredOrders().reverse().map(([orderId, order]) => (
                     <div key={orderId} className="orderContainer">
                         <h2>Tilauksen ID: <span style={{ color: "#2155ff" }}>{orderId}</span></h2>
                         <h2>Tilauksen Maksukoodi: <span style={{ color: "#2155ff" }}>{order[0].order_code}</span></h2>
@@ -224,18 +246,16 @@ function Orders({ getAllOrders }) {
                         <hr className="separator" />
                         <ul>
                             <h3 style={{ textAlign: "center" }}>Tuotteet</h3>
-                            {order.map(item => {
-                                return (
-                                    <li style={{ marginBottom: "10px", lineHeight: "1.5rem" }} key={item.record_id}>
-                                        <b>Artisti/Bändi:</b> {item.artist}<br />
-                                        <b>Levyn nimi:</b> {item.title}<br />
-                                        <b>Levy-yhtiö:</b> {item.label}<br />
-                                        <b>Koko:</b> {item.size}<br />
-                                        <b>Hinta:</b> {item.price}€<br />
-                                        <Button onClick={() => deleteItemFromOrder(orderId, item.record_id)} size="small" color="error" variant="contained">Poista</Button>
-                                    </li>
-                                );
-                            })}
+                            {order.map(item => (
+                                <li style={{ marginBottom: "10px", lineHeight: "1.5rem" }} key={item.record_id}>
+                                    <b>Artisti/Bändi:</b> {item.artist}<br />
+                                    <b>Levyn nimi:</b> {item.title}<br />
+                                    <b>Levy-yhtiö:</b> {item.label}<br />
+                                    <b>Koko:</b> {item.size}<br />
+                                    <b>Hinta:</b> {item.price}€<br />
+                                    <Button onClick={() => deleteItemFromOrder(orderId, item.record_id)} size="small" color="error" variant="contained">Poista</Button>
+                                </li>
+                            ))}
                         </ul>
                         <p>
                             Hinta yhteensä: {getTotalPrice(order)}€
@@ -270,7 +290,6 @@ function Orders({ getAllOrders }) {
                             >
                                 Muuta status
                             </button>
-
                         </div>
                         <h4>Status: <span style={{ color: getStatusColor(order[0].order_status) }}>{order[0].order_status}</span></h4>
                         <div style={{ textAlign: "center" }}>
