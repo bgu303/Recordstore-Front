@@ -129,49 +129,6 @@ function FrontPage() {
             <div className="contentSection">
                 <div className="section">
                     <h2 className="homePageTitles">PoppiMikko</h2>
-                    <ul className="ulFrontPage">
-                            {isLoading ? (
-                                <li style={{
-                                    fontSize: 24,
-                                    height: 400,
-                                    backgroundColor: "#e9f0f7",
-                                    textAlign: "center",
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center"
-                                }}>
-                                    Ladataan ilmoituksia...
-                                </li>
-                            ) : (
-                                notifications && notifications.length > 0 ? (
-                                    notifications.slice().reverse().map((notif, index) => (
-                                        <li key={index}>
-                                            <p>{notif.notification_text}</p>
-                                            <span className="notification-time">Julkaistu: {new Date(notif.created_at).toLocaleString()}</span>
-                                        </li>
-                                    ))
-                                ) : (
-                                    <li style={{
-                                        color: "white",
-                                        fontSize: 24,
-                                        height: 400,
-                                        backgroundColor: "#cc0000",
-                                        textAlign: "center",
-                                        display: "flex",
-                                        justifyContent: "center",
-                                        alignItems: "center"
-                                    }}>
-                                        PoppiMikko KESÄLOMALLA!
-                                        <br />
-                                        Sivusto palaa käyttöön elokuussa tai syyskuussa.
-                                        <br />
-                                        Kirjautuminen tai levyjen ostaminen tällä aikavälillä EI OLE mahdollista.
-                                        <br />
-                                        Sivusto ja käyttäjät palautuvat ennalleen kesäloman jälkeen.
-                                    </li>
-                                )
-                            )}
-                        </ul>
                     <p className="homePageParagraph">
                         Nimimerkin otin ensimmäistä kertaa käyttöön reilut 10 vuotta sitten, kun aloin latamaan videoita YouTubeen (joku saattaa muistaakin). Kuuden vuoden aikana latasin biisejä (lähinnä suomalaisia) sinne noin 1700, katselukertoja oli yli 16 miljoonaa. Kunnes kanava suljettiin ja kaikki lisäämäni lataukset katosivat sieltä. PoppiMikon rinnalla laitoin sinne myös biisejä nimimerkillä PunkMikko, tuo kanava siellä on säilynyt. Tosin aktiivinen en sen kanssa ole ollut vuosikausiin. Sittemmin olen tätä PoppiMikko nimeä siellä täällä käyttänyt, nyt siis myös tällä nettisivulla.
                         <br /><br />
