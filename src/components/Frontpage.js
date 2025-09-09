@@ -278,13 +278,11 @@ function FrontPage() {
                                         justifyContent: "center",
                                         alignItems: "center"
                                     }}>
-                                        PoppiMikko KESÄLOMALLA!
+                                        PoppiMikko Huoltokatkolla!
                                         <br />
-                                        Sivusto palaa käyttöön elokuussa tai syyskuussa.
+                                        Sivusto palaa käyttöön mahdollisimman pian!
                                         <br />
-                                        Kirjautuminen tai levyjen ostaminen tällä aikavälillä EI OLE mahdollista.
-                                        <br />
-                                        Sivusto ja käyttäjät palautuvat ennalleen kesäloman jälkeen.
+                                        Kirjautuminen tai levyjen ostaminen huoltokatkolla EI OLE mahdollista.
                                     </li>
                                 )
                             )}
