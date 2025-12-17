@@ -1,17 +1,14 @@
-import * as React from 'react';
 import { useState, useEffect } from 'react';
 import '../styling/Frontpage.css'
-import { AgGridReact } from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
 import 'ag-grid-community/styles/ag-theme-material.css';
-import { useNavigate } from "react-router-dom";
 import Footer from './Footer';
 import ImageBanner from './Imagebanner';
+import { Helmet } from 'react-helmet-async';
 
 import { BASE_URL } from './Apiconstants';
 
 function FrontPage() {
-    const navigate = useNavigate();
     const [records, setRecords] = useState([]);
     const [randomRecords, setRandomRecords] = useState([]);
     const [notifications, setNotifications] = useState([]);
@@ -37,7 +34,6 @@ function FrontPage() {
             });
     }
 
-
     const showNotifications = () => {
         fetch(`${BASE_URL}/notifications/`)
             .then(response => {
@@ -57,7 +53,6 @@ function FrontPage() {
                 setIsLoading(false); // Stop loading after fetching data
             });
     };
-
 
     const showPlaylists = () => {
         fetch(`${BASE_URL}/playlists/`)
@@ -121,6 +116,13 @@ function FrontPage() {
 
     return (
         <>
+            <Helmet>
+                <title>PoppiMikko – Vinyylejä, LP:itä, CD:itä ja paljon muuta!</title>
+                <meta
+                    name="description"
+                    content="PoppiMikon online levykauppa. Myynnissä vinyylejä, LP:itä, CD:itä ja paljon muuta."
+                />
+            </Helmet>
             <div className="frontPageMainDiv">
                 <h1 className="frontPageTitle">Tervetuloa PoppiMikon levykauppaan</h1>
                 <ImageBanner />

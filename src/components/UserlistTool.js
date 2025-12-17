@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { AgGridReact } from 'ag-grid-react';
-import { Switch, Button } from '@mui/material';
+import { Button } from '@mui/material';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-material.css';
 import { useNavigate } from 'react-router-dom';
@@ -70,7 +70,6 @@ function UserListTool() {
                 alert("Jokin meni vikaan.");
             });
     };
-
 
     const deleteUser = (data) => {
         const userId = data.id;

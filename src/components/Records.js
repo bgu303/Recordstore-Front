@@ -1,15 +1,14 @@
-import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
 import 'ag-grid-community/styles/ag-theme-material.css';
 import { Button } from '@mui/material';
 import TextField from '@mui/material/TextField';
-import Sizefilter from './Sizefilter';
 import '../styling/Records.css'
 import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
 import CircularProgress from '@mui/material/CircularProgress';
 import EditIcon from '@mui/icons-material/Edit';
+import { Helmet } from 'react-helmet-async';
 
 import { BASE_URL } from './Apiconstants';
 
@@ -46,7 +45,7 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
                 setRecords([]);
             });
     }
-    
+
     const handleDiscogsLink = (data) => {
         const discogsSubStr = data.substring(1);
         fetch(`https://api.discogs.com/releases/${discogsSubStr}`)
@@ -87,7 +86,7 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
     const editRecord = (record) => {
         setEditedRecord(record);
         setOriginalSoldStatus(record.sold);
-        setIsEditPopupOpen(true);  
+        setIsEditPopupOpen(true);
     };
 
     const handleInputChange = (e) => {
@@ -364,8 +363,20 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
 
     return (
         <>
-            <h2 style={{ textAlign: "center" }}>PoppiMikon levylista</h2>
-            <h5 style={{ textAlign: "center" }}>Jokaisen sarakkeen voi järjestää aakkosjärjestykseen klikkaamalla sarakkeen otsikkoa.<br/>Sarakkeiden kokoa voi muuttaa tarttumalla hiirellä otsikko sarakkeen reunasta.</h5>
+            <Helmet>
+                <title>PoppiMikon Levylista</title>
+                <meta
+                    name="description"
+                    content="PoppiMikon levylista ja verkkokauppa. Myynnissä vinyylit, LP-levyt ja CD:t. Rock, jazz, pop ja punk – toimitus kaikkialle Suomeen."
+                />
+            </Helmet>
+            <h1 style={{ textAlign: "center" }}>PoppiMikon levylista</h1>
+            <h5 style={{ textAlign: "center" }}>
+                PoppiMikon levylistasta löydät myynnissä olevat vinyylit,
+                LP-levyt, singlet ja CD:t. Valikoimassa on musiikkia eri genreistä, kuten rock/pop,
+                alter, suomalaista musiikkia ja paljon muuta!
+            </h5>
+            <h5 style={{ textAlign: "center" }}>Jokaisen sarakkeen voi järjestää aakkosjärjestykseen klikkaamalla sarakkeen otsikkoa.<br />Sarakkeiden kokoa voi muuttaa tarttumalla hiirellä otsikko sarakkeen reunasta.</h5>
             <h5 style={{ textAlign: "center" }}>Levylistasta voi hakea yhdellä tai useammalla sarakkeella klikkaamalla sarakeotsikon haku-menua.</h5>
             <div className="ag-theme-material trainings" style={{ height: "73vh", width: "95%", margin: "auto", fontSize: 11, fontWeight: "bold" }}>
                 <AgGridReact
@@ -514,7 +525,7 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
                                 Valmis
                             </Button>
                             <Button variant="contained" color="error" onClick={() => setIsEditPopupOpen(false)}>
-                               Peruuta
+                                Peruuta
                             </Button>
                         </div>
                     </div>

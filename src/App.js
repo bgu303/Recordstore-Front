@@ -22,7 +22,6 @@ import GlobalChat from './components/Globalchat';
 import "./App.css";
 import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
-import { TextField } from '@mui/material';
 import { jwtDecode } from 'jwt-decode';
 import "./styling/Navbar.css";
 import SearchIcon from '@mui/icons-material/Search';
@@ -30,7 +29,6 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import socket from './components/socket';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import blop from "./audio/blop.mp3"
 
 import { BASE_URL } from './components/Apiconstants';
 
@@ -50,7 +48,6 @@ function App() {
   const [adminConversationIds, setAdminConversationIds] = useState([]);
   const [newMessageState, setNewMessageState] = useState(false);
   const [adminNewMessageIds, setAdminNewMessageIds] = useState([]);
-  const [adminNewMessagesSinceLogin, setAdminNewMessagesSinceLogin] = useState([]);
   const [shoppingcart, setShoppingcart] = useState([]);
   const [token, setToken] = useState(null)
   const [shoppingcartSize, setShoppingcartSize] = useState(0);
@@ -60,9 +57,6 @@ function App() {
   const [isOpen, setIsOpen] = useState(false);
   const [newOrderCount, setNewOrderCount] = useState(0);
   const [imageError, setImageError] = useState(false); //This is to track if Logo fails to load -> it displays "Etusivu" - text.
-
-  //Idk if this will be used anymore, if anything I should make all of the things that use token use the token state as above ^ CURRENTLY USED ONLY IN LOGIN. Fix maybe?
-  const token1 = localStorage.getItem("jwtToken")
 
   const [customerInfo, setCustomerInfo] = useState({
     name: "",
@@ -74,7 +68,6 @@ function App() {
   });
 
   const [cartTotal, setCartTotal] = useState(0);
-  const logo = "https://i.imgur.com/baI8pOI.png"
 
   useEffect(() => {
     const storedIsLoggedIn = localStorage.getItem("isLoggedIn");

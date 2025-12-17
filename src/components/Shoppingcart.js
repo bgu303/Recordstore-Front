@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
@@ -10,7 +9,6 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
 import { useNavigate } from "react-router-dom";
-import socket from './socket';
 import '../styling/Shoppingcart.css'
 
 import { BASE_URL } from './Apiconstants';
@@ -20,7 +18,6 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
     const [shippingOptionChecker, setShippingOptionChecker] = useState(false);
     const navigate = useNavigate();
     const token = localStorage.getItem('jwtToken');
-    const currentTime = new Date().toISOString();
     const [message, setMessage] = useState("");
 
     useEffect(() => {

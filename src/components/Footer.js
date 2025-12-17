@@ -1,4 +1,3 @@
-import * as React from 'react';
 import '../styling/Frontpage.css'
 import { useNavigate } from "react-router-dom";
 
