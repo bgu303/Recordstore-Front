@@ -27,7 +27,6 @@ function OwnOrders({ loggedInUser }) {
                 if (response.ok) {
                     return response.json();
                 } else {
-                    console.log("Something went wrong")
                 }
             })
             .then(responseData => {
@@ -36,7 +35,6 @@ function OwnOrders({ loggedInUser }) {
                 setOrderData(groupedOrders);
             })
             .catch(error => {
-                console.log(error.message);
             });
     }
 

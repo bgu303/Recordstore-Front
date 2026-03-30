@@ -38,7 +38,6 @@ function DeleteUser() {
                     navigate("/records");
                 })
                 .catch(error => {
-                    console.log(`Error deleting user: ${error}`);
                     alert("Jokin meni vikaan");
                 })
         }

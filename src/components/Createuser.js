@@ -88,7 +88,6 @@ function CreateUser() {
                 navigate("/login");
             }
         } catch (error) {
-            console.log(`Error in creating user: ${error}`);
             alert("Jokin meni vikaan käyttäjää luodessa.");
         }
     }

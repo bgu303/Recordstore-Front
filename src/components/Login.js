@@ -78,7 +78,6 @@ function Login({ isLoggedIn, setIsLoggedIn, loggedInUser, setLoggedInUser, conve
                 }, 300);
             })
             .catch(error => {
-                console.log(`Error logging in: ${error}`);
                 alert("Salasana tai käyttäjänimi väärin.");
             });
     };

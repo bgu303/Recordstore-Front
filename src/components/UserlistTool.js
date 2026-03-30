@@ -38,7 +38,6 @@ function UserListTool() {
                 setAllUsers(filteredUsers);
             })
             .catch(error => {
-                console.log(error.message);
                 setAllUsers([]);
             });
     };
@@ -97,7 +96,6 @@ function UserListTool() {
                     alert("Käyttäjää poistaessa tapahtui virhe.");
                 });
         } else {
-            console.log("Jokin meni pieleen.");
         }
     };
 

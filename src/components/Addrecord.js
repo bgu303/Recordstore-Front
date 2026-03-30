@@ -75,7 +75,6 @@ function AddRecord({ loggedInUser }) {
                 return alert("Levy lisätty onnistuneesti.");
             }
         } catch (error) {
-            console.log(`Error in adding record: ${error}`);
         }
     }
 
@@ -152,7 +151,6 @@ function AddRecord({ loggedInUser }) {
                 return alert("Levyt lisätty onnistuneesti.");
             }
         } catch (error) {
-            console.log(`Error uploading data: ${error}`);
             alert("Error uploading data");
         }
     }

@@ -33,6 +33,32 @@
     border-right: 1px solid #ddd;
 }
 
+.ag-theme-material .ag-header-cell-label,
+.ag-theme-material .ag-header-cell-text {
+    font-weight: 700;
+    color: rgb(0, 0, 0);
+}
+
+.ag-theme-material .ag-header-cell-text {
+    font-size: 0.8rem;
+}
+
+.ag-custom-menu-search-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    color: rgb(0, 0, 0);
+}
+
+.ag-custom-menu-search-icon svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+    color: rgb(0, 0, 0);
+}
+
 /* Hide the filter dropdown */
 .ag-theme-material .ag-filter-select {
     display: none !important;
@@ -92,6 +118,10 @@
 
     .ag-header-cell, .ag-cell {
         font-size: 0.7rem;
+    }
+
+    .ag-theme-material .ag-header-cell-text {
+        font-size: 0.75rem;
     }
     
     .discogsPicture {

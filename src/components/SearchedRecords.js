@@ -35,8 +35,66 @@ function SearchedRecords({ searchResults, loggedInUser, showShoppingcart }) {
             })
     }
 
+    const generateGuestToken = () => {
+        return 'guest_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    };
+
+    const readGuestToken = () => {
+        let token = localStorage.getItem("guestToken");
+        if (!token) {
+            const match = document.cookie.match(/(?:^|;\s*)guestToken=([^;]+)/);
+            if (match) token = match[1];
+        }
+        return token;
+    };
+
+    const writeGuestToken = (token) => {
+        localStorage.setItem("guestToken", token);
+        document.cookie = `guestToken=${token}; path=/; max-age=${60*60*24*365}`;
+    };
+
+    const getOrCreateGuestToken = () => {
+        let guestToken = readGuestToken();
+        if (!guestToken) {
+            guestToken = generateGuestToken();
+            writeGuestToken(guestToken);
+        }
+        return guestToken;
+    };
+
     const addToCart = async (data) => {
-        console.log(`UserId: ${loggedInUser.id} itemId: ${data.id}`);
+        const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+
+        if (!isLoggedIn) {
+            // Guest user: send to backend with guest token
+            try {
+                const guestToken = getOrCreateGuestToken();
+
+                const response = await fetch(`${BASE_URL}/shoppingcart/addtocart`, {
+                    method: "POST",
+                    headers: { "Content-type": "application/json" },
+                    body: JSON.stringify({
+                        guestToken,
+                        recordId: data.id
+                    })
+                });
+
+                if (!response.ok) {
+                    if (response.status === 501) {
+                        return alert("Levy on jo sinun tai toisen käyttäjän ostoskorissa");
+                    }
+                    return alert("Jokin meni vikaan lisätessä koriin");
+                } else {
+                    showShoppingcart();
+                    alert("Koriin lisääminen onnistui!");
+                    return;
+                }
+            } catch (error) {
+                return alert("Jokin meni vikaan lisätessä koriin");
+            }
+        }
+
+        // Logged in user: use backend
         try {
             const response = await fetch(`${BASE_URL}/shoppingcart/addtocart`, {
                 method: "POST",
@@ -58,12 +116,10 @@ function SearchedRecords({ searchResults, loggedInUser, showShoppingcart }) {
                 return;
             }
         } catch (error) {
-            console.log(`Error adding to cart: ${error}`);
         }
     }
 
     const displayImage = (data) => {
-        console.log("moi")
         setShowPicture(true);
         setIsImageLoading(true);
         setImageLoadTimeout(false);

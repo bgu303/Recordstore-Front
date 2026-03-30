@@ -32,7 +32,6 @@ function Orders({ getAllOrders }) {
                 setOrderData(groupedOrders);
             })
             .catch(error => {
-                console.log(error.message);
             });
     }
 
@@ -97,14 +96,12 @@ function Orders({ getAllOrders }) {
         fetch(`${BASE_URL}/orders/changeorderstatus/${id}/${orderStatus}`)
             .then(response => {
                 if (!response.ok) {
-                    console.log("Failed to update Status.");
                 } else {
                     getOrders();
                     getAllOrders();
                 }
             })
             .catch(error => {
-                console.log("Error updating Status:", error);
             })
     }
 
@@ -189,14 +186,12 @@ function Orders({ getAllOrders }) {
             })
                 .then(response => {
                     if (!response.ok) {
-                        console.log("Failed to delete order item.");
                     } else {
                         getOrders();
                         getAllOrders();
                     }
                 })
                 .catch(error => {
-                    console.log("Error deleting order item:", error);
                 });
         }
     }
@@ -240,6 +235,9 @@ function Orders({ getAllOrders }) {
                                 <p><b>Toimitustapa:</b> {order[0].customer_shippingoption}</p>
                                 {order[0].customer_address && (
                                     <p><b>Osoite:</b> {order[0].customer_address}</p>
+                                )}
+                                {order[0].customer_message && (
+                                    <p><b>Viesti:</b> {order[0].customer_message}</p>
                                 )}
                             </>
                         )}

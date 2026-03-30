@@ -41,7 +41,6 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
                 setRecords(responseData);
             })
             .catch(error => {
-                console.log(error.message);
                 setRecords([]);
             });
     }
@@ -122,8 +121,66 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
             });
     };
 
+    const generateGuestToken = () => {
+        return 'guest_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    };
+
+    const readGuestToken = () => {
+        let token = localStorage.getItem("guestToken");
+        if (!token) {
+            const match = document.cookie.match(/(?:^|;\s*)guestToken=([^;]+)/);
+            if (match) token = match[1];
+        }
+        return token;
+    };
+
+    const writeGuestToken = (token) => {
+        localStorage.setItem("guestToken", token);
+        document.cookie = `guestToken=${token}; path=/; max-age=${60*60*24*365}`;
+    };
+
+    const getOrCreateGuestToken = () => {
+        let guestToken = readGuestToken();
+        if (!guestToken) {
+            guestToken = generateGuestToken();
+            writeGuestToken(guestToken);
+        }
+        return guestToken;
+    };
+
     const addToCart = async (data) => {
-        console.log(data)
+        const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+
+        if (!isLoggedIn) {
+            // Guest user: send to backend with guest token
+            try {
+                const guestToken = getOrCreateGuestToken();
+
+                const response = await fetch(`${BASE_URL}/shoppingcart/addtocart`, {
+                    method: "POST",
+                    headers: { "Content-type": "application/json" },
+                    body: JSON.stringify({
+                        guestToken,
+                        recordId: data.id
+                    })
+                });
+
+                if (!response.ok) {
+                    if (response.status === 501) {
+                        return alert("Levy on jo sinun tai toisen käyttäjän ostoskorissa");
+                    }
+                    return alert("Jokin meni vikaan lisätessä koriin");
+                } else {
+                    alert(`Ostoskoriin lisääminen onnistui!\nArtisti: ${data.artist}\nLevyn nimi: ${data.title}\nKoko: ${data.size}\nKannen kunto: ${data.kan}\nLevyn kunto: ${data.lev}\nHinta: ${data.price}`);
+                    showShoppingcart();
+                    return;
+                }
+            } catch (error) {
+                return alert("Jokin meni vikaan lisätessä koriin");
+            }
+        }
+
+        // Logged in user: use backend
         try {
             const response = await fetch(`${BASE_URL}/shoppingcart/addtocart`, {
                 method: "POST",
@@ -145,7 +202,6 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
                 return;
             }
         } catch (error) {
-            console.log(`Error adding to cart: ${error}`);
         }
     }
 
@@ -247,7 +303,7 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
                     flex: isMobile ? undefined : 1.5,
                     suppressMovable: true,
                     cellStyle: { textAlign: "center" },
-                    hide: !localStorage.getItem("isLoggedIn") || localStorage.getItem("loggedInUserRole") === "ADMIN"
+                    hide: localStorage.getItem("loggedInUserRole") === "ADMIN"
                 },
                 {
                     cellRenderer: params => <Button size="small" variant="contained" color="error" onClick={() => deleteRecord(params.data)}>Poista</Button>,
@@ -300,10 +356,16 @@ function Records({ isLoggedIn, loggedInUser, onModelChange, showShoppingcart }) 
         filterOoo: "Hae...",
     };
 
+    const searchMenuIcon = '<span class="ag-custom-menu-search-icon" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M10.5 3a7.5 7.5 0 1 0 4.73 13.32l4.22 4.21 1.41-1.41-4.21-4.22A7.5 7.5 0 0 0 10.5 3zm0 2a5.5 5.5 0 1 1 0 11 5.5 5.5 0 0 1 0-11z"></path></svg></span>';
+
     //This needs to be added in order to use custom filtering tools.
     const gridOptions = {
         reactiveCustomComponents: true,
         suppressMenuHide: true,
+        icons: {
+            menu: searchMenuIcon,
+            menuAlt: searchMenuIcon
+        }
     };
 
     const closePicture = () => {

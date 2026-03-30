@@ -20,15 +20,44 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
     const token = localStorage.getItem('jwtToken');
     const [message, setMessage] = useState("");
 
-    useEffect(() => {
-        if (!localStorage.getItem("isLoggedIn")) {
-            navigate("/records")
+    // Guest token functions
+    const generateGuestToken = () => {
+        return 'guest_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    };
+
+    const readGuestToken = () => {
+        let token = localStorage.getItem("guestToken");
+        if (!token) {
+            const match = document.cookie.match(/(?:^|;\s*)guestToken=([^;]+)/);
+            if (match) token = match[1];
         }
-    }, [])
+        return token;
+    };
+
+    const writeGuestToken = (token) => {
+        localStorage.setItem("guestToken", token);
+        document.cookie = `guestToken=${token}; path=/; max-age=${60 * 60 * 24 * 365}`;
+    };
+
+    const getOrCreateGuestToken = () => {
+        let guestToken = readGuestToken();
+        if (!guestToken) {
+            guestToken = generateGuestToken();
+            writeGuestToken(guestToken);
+        }
+        return guestToken;
+    };
+
+    // Guest users are allowed - no redirect needed
 
     useEffect(() => {
+        // Ensure guest token exists before loading cart
+        const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+        if (!isLoggedIn) {
+            getOrCreateGuestToken();
+        }
         showShoppingcart();
-    }, [loggedInUser.id]);
+    }, []);
 
     useEffect(() => {
         setCustomerInfo({
@@ -37,14 +66,15 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
             email: "",
             address: "",
             paymentOption: "",
-            shippingOption: ""
+            shippingOption: "",
+            message: ""
         });
     }, [])
 
     useEffect(() => {
         if (customerInfo.shippingOption === "Nouto Vuosaaresta") {
             setShippingOptionChecker(false);
-        } else if (customerInfo.shippingOption === "Posti") {
+        } else if (customerInfo.shippingOption === "Matkahuolto") {
             setShippingOptionChecker(true);
         }
     }, [customerInfo.shippingOption])
@@ -70,52 +100,113 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
     }
 
     const showShoppingcart = () => {
-        fetch(`${BASE_URL}/shoppingcart/shoppingcartitems/${localStorage.getItem("loggedInUserId")}`, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    navigate("/records");
-                }
-            })
-            .then(responseData => {
-                setShoppingcart(responseData)
-                setShoppingcartSize(responseData.length)
-            })
-    }
+        const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
 
-    const deleteFromShoppingcart = (data) => {
-        if (window.confirm("Oletko varma että haluat poistaa levyn?")) {
-            if (!token) {
-                return alert("Jokin meni vikaan");
-            }
-
-            fetch(`${BASE_URL}/shoppingcart/shoppingcartdelete/${data.id}`, {
-                method: "DELETE",
+        if (isLoggedIn) {
+            // Logged in user: fetch from backend
+            fetch(`${BASE_URL}/shoppingcart/shoppingcartitems/${localStorage.getItem("loggedInUserId")}`, {
                 headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
+                    'Authorization': `Bearer ${token}`
                 }
             })
                 .then(response => {
                     if (response.ok) {
-                        showShoppingcart();
+                        return response.json();
                     } else {
-                        alert("Jotain meni vikaan.");
+                        navigate("/records");
                     }
                 })
+                .then(responseData => {
+                    setShoppingcart(responseData)
+                    setShoppingcartSize(responseData.length)
+                })
+        } else {
+            // Guest user: fetch from backend using guest token
+            const guestToken = getOrCreateGuestToken();
+            fetch(`${BASE_URL}/shoppingcart/shoppingcartitems/${guestToken}`)
+                .then(response => {
+                    if (response.ok) return response.json();
+                    else throw new Error("Failed to fetch guest cart");
+                })
+                .then(responseData => {
+                    setShoppingcart(responseData);
+                    setShoppingcartSize(responseData.length);
+                })
                 .catch(error => {
-                    console.error('Error:', error);
-                    alert("Jotain meni vikaan.");
+                    console.error('Error loading guest cart from server:', error);
+                    setShoppingcart([]);
+                    setShoppingcartSize(0);
                 });
         }
     }
 
+    const deleteFromShoppingcart = (data) => {
+        if (window.confirm("Oletko varma että haluat poistaa levyn?")) {
+            const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+
+            if (isLoggedIn) {
+                // Logged in user: delete from backend
+                if (!token) {
+                    return alert("Jokin meni vikaan");
+                }
+
+                fetch(`${BASE_URL}/shoppingcart/shoppingcartdelete/${data.id}`, {
+                    method: "DELETE",
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            showShoppingcart();
+                        } else {
+                            alert("Jotain meni vikaan.");
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert("Jotain meni vikaan.");
+                    });
+            } else {
+                // Guest user: delete via backend using guest token
+                const guestToken = readGuestToken();
+
+                if (!guestToken) {
+                    return alert("Jokin meni vikaan - istuntosesi on vanhentunut.");
+                }
+
+                fetch(`${BASE_URL}/shoppingcart/guestdelete/${data.id}`, {
+                    method: "DELETE",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ guestToken })
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            showShoppingcart();
+                        } else {
+                            return response.text().then(text => {
+                                console.error('Guest delete error response:', text);
+                                alert("Jotain meni vikaan.");
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error deleting guest cart item:', error);
+                        alert("Jotain meni vikaan.");
+                    });
+            }
+        }
+    }
+
     const sendMessageOrderNotificationMessage = (orderId, orderCode) => {
+        // Only send message if user is logged in (has conversationId)
+        if (!conversationId || !token) {
+            return;
+        }
+
         const message = `Uusi tilaus vastaanotettu!\n\nTilauksen ID: ${orderId}\n\nNimi: ${customerInfo.name}\n\nSähköposti: ${customerInfo.email}\n\nPuhelinnumero: ${customerInfo.phoneNumber}\n\nMaksutapa: ${customerInfo.paymentOption}${(customerInfo.paymentOption === "MobilePay" || customerInfo.paymentOption === "Tilisiirto") ? `\n\nMaksukoodi: ${orderCode}` : ""}\n\nToimitustapa: ${customerInfo.shippingOption} ${customerInfo.address ? `\n\nOsoite:\n${customerInfo.address}` : ""}`;
 
         fetch(`${BASE_URL}/chat/sendautomatedmessage`, {
@@ -131,7 +222,6 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
         })
             .then(response => response.json())
             .then(data => {
-                console.log('Message sent successfully:', data);
             })
             .catch(error => {
                 console.error('Error sending message:', error);
@@ -158,7 +248,7 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
         if (customerInfo.phoneNumber.length > 15) {
             return alert("Puhelinnumero ei voi olla yli 15 merkkiä pitkä.");
         }
-        if (customerInfo.address.trim() === "" && customerInfo.shippingOption === "Posti") {
+        if (customerInfo.address.trim() === "" && customerInfo.shippingOption === "Matkahuolto") {
             return alert("Täytä kaikki tilaukseen liittyvät kentät.");
         }
         if (shoppingcart.length === 0) {
@@ -167,18 +257,23 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
         if (cartTotal < 20) {
             return alert("Ei alle 20 euron tilauksia.");
         }
-        if (customerInfo.paymentOption === "Käteinen" && customerInfo.shippingOption === "Posti") {
-            return alert("Tilausta, joka lähetetään postitse ei voi maksaa käteisellä. Valitse toinen maksutapa.")
+        if (customerInfo.paymentOption === "Käteinen" && customerInfo.shippingOption === "Matkahuolto") {
+            return alert("Tilausta, joka lähetetään Matkahuollon kautta ei voi maksaa käteisellä. Valitse toinen maksutapa.")
         }
 
         if (window.confirm("Lähetetäänkö ostoskori?")) {
             try {
+                const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+                const userId = isLoggedIn ? loggedInUser.id : null;
+                const guestToken = !isLoggedIn ? readGuestToken() : null;
+
                 const response = await fetch(`${BASE_URL}/shoppingcart/sendcart`, {
                     method: "POST",
                     headers: { "Content-type": "application/json" },
                     body: JSON.stringify({
                         customerInfo,
-                        userId: loggedInUser.id,
+                        userId: userId,
+                        guestToken: guestToken,
                         shoppingcart: shoppingcart
                     })
                 });
@@ -187,24 +282,49 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                     const data = await response.json();
 
                     if (data.success) {
-                        const deleteResponse = await fetch(`${BASE_URL}/shoppingcart/shoppingcartdeleteall/${loggedInUser.id}`, { method: "DELETE" });
+                        if (isLoggedIn) {
+                            // Logged in user: delete from backend
+                            const deleteResponse = await fetch(`${BASE_URL}/shoppingcart/shoppingcartdeleteall/${userId}`, { method: "DELETE" });
 
-                        if (deleteResponse.ok) {
-                            showShoppingcart();
-
-                            // Use the orderId returned from the server
-                            sendMessageOrderNotificationMessage(data.orderId, data.orderCode);
-                            navigate("/ordersummary");
+                            if (deleteResponse.ok) {
+                                showShoppingcart();
+                            } else {
+                                console.error('Failed to clear logged-in user cart');
+                            }
                         } else {
-                            alert("Jotain meni vikaan.");
-                            console.log(deleteResponse);
+                            // Guest user: tell backend to clear cart by token
+                            if (guestToken) {
+                                const deleteResponse = await fetch(`${BASE_URL}/shoppingcart/shoppingcartdeleteall/${guestToken}`, { method: "DELETE" });
+                                if (deleteResponse.ok) {
+                                    showShoppingcart();
+                                } else {
+                                    console.error('Failed to clear guest cart');
+                                }
+                            } else {
+                                console.warn('No guest token found, cart may not be cleared');
+                                showShoppingcart();
+                            }
                         }
+
+                        // Send notification message if applicable
+                        sendMessageOrderNotificationMessage(data.orderId, data.orderCode);
+
+                        // Store order info for display in ordersummary
+                        localStorage.setItem('lastOrderId', data.orderId);
+                        localStorage.setItem('lastOrderCode', data.orderCode);
+
+                        navigate("/ordersummary");
                     } else {
                         alert("Jotain meni vikaan.");
                     }
+                } else {
+                    const errorText = await response.text();
+                    console.error('Order submission failed:', response.status, errorText);
+                    alert("Jotain meni vikaan.");
                 }
             } catch (error) {
-                console.log(`Error in sending order: ${error}`);
+
+                alert("Jotain meni vikaan.");
             }
         } else {
             alert("Ostoskoria ei lähetetty.");
@@ -324,16 +444,23 @@ function Shoppingcart({ loggedInUser, customerInfo, setCustomerInfo, cartTotal, 
                         </div>
                         {customerInfo.shippingOption === "Matkahuolto" && (
                             <>
-                            <div>Kätevin Matkahuollon pakettipiste/-automaatti</div>
-                            <TextField label="Matkahuollon toimipiste"
-                                onChange={e => setCustomerInfo({ ...customerInfo, address: e.target.value })}
-                                value={customerInfo.address}
-                                multiline
-                                rows={4}
-                                style={{ backgroundColor: "white", borderRadius: 10 }}
-                            />
+                                <div>Kätevin Matkahuollon pakettipiste/-automaatti</div>
+                                <TextField label="Matkahuollon toimipiste"
+                                    onChange={e => setCustomerInfo({ ...customerInfo, address: e.target.value })}
+                                    value={customerInfo.address}
+                                    multiline
+                                    rows={4}
+                                    style={{ backgroundColor: "white", borderRadius: 10, width: 400 }}
+                                />
                             </>
                         )}
+                        <TextField label="Lisäviesti tilaukseen"
+                            onChange={e => setCustomerInfo({ ...customerInfo, message: e.target.value })}
+                            value={customerInfo.message || ""}
+                            multiline
+                            rows={3}
+                            style={{ backgroundColor: "white", borderRadius: 10, width: 400 }}
+                        />
                         <div style={{ textAlign: "center", marginBottom: "15px" }}>
                             <Button size="large" color="success" variant="contained" onClick={() => sendOrder()}>Lähetä</Button>
                         </div>

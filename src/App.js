@@ -64,10 +64,26 @@ function App() {
     email: "",
     address: "",
     paymentOption: "",
-    shippingOption: ""
+    shippingOption: "",
+    message: ""
   });
 
   const [cartTotal, setCartTotal] = useState(0);
+
+  // helper to sync token with cookie
+  const readGuestToken = () => {
+    let token = localStorage.getItem("guestToken");
+    if (!token) {
+      const match = document.cookie.match(/(?:^|;\s*)guestToken=([^;]+)/);
+      if (match) token = match[1];
+    }
+    return token;
+  };
+
+  const writeGuestToken = (token) => {
+    localStorage.setItem("guestToken", token);
+    document.cookie = `guestToken=${token}; path=/; max-age=${60*60*24*365}`;
+  };
 
   useEffect(() => {
     const storedIsLoggedIn = localStorage.getItem("isLoggedIn");
@@ -84,6 +100,15 @@ function App() {
         id: parseInt(storedUserId, 10),
         token: storedToken
       });
+    } else {
+      let guestToken = readGuestToken();
+      if (!guestToken) {
+        guestToken = 'guest_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        writeGuestToken(guestToken);
+      } else {
+        // ensure cookie is synced
+        writeGuestToken(guestToken);
+      }
     }
   }, []);
 
@@ -297,18 +322,44 @@ function App() {
     if (localStorage.getItem("loggedInUserRole") === "ADMIN") {
       return;
     }
-    fetch(`${BASE_URL}/shoppingcart/shoppingcartitems/${localStorage.getItem("loggedInUserId")}`)
-      .then(response => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error('Failed to fetch shopping cart items');
-        }
-      })
-      .then(responseData => {
-        setShoppingcartSize(responseData.length)
-      })
-      .catch(error => console.error("Error:", error));
+
+    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+
+    if (isLoggedIn) {
+      // Logged in user: fetch from backend
+      const userId = localStorage.getItem("loggedInUserId");
+      fetch(`${BASE_URL}/shoppingcart/shoppingcartitems/${userId}`)
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error('Failed to fetch shopping cart items');
+          }
+        })
+        .then(responseData => {
+          setShoppingcartSize(responseData.length)
+        })
+        .catch(error => console.error("Error:", error));
+    } else {
+      // Guest user: fetch from backend
+      const guestToken = readGuestToken();
+      if (guestToken) {
+        fetch(`${BASE_URL}/shoppingcart/shoppingcartitems/${guestToken}`)
+          .then(response => {
+            if (response.ok) return response.json();
+            throw new Error('Failed to fetch guest cart items');
+          })
+          .then(responseData => {
+            setShoppingcartSize(responseData.length);
+          })
+          .catch(error => {
+            console.error("Error loading guest cart from server:", error);
+            setShoppingcartSize(0);
+          });
+      } else {
+        setShoppingcartSize(0);
+      }
+    }
   };
 
   // Function to get all the orders. This is used for admin so it can fetch all the orders and indicate if new ones have arrived.
@@ -326,7 +377,6 @@ function App() {
         if (response.ok) {
           return response.json();
         } else {
-          console.log("Failed to fetch orders.");
           return [];
         }
       })
@@ -345,10 +395,8 @@ function App() {
 
   // useEffect to trigger showShoppingcart
   useEffect(() => {
-    if (loggedInUser.id) {
-      showShoppingcart();
-    }
-  }, [token, loggedInUser.id]);
+    showShoppingcart();
+  }, [token]);
 
   const clickedLink = (path, setActivePath) => {
     setSearchOpen(false);
@@ -538,7 +586,7 @@ function App() {
             <div className="searchUnderline"></div>
           </div>
           <div className="nav-right">
-            {isLoggedIn && loggedInUser.role !== "ADMIN" && (
+            {loggedInUser.role !== "ADMIN" && (
               <Link
                 to="/shoppingcart"
                 className={`nav-link nav-link-shoppingcart first ${activePath === "/shoppingcart" ? "active" : ""}`}>
@@ -570,7 +618,7 @@ function App() {
           </div>
         </nav>
         <div className="mobileDiv">
-          {isLoggedIn && loggedInUser.role !== "ADMIN" && (
+          {loggedInUser.role !== "ADMIN" && (
             <Link
               to="/shoppingcart"
               className={`nav-link nav-link-shoppingcart second ${activePath === "/shoppingcart" ? "active" : ""}`}>

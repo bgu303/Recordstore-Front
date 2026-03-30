@@ -37,8 +37,6 @@ function FrontPageTool() {
             .then(response => {
                 if (response.ok) {
                     return response.json();
-                } else {
-                    console.log("Failed to fetch notifications.")
                 }
             })
             .then(responseData => {
@@ -69,7 +67,6 @@ function FrontPageTool() {
                 getNotifications();
             }
         } catch (error) {
-            console.log(error);
         }
     }
 
@@ -97,8 +94,6 @@ function FrontPageTool() {
             .then(response => {
                 if (response.ok) {
                     return response.json();
-                } else {
-                    console.log("Failed to fetch notifications.")
                 }
             })
             .then(responseData => {
@@ -134,7 +129,6 @@ function FrontPageTool() {
                 getPlaylists();
             }
         } catch (error) {
-            console.log(error);
         }
     }
 

@@ -64,7 +64,6 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
                 setAllUsers(filteredUsers);
             })
             .catch(error => {
-                console.log(error.message);
                 setAllUsers([]);
             });
     };
@@ -226,14 +225,11 @@ function ChatRoom({ loggedInUser, conversationId, setConversationId, conversatio
                 })
                 .then(responseData => {
                     if (isMounted) {
-                        console.log(responseData);
-                        console.log("moi");
                         setNewMessageState(false);
                     }
                 })
                 .catch(error => {
                     if (isMounted) {
-                        console.error("There was a problem with the fetch operation:", error);
                     }
                 });
 

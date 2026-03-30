@@ -29,7 +29,6 @@ function FrontPage() {
                 getRandomRecords();
             })
             .catch(error => {
-                console.log(error.message);
                 setRecords([]);
             });
     }
@@ -40,14 +39,12 @@ function FrontPage() {
                 if (response.ok) {
                     return response.json();
                 } else {
-                    console.log("Failed to fetch notifications.");
                 }
             })
             .then(responseData => {
                 setNotifications(responseData);
             })
             .catch(error => {
-                console.log("Error fetching notifications: ", error);
             })
             .finally(() => {
                 setIsLoading(false); // Stop loading after fetching data
@@ -60,7 +57,6 @@ function FrontPage() {
                 if (response.ok) {
                     return response.json();
                 } else {
-                    console.log("Failed to fetch playlists.")
                 }
             })
             .then(responseData => {
@@ -132,9 +128,9 @@ function FrontPage() {
                 <div className="section">
                     <h2 className="homePageTitles">PoppiMikko</h2>
                     <p className="homePageParagraph">
-                        Nimimerkin otin ensimmäistä kertaa käyttöön reilut 10 vuotta sitten, kun aloin latamaan videoita YouTubeen (joku saattaa muistaakin). Kuuden vuoden aikana latasin biisejä (lähinnä suomalaisia) sinne noin 1700, katselukertoja oli yli 16 miljoonaa. Kunnes kanava suljettiin ja kaikki lisäämäni lataukset katosivat sieltä. PoppiMikon rinnalla laitoin sinne myös biisejä nimimerkillä PunkMikko, tuo kanava siellä on säilynyt. Tosin aktiivinen en sen kanssa ole ollut vuosikausiin. Sittemmin olen tätä PoppiMikko nimeä siellä täällä käyttänyt, nyt siis myös tällä nettisivulla.
+                        Nimimerkin otin ensimmäistä kertaa käyttöön reilut 10 vuotta sitten, kun aloin latamaan videoita YouTubeen (joku saattaa muistaakin). Kuuden vuoden aikana latasin biisejä (lähinnä suomalaisia) sinne noin 1700, katselukertoja oli yli 16 miljoonaa. Kunnes kanava suljettiin ja kaikki lisäämäni lataukset katosivat sieltä. PoppiMikon rinnalla laitoin sinne myös biisejä nimimerkillä PunkMikko, tuo kanava siellä on säilynyt. Tosin aktiivinen en sen kanssa ole ollut vuosikausiin. Sittemmin olen tätä PoppiMikko nimeä siellä täällä käyttänyt, nyt siis myös tällä nettisivulla. <br />PoppiMikkoon saa yhteyttä sähköpostiosoitteesta: <b>mives44@gmail.com</b>
                         <br /><br />
-                        <b>Myytävät</b><br />Levyt täällä ovat kaksoiskappaleita tai itselleni tarpeettomia, laidasta laitaan kaikenlaista sälää. Aussi /Alternative -sinkut ovat hyvin edustettuina, kuten myös CD-singlet. LP-osastoa on tässä vaiheessa hieman niukasti, mutta katsotaan, lisäyksiä saattaa olla tulossa myöhemmin. Suurinta osaa on vain yksi kappale, joitain aussi/alternative -sinkkuja voi olla useampikin. Kaikki nämä pitäisi löytyä varastosta, mutta tänne on saattanut jäädä roikkumaan jo aiemmin myytyjä kohteitakin. Hinnoittelussa olen pyrkinyt kohtuullisuuteen ja varmaan suurelta osin siinä onnistunutkin. Lähtökohtana olen käyttänyt Discogsin mediaanihintaa, koska se on varmaan monelle sellainen hyvä vertailukohta. Tietenkään se ei ole mikään ehdottomasti "oikea hinta", koska eihän sellaista ole olemassakaan. On vain hinta, jolla levy joko menee kaupaksi tai sitten ei. <b>Minimitilaus on 20 euroa ja vaatii rekisteröitymisen.</b> Levyjä myyn amatööripohjalta, joten toimitusaika vaihtelee.
+                        <b>Myytävät</b><br />Levyt täällä ovat kaksoiskappaleita tai itselleni tarpeettomia, laidasta laitaan kaikenlaista sälää. Aussi /Alternative -sinkut ovat hyvin edustettuina, kuten myös CD-singlet. LP-osastoa on tässä vaiheessa hieman niukasti, mutta katsotaan, lisäyksiä saattaa olla tulossa myöhemmin. Suurinta osaa on vain yksi kappale, joitain aussi/alternative -sinkkuja voi olla useampikin. Hinnoittelussa olen pyrkinyt kohtuullisuuteen ja varmaan suurelta osin siinä onnistunutkin. <b>Minimitilaus on 20 euroa</b> Levyjä myyn amatööripohjalta, joten toimitusaika vaihtelee.
                     </p>
                 </div>
                 <div className="vertical-line"></div>
@@ -147,11 +143,11 @@ function FrontPage() {
                         <br /><br />
                         <b>Mobiililaitteella käyttö</b><br />Jos vain mahdollista, niin käytä sivuja tietokoneella tai läppärillä. Sivustoa on parhaan mukaan koitettu optimoida myös mobiililaitteilla toimivaksi, mutta parannettavaa varmasti on, vähintään levylistan selaaminen on vaikeampaa mobiililaitteella.
                         <br /><br />
-                        <b>Maksutavat</b><br />Sivusto ei tällä hetkellä tue suoraa maksujärjestelmää, joten maksamiseen on kolme vaihtoehtoa: MobilePay, tilisiirto tai käteinen noudon yhteydessä. Tilausta tehdessäsi pääset valitsemaan maksutavan.
+                        <b>Maksutavat</b><br />Sivusto ei tue suoraa maksujärjestelmää, joten maksamiseen on kolme vaihtoehtoa: MobilePay, tilisiirto tai käteinen noudon yhteydessä. Tilausta tehdessäsi pääset valitsemaan maksutavan.
                         <br /><br />
-                        <b>Postikulut</b><br />Lisätään, jos ei ole nouto Vuosaaresta. Postikulut ovat <b>7,50 euroa</b> ja postitetaan <b>Matkahuollon</b> kautta. Erikoistapauksissa (Esim 1 CD) postikulut pienemmät. Erikoistapauksista ilmoitetaan Chatin kautta. Huomioithan hinnanlisäyksen tilausta tehdessäsi.
+                        <b>Postikulut</b><br />Lisätään, jos ei ole nouto Vuosaaresta. Postikulut ovat <b>7,50 euroa</b> ja postitetaan <b>Matkahuollon</b> kautta. Erikoistapauksissa (Esim 1 CD) postikulut pienemmät. Erikoistapauksista neuvotellaan erikseen. Huomioithan hinnanlisäyksen tilausta tehdessäsi.
                         <br /><br />
-                        <b>Chatti</b><br />Tarkoitettu tilauksen tekemisen jälkeen asioiden sopimiseen, esimerkiksi sopiminen noudosta. Chatti on tarkoitettu vain tilausten hoitoon, joten jätetään muut keskustelut yleiseen chattiin tai toiselle somealustalle. Jos chatin kanssa ongelmia, koita <b>päivittää sivu (F5).</b>
+                        <b>Chatti</b><br />Tarkoitettu rekisteröityneille käyttäjille tilauksen tekemisen jälkeen asioiden sopimiseen, esimerkiksi sopiminen noudosta. Chatti on tarkoitettu vain tilausten hoitoon, joten jätetään muut keskustelut yleiseen chattiin tai toiselle somealustalle. Jos chatin kanssa ongelmia, koita <b>päivittää sivu (F5).</b>
                         <br /><br />
                         <b>Ilmoitustaulu</b><br />Ilmoitustaulu sijaitsee oikeassa reunassa ja sinne tulee tietoa, jos olen lisännyt levyjä myyntiin tai milloin olen "lomalla" eli kauppa on kiinni. Tai ihan mitä tahansa, mitä mieleen tulee.
                         <br /><br />

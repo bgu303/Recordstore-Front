@@ -43,7 +43,6 @@ function SendFeedback({ loggedInUser }) {
             }
             return alert("Palaute lähetetty onnistuneesti.");
         } catch (error) {
-            console.log(error);
         }
     };
 
