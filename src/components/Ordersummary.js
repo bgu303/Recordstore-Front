@@ -52,7 +52,7 @@ function Ordersummary({ loggedInUser, customerInfo, cartTotal }) {
                 <p>Tilauksen hinta yhteensä: <b>{totalWithShipping} euroa.</b></p>
                 {customerInfo.paymentOption === "Tilisiirto" && (
                     <>
-                        <p>Maksu tilille: <b>XXXXXXXX</b></p>
+                        <p>Maksu tilille: <b>FI37 8000 2203 1664 33</b></p>
                         <p><i><b style={{ textDecoration: "underline"}}>Otathan tilinumeron talteen maksua varten!</b></i></p>
                     </>
                 )}
